@@ -1,12 +1,2556 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>智能城市</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoCity - 未来智能城市</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP 动画库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #0a192f;
+            --secondary-color: #172a45;
+            --accent-color: #64ffda;
+            --neon-blue: #00f0ff;
+            --neon-purple: #b300ff;
+            --text-color: #e6f1ff;
+            --text-secondary: #8892b0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .neon-text-blue {
+            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue);
+        }
+        
+        .neon-text-purple {
+            text-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple), 0 0 15px var(--neon-purple);
+        }
+        
+        .neon-border-blue {
+            box-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+        }
+        
+        .neon-border-purple {
+            box-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple);
+            border: 1px solid var(--neon-purple);
+        }
+        
+        .glow-blue {
+            filter: drop-shadow(0 0 8px var(--neon-blue));
+        }
+        
+        .glow-purple {
+            filter: drop-shadow(0 0 8px var(--neon-purple));
+        }
+        
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(100, 255, 218, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(100, 255, 218, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .circuit-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2364ffda' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        #city-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .section {
+            min-height: 100vh;
+            padding: 6rem 0;
+            position: relative;
+        }
+        
+        .card {
+            background-color: rgba(23, 42, 69, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+            border-color: rgba(100, 255, 218, 0.5);
+        }
+        
+        .nav-link {
+            position: relative;
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent-color);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 80%;
+        }
+        
+        .active-nav {
+            color: var(--accent-color);
+        }
+        
+        .active-nav::after {
+            width: 80%;
+        }
+        
+        .btn-primary {
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+            box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(100, 255, 218, 0.1);
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(100, 255, 218, 0.2);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
+        }
+        
+        .scene-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(23, 42, 69, 0.7);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .scene-card:hover .scene-icon {
+            background-color: rgba(100, 255, 218, 0.1);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .dashboard-card {
+            background-color: rgba(11, 23, 42, 0.8);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            border-color: rgba(100, 255, 218, 0.5);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+        
+        .ai-assistant-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+        
+        .ai-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(100, 255, 218, 0.1);
+            border: 1px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-button:hover {
+            background-color: rgba(100, 255, 218, 0.2);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .ai-chat {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background-color: rgba(23, 42, 69, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 0.5rem;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .ai-chat.active {
+            display: flex;
+        }
+        
+        .ai-chat-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .ai-chat-body {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        
+        .ai-chat-footer {
+            padding: 1rem;
+            border-top: 1px solid rgba(100, 255, 218, 0.2);
+            display: flex;
+        }
+        
+        .ai-chat-input {
+            flex: 1;
+            background-color: rgba(11, 23, 42, 0.7);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 0.25rem;
+            padding: 0.75rem;
+            color: var(--text-color);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-chat-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px rgba(100, 255, 218, 0.5);
+        }
+        
+        .ai-chat-send {
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 0.25rem;
+            padding: 0.75rem 1rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-chat-send:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+            box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            max-width: 80%;
+        }
+        
+        .message-content {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+        }
+        
+        .message.ai .message-content {
+            background-color: rgba(100, 255, 218, 0.1);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-top-left-radius: 0;
+        }
+        
+        .message.user {
+            margin-left: auto;
+        }
+        
+        .message.user .message-content {
+            background-color: rgba(107, 114, 128, 0.2);
+            border: 1px solid rgba(107, 114, 128, 0.4);
+            border-top-right-radius: 0;
+        }
+        
+        .loading-dots span {
+            animation: loading 1.4s infinite ease-in-out both;
+        }
+        
+        .loading-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+        
+        .loading-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+        
+        @keyframes loading {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        .scene-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .scene-modal.active {
+            display: flex;
+        }
+        
+        .scene-modal-content {
+            background-color: rgba(23, 42, 69, 0.95);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .scene-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .scene-modal-close:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+            box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+        
+        .scene-modal-body {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .scene-modal-image {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+        }
+        
+        .scene-modal-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .scene-modal-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .scene-modal-info h3 {
+            margin-bottom: 1rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+        
+        .scene-modal-info p {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .scene-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .scene-feature {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background-color: rgba(11, 23, 42, 0.7);
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 0.25rem;
+        }
+        
+        .scene-feature i {
+            color: var(--accent-color);
+            margin-right: 0.75rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .scene-modal-body {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .scene-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .ai-chat {
+                width: 300px;
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .ai-chat {
+                width: 280px;
+                height: 350px;
+                right: -1rem;
+            }
+        }
+        
+        /* 3D城市模型容器 */
+        #city-model-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+        
+        /* 数据可视化容器 */
+        .data-visualization {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+        }
+        
+        /* 粒子背景 */
+        #particles-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* 滚动指示器 */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+        
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(100, 255, 218, 0.1);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(11, 23, 42, 0.7);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(100, 255, 218, 0.3);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 255, 218, 0.5);
+        }
+    </style>
 </head>
-<body>
-  <h1>欢迎来到智能城市页面</h1>
-  <p>这里是智能城市的介绍。</p>
-  <a href="demo1.1.html">返回主页</a>
+<body class="grid-pattern">
+    <!-- 加载动画 -->
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <h2 class="text-xl font-bold text-accent-color">加载中...</h2>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 w-full bg-primary-color bg-opacity-90 backdrop-blur-md z-50 border-b border-accent-color border-opacity-20">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <a href="#" class="text-2xl font-bold neon-text-blue">
+                        <i class="fas fa-city mr-2"></i>NeoCity
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="#home" class="nav-link active-nav">首页</a>
+                    <a href="#transportation" class="nav-link">智能交通</a>
+                    <a href="#other-scenes" class="nav-link">其他场景</a>
+                    <a href="#dashboard" class="nav-link">数据中心</a>
+                    <a href="#about" class="nav-link">关于我们</a>
+                    <a href="#" class="btn-primary ml-4">探索更多</a>
+                </div>
+                
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-accent-color">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 移动端菜单 -->
+            <div id="mobile-menu" class="md:hidden hidden mt-4 pb-4">
+                <a href="#home" class="block py-2 text-accent-color">首页</a>
+                <a href="#scenes" class="block py-2 text-text-secondary">智能场景</a>
+                <a href="#dashboard" class="block py-2 text-text-secondary">数据中心</a>
+                <a href="#about" class="block py-2 text-text-secondary">关于我们</a>
+                <a href="#" class="btn-primary mt-4 inline-block">探索更多</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首页/英雄区 -->
+    <section id="home" class="section flex items-center justify-center relative overflow-hidden">
+        <!-- 粒子背景 -->
+        <div id="particles-bg"></div>
+        
+        <div class="container mx-auto px-4 z-10">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                        <span class="neon-text-blue">未来城市</span>
+                        <br>
+                        <span class="neon-text-purple">智能生活</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-text-secondary mb-8 max-w-lg">
+                        NeoCity 打造以人为本的智能城市生态系统，通过先进科技与数据分析，
+                        实现城市可持续发展与居民生活品质提升。
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#scenes" class="btn-secondary">
+                            <i class="fas fa-vr-cardboard mr-2"></i>探索场景
+                        </a>
+                        <a href="#dashboard" class="btn-primary">
+                            <i class="fas fa-chart-line mr-2"></i>数据中心
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2">
+                    <div class="relative">
+                        <img src="https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/d7b136d5fd6d404ca8873982b587cfaf~tplv-a9rns2rl98-image.image?rcl=202511051910076C9BECB8E975BFCE0E0B&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1764933036&x-signature=zVRFYb92q1QVcbPgt9i9qAKz1jY%3D" 
+                             alt="智能城市3D模型" 
+                             class="w-full h-auto rounded-lg glow-blue">
+                        <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-neon-purple bg-opacity-20 rounded-full filter blur-3xl"></div>
+                        <div class="absolute -top-4 -left-4 w-32 h-32 bg-neon-blue bg-opacity-20 rounded-full filter blur-3xl"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 滚动指示器 -->
+        <div class="scroll-indicator text-accent-color">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- 智能交通部分 -->
+    <section id="transportation" class="section bg-secondary-color bg-opacity-50 circuit-pattern relative overflow-hidden">
+        <!-- 背景装饰 -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-10">
+            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/bbfb49c812ad432093f5378c00ee5ae7~tplv-a9rns2rl98-image.image?rcl=20251105192004F7660168640FECCED491&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1764933651&x-signature=q748%2FKoVTCTGr2knwEYlp4KBrBc%3D" alt="智能交通背景" class="w-full h-full object-cover">
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 neon-text-blue">智能交通系统</h2>
+                <p class="text-lg text-text-secondary max-w-2xl mx-auto">
+                    NeoCity 智能交通系统通过 AI、大数据和物联网技术，打造高效、安全、环保的城市交通生态
+                </p>
+            </div>
+            
+            <!-- 智能交通主视觉 -->
+            <div class="mb-20">
+                <div class="relative rounded-lg overflow-hidden border border-neon-blue neon-border-blue">
+                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/bbfb49c812ad432093f5378c00ee5ae7~tplv-a9rns2rl98-image.image?rcl=20251105192004F7660168640FECCED491&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1764933651&x-signature=q748%2FKoVTCTGr2knwEYlp4KBrBc%3D" 
+                         alt="智能交通系统" 
+                         class="w-full h-auto">
+                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-primary-color to-transparent">
+                        <h3 class="text-2xl font-bold mb-2 neon-text-blue">未来出行，智慧引领</h3>
+                        <p class="text-text-secondary max-w-2xl">
+                            整合自动驾驶、智能信号控制、实时路况分析和公共交通优化，构建无缝衔接的智能交通网络
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 智能交通核心功能 -->
+            <div class="mb-20">
+                <h3 class="text-2xl font-bold mb-8 text-center text-neon-blue">核心功能模块</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- 智能信号控制 -->
+                    <div class="card scene-card p-6 cursor-pointer" data-scene="traffic-signal">
+                        <div class="scene-icon">
+                            <i class="fas fa-traffic-light text-2xl text-neon-blue"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">智能信号控制</h3>
+                        <p class="text-text-secondary mb-4">
+                            基于AI的自适应交通信号灯系统，根据实时交通流量自动调整信号时序，
+                            减少车辆等待时间，提高道路通行效率。
+                        </p>
+                        <div class="flex items-center text-accent-color">
+                            <span>了解更多</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- 自动驾驶车队 -->
+                    <div class="card scene-card p-6 cursor-pointer" data-scene="autonomous-vehicles">
+                        <div class="scene-icon">
+                            <i class="fas fa-car-on text-2xl text-neon-blue"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">自动驾驶车队</h3>
+                        <p class="text-text-secondary mb-4">
+                            由AI控制的自动驾驶车辆网络，实现车辆间的实时通信和协同驾驶，
+                            提高道路利用率，减少交通事故。
+                        </p>
+                        <div class="flex items-center text-accent-color">
+                            <span>了解更多</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- 智能停车系统 -->
+                    <div class="card scene-card p-6 cursor-pointer" data-scene="smart-parking">
+                        <div class="scene-icon">
+                            <i class="fas fa-parking text-2xl text-neon-blue"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">智能停车系统</h3>
+                        <p class="text-text-secondary mb-4">
+                            全自动立体停车库和智能停车引导系统，实现车位实时监控和自动泊车，
+                            减少停车时间和空间占用。
+                        </p>
+                        <div class="flex items-center text-accent-color">
+                            <span>了解更多</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- 实时路况监控 -->
+                    <div class="card scene-card p-6 cursor-pointer" data-scene="traffic-monitoring">
+                        <div class="scene-icon">
+                            <i class="fas fa-video text-2xl text-neon-blue"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">实时路况监控</h3>
+                        <p class="text-text-secondary mb-4">
+                            遍布城市的智能摄像头和传感器网络，实时收集交通数据，
+                            通过AI分析预测交通流量变化，提供最优出行路线。
+                        </p>
+                        <div class="flex items-center text-accent-color">
+                            <span>了解更多</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- 公共交通优化 -->
+                    <div class="card scene-card p-6 cursor-pointer" data-scene="public-transport">
+                        <div class="scene-icon">
+                            <i class="fas fa-bus text-2xl text-neon-blue"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">公共交通优化</h3>
+                        <p class="text-text-secondary mb-4">
+                            智能公交调度系统，根据乘客流量实时调整发车频率和路线，
+                            提供实时到站信息，提升公共交通体验。
+                        </p>
+                        <div class="flex items-center text-accent-color">
+                            <span>了解更多</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- 交通数据中心 -->
+                    <div class="card scene-card p-6 cursor-pointer" data-scene="traffic-data-center">
+                        <div class="scene-icon">
+                            <i class="fas fa-server text-2xl text-neon-blue"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">交通数据中心</h3>
+                        <p class="text-text-secondary mb-4">
+                            整合城市交通大数据，通过AI分析提供交通规划决策支持，
+                            实现交通系统的持续优化和升级。
+                        </p>
+                        <div class="flex items-center text-accent-color">
+                            <span>了解更多</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 智能交通效果展示 -->
+            <div class="mb-20">
+                <h3 class="text-2xl font-bold mb-8 text-center text-neon-blue">智能交通效果展示</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 交通流量对比 -->
+                    <div class="dashboard-card">
+                        <h4 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-chart-line text-neon-blue mr-2"></i>
+                            交通流量优化效果
+                        </h4>
+                        <div class="chart-container">
+                            <canvas id="trafficFlowChart"></canvas>
+                        </div>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="bg-primary-color bg-opacity-50 p-3 rounded-lg border border-accent-color border-opacity-20">
+                                <div class="text-text-secondary text-sm">拥堵减少</div>
+                                <div class="text-xl font-bold text-neon-green">-45%</div>
+                            </div>
+                            <div class="bg-primary-color bg-opacity-50 p-3 rounded-lg border border-accent-color border-opacity-20">
+                                <div class="text-text-secondary text-sm">通行效率提升</div>
+                                <div class="text-xl font-bold text-neon-blue">+32%</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 碳排放对比 -->
+                    <div class="dashboard-card">
+                        <h4 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-leaf text-neon-green mr-2"></i>
+                            环境影响改善
+                        </h4>
+                        <div class="chart-container">
+                            <canvas id="carbonEmissionChart"></canvas>
+                        </div>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="bg-primary-color bg-opacity-50 p-3 rounded-lg border border-accent-color border-opacity-20">
+                                <div class="text-text-secondary text-sm">碳排放减少</div>
+                                <div class="text-xl font-bold text-neon-green">-38%</div>
+                            </div>
+                            <div class="bg-primary-color bg-opacity-50 p-3 rounded-lg border border-accent-color border-opacity-20">
+                                <div class="text-text-secondary text-sm">能源消耗降低</div>
+                                <div class="text-xl font-bold text-neon-blue">-27%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 智能交通互动体验 -->
+            <div>
+                <h3 class="text-2xl font-bold mb-8 text-center text-neon-blue">智能交通互动体验</h3>
+                
+                <div class="dashboard-card p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-xl font-bold mb-4">交通信号灯模拟</h4>
+                            <p class="text-text-secondary mb-6">
+                                体验AI控制的智能交通信号灯如何根据实时交通流量自动调整信号时序，优化交通流畅度。
+                            </p>
+                            
+                            <div class="bg-primary-color bg-opacity-70 p-6 rounded-lg border border-accent-color border-opacity-20 mb-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 h-16 rounded-full bg-gray-700 flex items-center justify-center mb-2">
+                                            <i class="fas fa-car text-2xl"></i>
+                                        </div>
+                                        <div class="text-sm text-text-secondary">北向南</div>
+                                        <div class="text-lg font-bold text-neon-blue" id="north-south-count">24</div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 h-16 rounded-full bg-gray-700 flex items-center justify-center mb-2">
+                                            <i class="fas fa-car text-2xl"></i>
+                                        </div>
+                                        <div class="text-sm text-text-secondary">东向西</div>
+                                        <div class="text-lg font-bold text-neon-blue" id="east-west-count">8</div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 h-16 rounded-full bg-gray-700 flex items-center justify-center mb-2">
+                                            <i class="fas fa-car text-2xl"></i>
+                                        </div>
+                                        <div class="text-sm text-text-secondary">南向北</div>
+                                        <div class="text-lg font-bold text-neon-blue" id="south-north-count">15</div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-16 h-16 rounded-full bg-gray-700 flex items-center justify-center mb-2">
+                                            <i class="fas fa-car text-2xl"></i>
+                                        </div>
+                                        <div class="text-sm text-text-secondary">西向东</div>
+                                        <div class="text-lg font-bold text-neon-blue" id="west-east-count">11</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-center">
+                                    <div class="relative w-64 h-64">
+                                        <!-- 十字路口 -->
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <div class="w-48 h-16 bg-gray-800 rounded-lg"></div>
+                                            <div class="w-16 h-48 bg-gray-800 rounded-lg"></div>
+                                        </div>
+                                        
+                                        <!-- 交通灯 -->
+                                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col space-y-2">
+                                            <div class="w-6 h-6 rounded-full bg-gray-700" id="north-light"></div>
+                                            <div class="w-6 h-6 rounded-full bg-gray-700" id="north-yellow"></div>
+                                            <div class="w-6 h-6 rounded-full bg-green-500" id="north-green"></div>
+                                        </div>
+                                        
+                                        <div class="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 flex flex-col space-y-2">
+                                            <div class="w-6 h-6 rounded-full bg-red-500" id="east-light"></div>
+                                            <div class="w-6 h-6 rounded-full bg-gray-700" id="east-yellow"></div>
+                                            <div class="w-6 h-6 rounded-full bg-gray-700" id="east-green"></div>
+                                        </div>
+                                        
+                                        <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 flex flex-col space-y-2">
+                                            <div class="w-6 h-6 rounded-full bg-gray-700" id="south-light"></div>
+                                            <div class="w-6 h-6 rounded-full bg-gray-700" id="south-yellow"></div>
+                                            <div class="w-6 h-6 rounded-full bg-green-500" id="south-green"></div>
+                                        </div>
+                                        
+                                        <div class="absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col space-y-2">
+                                            <div class="w-6 h-6 rounded-full bg-red-500" id="west-light"></div>
+                                            <div class="w-6 h-6 rounded-full bg-gray-700" id="west-yellow"></div>
+                                            <div class="w-6 h-6 rounded-full bg-gray-700" id="west-green"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 flex justify-center">
+                                    <button id="simulate-traffic" class="btn-secondary">
+                                        <i class="fas fa-play mr-2"></i>模拟交通流量变化
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="text-sm text-text-secondary">
+                                <p><span class="text-accent-color">•</span> 点击"模拟交通流量变化"按钮，观察交通信号灯如何根据车辆数量自动调整</p>
+                                <p><span class="text-accent-color">•</span> AI系统会根据实时交通流量，动态调整各方向信号灯时长</p>
+                                <p><span class="text-accent-color">•</span> 目标是最大化道路通行效率，减少车辆等待时间</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xl font-bold mb-4">自动驾驶路线规划</h4>
+                            <p class="text-text-secondary mb-6">
+                                体验自动驾驶车辆如何通过实时路况数据，智能规划最优行驶路线，避开拥堵区域。
+                            </p>
+                            
+                            <div class="bg-primary-color bg-opacity-70 p-6 rounded-lg border border-accent-color border-opacity-20 mb-6">
+                                <div class="relative w-full h-64 mb-4 overflow-hidden rounded-lg">
+                                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/b629af64a3bd4e87b43bb0559f69eadd~tplv-a9rns2rl98-image.image?rcl=20251105192004F7660168640FECCED491&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1764933650&x-signature=nWV7xmgEf1lxWqXdYvI9qf3gPXA%3D" 
+                                         alt="城市交通监控" 
+                                         class="w-full h-full object-cover">
+                                    
+                                    <!-- 路线覆盖层 -->
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="w-3/4 h-3/4 relative">
+                                            <!-- 路线A -->
+                                            <div class="absolute top-0 left-0 w-full h-0.5 bg-green-500" style="top: 30%;"></div>
+                                            <div class="absolute top-0 left-0 w-0.5 h-full bg-green-500" style="left: 70%; top: 30%; height: 40%;"></div>
+                                            <div class="absolute top-0 left-0 w-full h-0.5 bg-green-500" style="top: 70%; left: 0; width: 70%;"></div>
+                                            
+                                            <!-- 路线B -->
+                                            <div class="absolute top-0 left-0 w-full h-0.5 bg-red-500 opacity-50" style="top: 30%;"></div>
+                                            <div class="absolute top-0 left-0 w-full h-0.5 bg-red-500 opacity-50" style="top: 50%;"></div>
+                                            <div class="absolute top-0 left-0 w-full h-0.5 bg-red-500 opacity-50" style="top: 70%;"></div>
+                                            
+                                            <!-- 起点和终点 -->
+                                            <div class="absolute top-0 left-0 w-4 h-4 rounded-full bg-blue-500" style="top: 30%; left: 0; transform: translate(-50%, -50%);"></div>
+                                            <div class="absolute top-0 left-0 w-4 h-4 rounded-full bg-purple-500" style="top: 70%; left: 100%; transform: translate(-50%, -50%);"></div>
+                                            
+                                            <!-- 车辆图标 -->
+                                            <div class="absolute top-0 left-0 text-white" style="top: 30%; left: 10%; transform: translate(-50%, -50%);">
+                                                <i class="fas fa-car text-xl"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <div class="text-text-secondary text-sm">路线A (推荐)</div>
+                                        <div class="flex items-center mt-1">
+                                            <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                                            <div class="text-lg font-bold text-neon-green">18 分钟</div>
+                                        </div>
+                                        <div class="text-sm text-text-secondary mt-1">距离: 8.5 km</div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="text-text-secondary text-sm">路线B (拥堵)</div>
+                                        <div class="flex items-center mt-1">
+                                            <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                                            <div class="text-lg font-bold text-neon-red">32 分钟</div>
+                                        </div>
+                                        <div class="text-sm text-text-secondary mt-1">距离: 7.2 km</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between">
+                                    <div>
+                                        <div class="text-text-secondary text-sm">实时路况更新</div>
+                                        <div class="text-sm text-neon-blue">2分钟前</div>
+                                    </div>
+                                    
+                                    <button id="update-route" class="btn-secondary">
+                                        <i class="fas fa-sync-alt mr-2"></i>更新路线
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="text-sm text-text-secondary">
+                                <p><span class="text-accent-color">•</span> 系统会根据实时交通数据，自动计算最优行驶路线</p>
+                                <p><span class="text-accent-color">•</span> 绿色路线为推荐路线，避开拥堵区域</p>
+                                <p><span class="text-accent-color">•</span> 点击"更新路线"按钮，模拟实时路况变化</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 其他智能场景 -->
+    <section id="other-scenes" class="section bg-secondary-color bg-opacity-50 circuit-pattern">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 neon-text-blue">其他智能场景</h2>
+                <p class="text-lg text-text-secondary max-w-2xl mx-auto">
+                    探索 NeoCity 的其他智能场景，体验未来城市生活的无限可能
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 能源管理 -->
+                <div class="card scene-card p-6 cursor-pointer" data-scene="energy">
+                    <div class="scene-icon">
+                        <i class="fas fa-bolt text-2xl text-neon-yellow"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">能源管理</h3>
+                    <p class="text-text-secondary mb-4">
+                        智能电网与可再生能源整合系统，实现能源生产、分配和消耗的优化管理，
+                        提高能源利用效率，减少碳排放。
+                    </p>
+                    <div class="flex items-center text-accent-color">
+                        <span>了解更多</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+                
+                <!-- 智能安防 -->
+                <div class="card scene-card p-6 cursor-pointer" data-scene="security">
+                    <div class="scene-icon">
+                        <i class="fas fa-shield-alt text-2xl text-neon-green"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">智能安防</h3>
+                    <p class="text-text-secondary mb-4">
+                        基于AI的视频监控和预警系统，实时监测城市安全状况，
+                        快速识别异常行为，提升城市安全水平。
+                    </p>
+                    <div class="flex items-center text-accent-color">
+                        <span>了解更多</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+                
+                <!-- 环境监测 -->
+                <div class="card scene-card p-6 cursor-pointer" data-scene="environment">
+                    <div class="scene-icon">
+                        <i class="fas fa-leaf text-2xl text-neon-green"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">环境监测</h3>
+                    <p class="text-text-secondary mb-4">
+                        实时空气质量、水质和噪音监测系统，通过大数据分析预测环境变化趋势，
+                        为城市环境管理提供科学依据。
+                    </p>
+                    <div class="flex items-center text-accent-color">
+                        <span>了解更多</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数据可视化仪表盘 -->
+    <section id="dashboard" class="section">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 neon-text-purple">城市数据中心</h2>
+                <p class="text-lg text-text-secondary max-w-2xl mx-auto">
+                    实时监测城市运行关键指标，通过数据分析优化城市管理
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- 左侧：城市3D模型 -->
+                <div class="lg:col-span-2">
+                    <div class="dashboard-card">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-city text-neon-blue mr-2"></i>
+                            城市3D模型
+                        </h3>
+                        <div id="city-model-container">
+                            <!-- Three.js 3D城市模型将在这里渲染 -->
+                            <img src="https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/d7b136d5fd6d404ca8873982b587cfaf~tplv-a9rns2rl98-image.image?rcl=202511051910076C9BECB8E975BFCE0E0B&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1764933036&x-signature=zVRFYb92q1QVcbPgt9i9qAKz1jY%3D" 
+                                 alt="智能城市3D模型" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div class="mt-4 flex justify-between text-sm text-text-secondary">
+                            <div>
+                                <span class="text-neon-blue">•</span> 点击建筑查看详情
+                            </div>
+                            <div>
+                                <span class="text-neon-blue">•</span> 鼠标拖动旋转视角
+                            </div>
+                            <div>
+                                <span class="text-neon-blue">•</span> 滚轮缩放模型
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 右侧：数据指标卡片 -->
+                <div class="space-y-8">
+                    <!-- 能源消耗 -->
+                    <div class="dashboard-card">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-bolt text-neon-yellow mr-2"></i>
+                            能源消耗
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="energyChart"></canvas>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div>
+                                <span class="text-text-secondary">当前消耗</span>
+                                <div class="text-2xl font-bold text-neon-yellow">1,245 <span class="text-sm font-normal">kWh</span></div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-text-secondary">同比变化</span>
+                                <div class="text-lg font-bold text-neon-green">-8.2%</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 交通状况 -->
+                    <div class="dashboard-card">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-traffic-light text-neon-blue mr-2"></i>
+                            交通状况
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div>
+                                <span class="text-text-secondary">平均车速</span>
+                                <div class="text-2xl font-bold text-neon-blue">42 <span class="text-sm font-normal">km/h</span></div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-text-secondary">拥堵指数</span>
+                                <div class="text-lg font-bold text-neon-yellow">3.2/10</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 环境指标 -->
+                    <div class="dashboard-card">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-leaf text-neon-green mr-2"></i>
+                            环境指标
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-primary-color bg-opacity-50 p-3 rounded-lg border border-accent-color border-opacity-20">
+                                <div class="text-text-secondary text-sm">空气质量</div>
+                                <div class="text-xl font-bold text-neon-green">优 (42)</div>
+                            </div>
+                            <div class="bg-primary-color bg-opacity-50 p-3 rounded-lg border border-accent-color border-opacity-20">
+                                <div class="text-text-secondary text-sm">噪音水平</div>
+                                <div class="text-xl font-bold text-neon-blue">58 dB</div>
+                            </div>
+                            <div class="bg-primary-color bg-opacity-50 p-3 rounded-lg border border-accent-color border-opacity-20">
+                                <div class="text-text-secondary text-sm">温度</div>
+                                <div class="text-xl font-bold text-neon-yellow">24°C</div>
+                            </div>
+                            <div class="bg-primary-color bg-opacity-50 p-3 rounded-lg border border-accent-color border-opacity-20">
+                                <div class="text-text-secondary text-sm">湿度</div>
+                                <div class="text-xl font-bold text-neon-blue">62%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 大数据仪表盘 -->
+            <div class="mt-8">
+                <div class="dashboard-card">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-chart-pie text-neon-purple mr-2"></i>
+                        城市大数据仪表盘
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/238bf6f4549c4f5e8e544fa749322274~tplv-a9rns2rl98-image.image?rcl=202511051910076C9BECB8E975BFCE0E0B&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1764933037&x-signature=aUdMMo1MOkHtxEIvGGfDGmrQCPc%3D" 
+                                 alt="城市大数据仪表盘" 
+                                 class="w-full h-auto rounded-lg">
+                        </div>
+                        <div>
+                            <div class="mb-6">
+                                <h4 class="text-lg font-bold mb-2 text-neon-blue">城市运行状态</h4>
+                                <div class="w-full bg-primary-color rounded-full h-2.5">
+                                    <div class="bg-neon-green h-2.5 rounded-full" style="width: 85%"></div>
+                                </div>
+                                <div class="flex justify-between mt-1 text-sm text-text-secondary">
+                                    <span>正常运行</span>
+                                    <span>85%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="bg-primary-color bg-opacity-50 p-4 rounded-lg border border-accent-color border-opacity-20">
+                                    <div class="text-text-secondary text-sm">智能设备连接数</div>
+                                    <div class="text-2xl font-bold text-neon-blue">2,458,931</div>
+                                </div>
+                                <div class="bg-primary-color bg-opacity-50 p-4 rounded-lg border border-accent-color border-opacity-20">
+                                    <div class="text-text-secondary text-sm">每日数据处理量</div>
+                                    <div class="text-2xl font-bold text-neon-purple">1.2 PB</div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-lg font-bold mb-4 text-neon-blue">关键绩效指标</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-text-secondary">能源效率</span>
+                                            <span class="text-neon-green">+12.5%</span>
+                                        </div>
+                                        <div class="w-full bg-primary-color rounded-full h-2">
+                                            <div class="bg-neon-green h-2 rounded-full" style="width: 78%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-text-secondary">交通流畅度</span>
+                                            <span class="text-neon-blue">+8.3%</span>
+                                        </div>
+                                        <div class="w-full bg-primary-color rounded-full h-2">
+                                            <div class="bg-neon-blue h-2 rounded-full" style="width: 65%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-text-secondary">环境质量</span>
+                                            <span class="text-neon-yellow">+5.7%</span>
+                                        </div>
+                                        <div class="w-full bg-primary-color rounded-full h-2">
+                                            <div class="bg-neon-yellow h-2 rounded-full" style="width: 72%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-text-secondary">居民满意度</span>
+                                            <span class="text-neon-purple">+15.2%</span>
+                                        </div>
+                                        <div class="w-full bg-primary-color rounded-full h-2">
+                                            <div class="bg-neon-purple h-2 rounded-full" style="width: 88%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我们 -->
+    <section id="about" class="section bg-secondary-color bg-opacity-50 circuit-pattern">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 neon-text-blue">关于 NeoCity</h2>
+                <p class="text-lg text-text-secondary max-w-2xl mx-auto">
+                    我们致力于打造以人为本的智能城市生态系统，通过先进科技与数据分析，
+                    实现城市可持续发展与居民生活品质提升。
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-neon-blue">我们的愿景</h3>
+                    <p class="text-text-secondary mb-6">
+                        NeoCity 旨在通过整合人工智能、物联网、大数据分析等前沿技术，
+                        构建一个高效、可持续、宜居的未来城市模型。我们相信，
+                        技术应当服务于人，智能城市的最终目标是提升居民生活品质，
+                        创造更加美好的城市生活体验。
+                    </p>
+                    <p class="text-text-secondary mb-8">
+                        我们的团队由城市规划师、数据科学家、软件工程师和设计专家组成，
+                        共同致力于将创新理念转化为现实，为城市发展提供全新解决方案。
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col">
+                            <div class="text-3xl font-bold text-neon-blue mb-2">10+</div>
+                            <div class="text-text-secondary">智能城市项目</div>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="text-3xl font-bold text-neon-blue mb-2">50+</div>
+                            <div class="text-text-secondary">技术合作伙伴</div>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="text-3xl font-bold text-neon-blue mb-2">200+</div>
+                            <div class="text-text-secondary">专业团队成员</div>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="text-3xl font-bold text-neon-blue mb-2">500万+</div>
+                            <div class="text-text-secondary">受益居民</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="relative">
+                        <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/ac3ef2537dc8422ea20599900e9c33fe~tplv-a9rns2rl98-image.image?rcl=202511051910076C9BECB8E975BFCE0E0B&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1764933041&x-signature=RaJu3QT25He7LLgv4CePwu2ohfM%3D" 
+                             alt="AI城市顾问" 
+                             class="w-full h-auto rounded-lg glow-blue">
+                        <div class="absolute -bottom-6 -right-6 w-40 h-40 bg-neon-purple bg-opacity-20 rounded-full filter blur-3xl"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 合作伙伴 -->
+            <div class="mt-20">
+                <h3 class="text-2xl font-bold mb-8 text-center text-neon-blue">合作伙伴</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+                    <div class="flex items-center justify-center h-20 bg-primary-color bg-opacity-50 rounded-lg border border-accent-color border-opacity-20">
+                        <span class="text-xl font-bold text-text-secondary">TechCorp</span>
+                    </div>
+                    <div class="flex items-center justify-center h-20 bg-primary-color bg-opacity-50 rounded-lg border border-accent-color border-opacity-20">
+                        <span class="text-xl font-bold text-text-secondary">FutureSys</span>
+                    </div>
+                    <div class="flex items-center justify-center h-20 bg-primary-color bg-opacity-50 rounded-lg border border-accent-color border-opacity-20">
+                        <span class="text-xl font-bold text-text-secondary">UrbanTech</span>
+                    </div>
+                    <div class="flex items-center justify-center h-20 bg-primary-color bg-opacity-50 rounded-lg border border-accent-color border-opacity-20">
+                        <span class="text-xl font-bold text-text-secondary">DataSmart</span>
+                    </div>
+                    <div class="flex items-center justify-center h-20 bg-primary-color bg-opacity-50 rounded-lg border border-accent-color border-opacity-20">
+                        <span class="text-xl font-bold text-text-secondary">GreenCity</span>
+                    </div>
+                    <div class="flex items-center justify-center h-20 bg-primary-color bg-opacity-50 rounded-lg border border-accent-color border-opacity-20">
+                        <span class="text-xl font-bold text-text-secondary">AI Solutions</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-primary-color border-t border-accent-color border-opacity-20 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <a href="#" class="text-2xl font-bold neon-text-blue">
+                        <i class="fas fa-city mr-2"></i>NeoCity
+                    </a>
+                    <p class="text-text-secondary mt-4">
+                        打造以人为本的智能城市生态系统，
+                        通过先进科技与数据分析，实现城市可持续发展与居民生活品质提升。
+                    </p>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="text-text-secondary hover:text-accent-color transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-text-secondary hover:text-accent-color transition-colors">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="text-text-secondary hover:text-accent-color transition-colors">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                        <a href="#" class="text-text-secondary hover:text-accent-color transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-neon-blue">快速链接</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-text-secondary hover:text-accent-color transition-colors">首页</a></li>
+                        <li><a href="#scenes" class="text-text-secondary hover:text-accent-color transition-colors">智能场景</a></li>
+                        <li><a href="#dashboard" class="text-text-secondary hover:text-accent-color transition-colors">数据中心</a></li>
+                        <li><a href="#about" class="text-text-secondary hover:text-accent-color transition-colors">关于我们</a></li>
+                        <li><a href="#" class="text-text-secondary hover:text-accent-color transition-colors">联系我们</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-neon-blue">智能场景</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#transportation" class="text-text-secondary hover:text-accent-color transition-colors">智能交通</a></li>
+                        <li><a href="#other-scenes" class="text-text-secondary hover:text-accent-color transition-colors">能源管理</a></li>
+                        <li><a href="#other-scenes" class="text-text-secondary hover:text-accent-color transition-colors">智能安防</a></li>
+                        <li><a href="#other-scenes" class="text-text-secondary hover:text-accent-color transition-colors">环境监测</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-neon-blue">联系我们</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-accent-color"></i>
+                            <span class="text-text-secondary">北京市海淀区中关村科技园区</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3 text-accent-color"></i>
+                            <span class="text-text-secondary">+86 10 8888 8888</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3 text-accent-color"></i>
+                            <span class="text-text-secondary">info@neocity.com</span>
+                        </li>
+                    </ul>
+                    <div class="mt-6">
+                        <h5 class="text-sm font-bold mb-2 text-neon-blue">订阅我们的通讯</h5>
+                        <div class="flex">
+                            <input type="email" placeholder="您的邮箱地址" class="bg-primary-color border border-accent-color border-opacity-30 rounded-l-lg px-4 py-2 text-text-color focus:outline-none focus:border-accent-color">
+                            <button class="bg-accent-color text-primary-color px-4 py-2 rounded-r-lg hover:bg-opacity-80 transition-colors">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-accent-color border-opacity-20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-text-secondary text-sm mb-4 md:mb-0">
+                    &copy; 2023 NeoCity. 保留所有权利。
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-text-secondary hover:text-accent-color text-sm transition-colors">隐私政策</a>
+                    <a href="#" class="text-text-secondary hover:text-accent-color text-sm transition-colors">使用条款</a>
+                    <a href="#" class="text-text-secondary hover:text-accent-color text-sm transition-colors">Cookie 政策</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI助手 -->
+    <div class="ai-assistant-container">
+        <div class="ai-button" id="ai-button">
+            <i class="fas fa-robot text-2xl text-accent-color"></i>
+        </div>
+        
+        <div class="ai-chat" id="ai-chat">
+            <div class="ai-chat-header">
+                <div class="flex items-center">
+                    <i class="fas fa-robot text-accent-color mr-2"></i>
+                    <h3 class="font-bold">城市AI顾问</h3>
+                </div>
+                <button class="ai-chat-close" id="ai-chat-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="ai-chat-body" id="ai-chat-body">
+                <div class="message ai">
+                    <div class="message-content">
+                        您好！我是 NeoCity 的 AI 城市顾问。有什么可以帮助您了解智能城市的吗？
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-chat-footer">
+                <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="输入您的问题...">
+                <button class="ai-chat-send" id="ai-chat-send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 场景模态框 -->
+    <div class="scene-modal" id="scene-modal">
+        <div class="scene-modal-content">
+            <button class="scene-modal-close" id="scene-modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="scene-modal-body" id="scene-modal-body">
+                <!-- 模态框内容将通过 JavaScript 动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载动画
+            setTimeout(function() {
+                document.querySelector('.loader').classList.add('hidden');
+            }, 1500);
+            
+            // 移动端菜单
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // 导航链接高亮
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section');
+            
+            window.addEventListener('scroll', function() {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active-nav');
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.add('active-nav');
+                    }
+                });
+                
+                // 移动端菜单自动关闭
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+            
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // 初始化图表
+            initCharts();
+            
+            // AI助手功能
+            initAIAssistant();
+            
+            // 场景模态框
+            initSceneModal();
+            
+            // 初始化粒子背景
+            initParticlesBackground();
+            
+            // 初始化交通信号灯模拟
+            initTrafficLightSimulation();
+            
+            // 初始化路线更新功能
+            initRouteUpdate();
+        });
+        
+        // 初始化图表
+        function initCharts() {
+            // 能源消耗图表
+            const energyCtx = document.getElementById('energyChart').getContext('2d');
+            const energyChart = new Chart(energyCtx, {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
+                    datasets: [{
+                        label: '能源消耗 (kWh)',
+                        data: [850, 780, 720, 950, 1150, 1200, 1350, 1245],
+                        borderColor: '#00f0ff',
+                        backgroundColor: 'rgba(0, 240, 255, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(100, 255, 218, 0.1)'
+                            },
+                            ticks: {
+                                color: '#8892b0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(100, 255, 218, 0.1)'
+                            },
+                            ticks: {
+                                color: '#8892b0'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 交通状况图表
+            const trafficCtx = document.getElementById('trafficChart').getContext('2d');
+            const trafficChart = new Chart(trafficCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
+                    datasets: [{
+                        label: '平均车速 (km/h)',
+                        data: [55, 32, 48, 45, 30, 52],
+                        backgroundColor: [
+                            'rgba(0, 240, 255, 0.7)',
+                            'rgba(179, 0, 255, 0.7)',
+                            'rgba(0, 240, 255, 0.7)',
+                            'rgba(0, 240, 255, 0.7)',
+                            'rgba(179, 0, 255, 0.7)',
+                            'rgba(0, 240, 255, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(0, 240, 255, 1)',
+                            'rgba(179, 0, 255, 1)',
+                            'rgba(0, 240, 255, 1)',
+                            'rgba(0, 240, 255, 1)',
+                            'rgba(179, 0, 255, 1)',
+                            'rgba(0, 240, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(100, 255, 218, 0.1)'
+                            },
+                            ticks: {
+                                color: '#8892b0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(100, 255, 218, 0.1)'
+                            },
+                            ticks: {
+                                color: '#8892b0'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 交通流量优化效果图表
+            if (document.getElementById('trafficFlowChart')) {
+                const trafficFlowCtx = document.getElementById('trafficFlowChart').getContext('2d');
+                const trafficFlowChart = new Chart(trafficFlowCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'],
+                        datasets: [
+                            {
+                                label: '优化前',
+                                data: [45, 85, 60, 55, 62, 70, 95, 65],
+                                borderColor: 'rgba(255, 99, 132, 0.7)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                borderWidth: 2,
+                                tension: 0.4,
+                                fill: true
+                            },
+                            {
+                                label: '优化后',
+                                data: [45, 60, 48, 42, 45, 50, 65, 52],
+                                borderColor: 'rgba(0, 240, 255, 0.7)',
+                                backgroundColor: 'rgba(0, 240, 255, 0.1)',
+                                borderWidth: 2,
+                                tension: 0.4,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    color: '#8892b0'
+                                }
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '拥堵指数',
+                                    color: '#8892b0'
+                                },
+                                grid: {
+                                    color: 'rgba(100, 255, 218, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#8892b0'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(100, 255, 218, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#8892b0'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // 碳排放对比图表
+            if (document.getElementById('carbonEmissionChart')) {
+                const carbonEmissionCtx = document.getElementById('carbonEmissionChart').getContext('2d');
+                const carbonEmissionChart = new Chart(carbonEmissionCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                        datasets: [
+                            {
+                                label: '优化前',
+                                data: [1200, 1150, 1050, 980, 920, 880],
+                                backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: '优化后',
+                                data: [1200, 1050, 850, 720, 650, 580],
+                                backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    color: '#8892b0'
+                                }
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '碳排放量 (吨)',
+                                    color: '#8892b0'
+                                },
+                                grid: {
+                                    color: 'rgba(100, 255, 218, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#8892b0'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(100, 255, 218, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#8892b0'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // 初始化AI助手
+        function initAIAssistant() {
+            const aiButton = document.getElementById('ai-button');
+            const aiChat = document.getElementById('ai-chat');
+            const aiChatClose = document.getElementById('ai-chat-close');
+            const aiChatBody = document.getElementById('ai-chat-body');
+            const aiChatInput = document.getElementById('ai-chat-input');
+            const aiChatSend = document.getElementById('ai-chat-send');
+            
+            // 打开/关闭聊天窗口
+            aiButton.addEventListener('click', function() {
+                aiChat.classList.toggle('active');
+            });
+            
+            aiChatClose.addEventListener('click', function() {
+                aiChat.classList.remove('active');
+            });
+            
+            // 发送消息
+            function sendMessage() {
+                const message = aiChatInput.value.trim();
+                
+                if (message) {
+                    // 添加用户消息
+                    addMessage('user', message);
+                    aiChatInput.value = '';
+                    
+                    // 显示加载状态
+                    showLoading();
+                    
+                    // 模拟AI回复
+                    setTimeout(function() {
+                        hideLoading();
+                        const response = getAIResponse(message);
+                        addMessage('ai', response);
+                    }, 1000);
+                }
+            }
+            
+            aiChatSend.addEventListener('click', sendMessage);
+            
+            aiChatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // 添加消息到聊天窗口
+            function addMessage(type, content) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', type);
+                
+                const messageContent = document.createElement('div');
+                messageContent.classList.add('message-content');
+                messageContent.textContent = content;
+                
+                messageDiv.appendChild(messageContent);
+                aiChatBody.appendChild(messageDiv);
+                
+                // 滚动到底部
+                aiChatBody.scrollTop = aiChatBody.scrollHeight;
+            }
+            
+            // 显示加载状态
+            function showLoading() {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.classList.add('message', 'ai', 'loading');
+                
+                const loadingContent = document.createElement('div');
+                loadingContent.classList.add('message-content');
+                
+                const loadingDots = document.createElement('div');
+                loadingDots.classList.add('loading-dots', 'flex', 'space-x-1');
+                
+                for (let i = 0; i < 3; i++) {
+                    const dot = document.createElement('span');
+                    dot.classList.add('w-2', 'h-2', 'bg-accent-color', 'rounded-full');
+                    loadingDots.appendChild(dot);
+                }
+                
+                loadingContent.appendChild(loadingDots);
+                loadingDiv.appendChild(loadingContent);
+                aiChatBody.appendChild(loadingDiv);
+                
+                // 滚动到底部
+                aiChatBody.scrollTop = aiChatBody.scrollHeight;
+            }
+            
+            // 隐藏加载状态
+            function hideLoading() {
+                const loadingDiv = document.querySelector('.message.loading');
+                if (loadingDiv) {
+                    loadingDiv.remove();
+                }
+            }
+            
+            // 模拟AI回复
+            function getAIResponse(message) {
+                message = message.toLowerCase();
+                
+                if (message.includes('你好') || message.includes('hi') || message.includes('hello')) {
+                    return '您好！我是 NeoCity 的 AI 城市顾问。有什么可以帮助您了解智能城市的吗？';
+                }
+                else if (message.includes('智能交通') || message.includes('交通')) {
+                    return 'NeoCity 的智能交通系统采用 AI 控制的信号灯和实时路况监控，可减少 30% 的交通拥堵。系统还支持自动驾驶车辆的协同调度，提高道路利用率。';
+                }
+                else if (message.includes('能源') || message.includes('电力')) {
+                    return '我们的智能能源管理系统整合了太阳能、风能等可再生能源，通过 AI 预测和优化能源分配，使城市能源消耗降低 25%，碳排放减少 40%。';
+                }
+                else if (message.includes('安防') || message.includes('安全')) {
+                    return 'NeoCity 的智能安防系统使用 AI 视频分析技术，可实时监测异常行为并预警，配合无人机巡逻和智能门禁系统，使城市犯罪率降低 60%。';
+                }
+                else if (message.includes('家居') || message.includes('家庭')) {
+                    return '智能家居系统可实现家电自动化控制、能源管理和安防监控的无缝整合。通过手机 APP 或语音助手，居民可以远程控制家中设备，提高生活便捷性和安全性。';
+                }
+                else if (message.includes('医疗') || message.includes('健康')) {
+                    return '智慧医疗系统提供远程诊断、健康监测和紧急救援服务。居民可通过智能手环等设备实时监测健康数据，AI 系统会分析数据并提供健康建议，必要时自动联系医疗机构。';
+                }
+                else if (message.includes('教育') || message.includes('学习')) {
+                    return '智能教育平台采用 AI 个性化学习算法，根据学生的学习进度和能力定制学习内容。虚拟教室和 AR/VR 技术提供沉浸式学习体验，使教育资源更加均衡。';
+                }
+                else if (message.includes('环境') || message.includes('污染')) {
+                    return '环境监测系统实时监测空气质量、水质和噪音水平，通过大数据分析预测环境变化趋势。系统还会自动启动污染控制措施，如调整交通流量或启动空气净化设备。';
+                }
+                else if (message.includes('数据') || message.includes('分析')) {
+                    return 'NeoCity 每天处理超过 1 PB 的城市数据，包括交通流量、能源消耗、环境指标等。通过 AI 分析这些数据，我们可以优化城市管理，提高资源利用效率，改善居民生活质量。';
+                }
+                else if (message.includes('隐私') || message.includes('安全')) {
+                    return '我们非常重视数据隐私和安全。所有数据都采用加密存储，访问权限严格控制。我们的系统符合国际数据保护标准，定期进行安全审计和漏洞测试，确保数据安全。';
+                }
+                else if (message.includes('成本') || message.includes('投资')) {
+                    return '智能城市建设初期投资较大，但长期收益显著。根据我们的测算，平均 5-7 年可收回投资。主要收益来自能源节约、效率提升和公共服务优化。我们还提供多种融资方案，降低城市财政压力。';
+                }
+                else if (message.includes('何时') || message.includes('建设') || message.includes('完成')) {
+                    return 'NeoCity 是一个持续发展的项目。目前已有 3 个区域完成建设并投入使用，约 50 万居民受益。整个城市计划在 2030 年前全面建成，届时将成为全球领先的智能城市典范。';
+                }
+                else {
+                    return '感谢您的提问！这是一个很好的问题。我们的专家团队正在研究这个领域，预计很快会有相关解决方案推出。您还有其他关于智能城市的问题吗？';
+                }
+            }
+        }
+        
+        // 初始化场景模态框
+        function initSceneModal() {
+            const sceneCards = document.querySelectorAll('.scene-card');
+            const sceneModal = document.getElementById('scene-modal');
+            const sceneModalClose = document.getElementById('scene-modal-close');
+            const sceneModalBody = document.getElementById('scene-modal-body');
+            
+            // 场景数据
+            const scenesData = {
+                transportation: {
+                    title: '智能交通系统',
+                    image: 'https://img.freepik.com/free-photo/smart-transport-technology-concept-for-future-car-traffic-on-road_34629-448.jpg',
+                    description: 'NeoCity 的智能交通系统采用 AI 控制的信号灯和实时路况监控，可减少 30% 的交通拥堵。系统还支持自动驾驶车辆的协同调度，提高道路利用率。通过大数据分析，系统能够预测交通流量变化，提前调整信号灯时序，优化交通流畅度。',
+                    features: [
+                        { icon: 'fas fa-traffic-light', text: 'AI 智能信号灯' },
+                        { icon: 'fas fa-car', text: '自动驾驶车辆协同' },
+                        { icon: 'fas fa-route', text: '实时路况监控' },
+                        { icon: 'fas fa-map-marked-alt', text: '智能导航系统' },
+                        { icon: 'fas fa-bus', text: '公共交通优化' },
+                        { icon: 'fas fa-parking', text: '智能停车管理' }
+                    ]
+                },
+                energy: {
+                    title: '智能能源管理',
+                    image: 'https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/238bf6f4549c4f5e8e544fa749322274~tplv-a9rns2rl98-image.image?rcl=202511051910076C9BECB8E975BFCE0E0B&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1764933037&x-signature=aUdMMo1MOkHtxEIvGGfDGmrQCPc%3D',
+                    description: '我们的智能能源管理系统整合了太阳能、风能等可再生能源，通过 AI 预测和优化能源分配，使城市能源消耗降低 25%，碳排放减少 40%。智能电网能够实时监测能源生产和消耗，自动调整分配策略，确保能源供应稳定高效。',
+                    features: [
+                        { icon: 'fas fa-solar-panel', text: '可再生能源整合' },
+                        { icon: 'fas fa-bolt', text: '智能电网管理' },
+                        { icon: 'fas fa-chart-line', text: '能源消耗监控' },
+                        { icon: 'fas fa-lightbulb', text: '智能照明系统' },
+                        { icon: 'fas fa-water', text: '水资源优化管理' },
+                        { icon: 'fas fa-leaf', text: '低碳环保措施' }
+                    ]
+                },
+                security: {
+                    title: '智能安防系统',
+                    image: 'https://img.freepik.com/free-vector/artificial-intelligence-robot-ai-big-data-smart-city-illustration_53876-129731.jpg',
+                    description: 'NeoCity 的智能安防系统使用 AI 视频分析技术，可实时监测异常行为并预警，配合无人机巡逻和智能门禁系统，使城市犯罪率降低 60%。系统还整合了火灾、地震等灾害预警功能，提高城市安全水平。',
+                    features: [
+                        { icon: 'fas fa-video', text: 'AI 视频监控' },
+                        { icon: 'fas fa-drone', text: '无人机巡逻' },
+                        { icon: 'fas fa-shield-alt', text: '智能门禁系统' },
+                        { icon: 'fas fa-bell', text: '异常行为预警' },
+                        { icon: 'fas fa-fire-extinguisher', text: '火灾预警系统' },
+                        { icon: 'fas fa-ambulance', text: '紧急救援响应' }
+                    ]
+                },
+                home: {
+                    title: '智能家居系统',
+                    image: 'https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/c2973e99afc643f0a5ba88c4dcd572e7~tplv-a9rns2rl98-image.image?rcl=202511051910076C9BECB8E975BFCE0E0B&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1764933038&x-signature=63HLtnK1f2usO%2FN%2FPG0t8%2Bc%2BpSw%3D',
+                    description: '智能家居系统可实现家电自动化控制、能源管理和安防监控的无缝整合。通过手机 APP 或语音助手，居民可以远程控制家中设备，提高生活便捷性和安全性。系统还能学习居民生活习惯，自动调整家居环境，提供个性化体验。',
+                    features: [
+                        { icon: 'fas fa-house-user', text: '智能环境控制' },
+                        { icon: 'fas fa-robot', text: '语音助手集成' },
+                        { icon: 'fas fa-lock', text: '智能安防监控' },
+                        { icon: 'fas fa-thermometer-half', text: '温度自动调节' },
+                        { icon: 'fas fa-tv', text: '智能家电控制' },
+                        { icon: 'fas fa-mobile-alt', text: '手机远程控制' }
+                    ]
+                },
+                healthcare: {
+                    title: '智慧医疗系统',
+                    image: 'https://img.freepik.com/free-vector/doctor-nurses-with-medical-robot_23-2148982330.jpg',
+                    description: '智慧医疗系统提供远程诊断、健康监测和紧急救援服务。居民可通过智能手环等设备实时监测健康数据，AI 系统会分析数据并提供健康建议，必要时自动联系医疗机构。系统还整合了电子病历和医疗资源调度，提高医疗服务效率。',
+                    features: [
+                        { icon: 'fas fa-heartbeat', text: '健康数据监测' },
+                        { icon: 'fas fa-video', text: '远程医疗诊断' },
+                        { icon: 'fas fa-user-md', text: 'AI 健康顾问' },
+                        { icon: 'fas fa-ambulance', text: '紧急救援服务' },
+                        { icon: 'fas fa-notes-medical', text: '电子病历管理' },
+                        { icon: 'fas fa-pills', text: '智能用药提醒' }
+                    ]
+                },
+                education: {
+                    title: '智能教育系统',
+                    image: 'https://img.freepik.com/free-vector/online-education-internet-school-digital-learning_53876-120006.jpg',
+                    description: '智能教育平台采用 AI 个性化学习算法，根据学生的学习进度和能力定制学习内容。虚拟教室和 AR/VR 技术提供沉浸式学习体验，使教育资源更加均衡。系统还整合了教师资源管理和学习效果评估，提高教育质量。',
+                    features: [
+                        { icon: 'fas fa-robot', text: 'AI 个性化学习' },
+                        { icon: 'fas fa-vr-cardboard', text: 'AR/VR 教学体验' },
+                        { icon: 'fas fa-chalkboard-teacher', text: '虚拟教师助手' },
+                        { icon: 'fas fa-book', text: '数字教育资源' },
+                        { icon: 'fas fa-graduation-cap', text: '学习进度追踪' },
+                        { icon: 'fas fa-users', text: '协作学习平台' }
+                    ]
+                },
+                environment: {
+                    title: '智能环境监测',
+                    image: 'https://img.freepik.com/free-photo/futuristic-cityscape_1127-307.jpg',
+                    description: '环境监测系统实时监测空气质量、水质和噪音水平，通过大数据分析预测环境变化趋势。系统还会自动启动污染控制措施，如调整交通流量或启动空气净化设备。居民可通过手机 APP 查看实时环境数据，了解健康建议。',
+                    features: [
+                        { icon: 'fas fa-wind', text: '空气质量监测' },
+                        { icon: 'fas fa-water', text: '水质监测系统' },
+                        { icon: 'fas fa-volume-up', text: '噪音水平监测' },
+                        { icon: 'fas fa-chart-line', text: '环境趋势预测' },
+                        { icon: 'fas fa-leaf', text: '绿化覆盖管理' },
+                        { icon: 'fas fa-recycle', text: '智能垃圾分类' }
+                    ]
+                }
+            };
+            
+            // 打开模态框
+            sceneCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const sceneId = this.getAttribute('data-scene');
+                    const sceneData = scenesData[sceneId];
+                    
+                    if (sceneData) {
+                        // 填充模态框内容
+                        sceneModalBody.innerHTML = `
+                            <div class="scene-modal-image">
+                                <img src="${sceneData.image}" alt="${sceneData.title}">
+                            </div>
+                            <div class="scene-modal-info">
+                                <h3 class="text-2xl font-bold">${sceneData.title}</h3>
+                                <p>${sceneData.description}</p>
+                                <div class="scene-features">
+                                    ${sceneData.features.map(feature => `
+                                        <div class="scene-feature">
+                                            <i class="${feature.icon}"></i>
+                                            <span>${feature.text}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <button class="btn-secondary mt-6">
+                                    <i class="fas fa-info-circle mr-2"></i>了解更多详情
+                                </button>
+                            </div>
+                        `;
+                        
+                        // 显示模态框
+                        sceneModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            });
+            
+            // 关闭模态框
+            sceneModalClose.addEventListener('click', function() {
+                sceneModal.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // 点击模态框外部关闭
+            sceneModal.addEventListener('click', function(e) {
+                if (e.target === sceneModal) {
+                    sceneModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+        
+        // 初始化交通信号灯模拟
+        function initTrafficLightSimulation() {
+            const simulateButton = document.getElementById('simulate-traffic');
+            
+            if (simulateButton) {
+                simulateButton.addEventListener('click', function() {
+                    // 获取车辆计数元素
+                    const northSouthCount = document.getElementById('north-south-count');
+                    const eastWestCount = document.getElementById('east-west-count');
+                    const southNorthCount = document.getElementById('south-north-count');
+                    const westEastCount = document.getElementById('west-east-count');
+                    
+                    // 获取交通灯元素
+                    const northLight = document.getElementById('north-light');
+                    const northYellow = document.getElementById('north-yellow');
+                    const northGreen = document.getElementById('north-green');
+                    
+                    const eastLight = document.getElementById('east-light');
+                    const eastYellow = document.getElementById('east-yellow');
+                    const eastGreen = document.getElementById('east-green');
+                    
+                    const southLight = document.getElementById('south-light');
+                    const southYellow = document.getElementById('south-yellow');
+                    const southGreen = document.getElementById('south-green');
+                    
+                    const westLight = document.getElementById('west-light');
+                    const westYellow = document.getElementById('west-yellow');
+                    const westGreen = document.getElementById('west-green');
+                    
+                    // 模拟交通流量变化
+                    function updateTrafficFlow() {
+                        // 随机调整车辆数量
+                        const nsCount = Math.floor(Math.random() * 30) + 5;
+                        const ewCount = Math.floor(Math.random() * 30) + 5;
+                        const snCount = Math.floor(Math.random() * 30) + 5;
+                        const weCount = Math.floor(Math.random() * 30) + 5;
+                        
+                        // 更新显示
+                        northSouthCount.textContent = nsCount;
+                        eastWestCount.textContent = ewCount;
+                        southNorthCount.textContent = snCount;
+                        westEastCount.textContent = weCount;
+                        
+                        // 根据车辆数量调整信号灯
+                        // 计算南北方向和东西方向的总车辆数
+                        const northSouthTotal = nsCount + snCount;
+                        const eastWestTotal = ewCount + weCount;
+                        
+                        // 重置所有灯
+                        northLight.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        northYellow.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        northGreen.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        
+                        eastLight.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        eastYellow.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        eastGreen.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        
+                        southLight.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        southYellow.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        southGreen.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        
+                        westLight.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        westYellow.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        westGreen.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        
+                        // 根据车辆数量比例决定哪个方向绿灯
+                        if (northSouthTotal > eastWestTotal) {
+                            // 南北方向绿灯
+                            northGreen.className = 'w-6 h-6 rounded-full bg-green-500';
+                            southGreen.className = 'w-6 h-6 rounded-full bg-green-500';
+                            
+                            // 东西方向红灯
+                            eastLight.className = 'w-6 h-6 rounded-full bg-red-500';
+                            westLight.className = 'w-6 h-6 rounded-full bg-red-500';
+                        } else if (eastWestTotal > northSouthTotal) {
+                            // 东西方向绿灯
+                            eastGreen.className = 'w-6 h-6 rounded-full bg-green-500';
+                            westGreen.className = 'w-6 h-6 rounded-full bg-green-500';
+                            
+                            // 南北方向红灯
+                            northLight.className = 'w-6 h-6 rounded-full bg-red-500';
+                            southLight.className = 'w-6 h-6 rounded-full bg-red-500';
+                        } else {
+                            // 数量相等，交替绿灯
+                            if (Math.random() > 0.5) {
+                                // 南北方向绿灯
+                                northGreen.className = 'w-6 h-6 rounded-full bg-green-500';
+                                southGreen.className = 'w-6 h-6 rounded-full bg-green-500';
+                                
+                                // 东西方向红灯
+                                eastLight.className = 'w-6 h-6 rounded-full bg-red-500';
+                                westLight.className = 'w-6 h-6 rounded-full bg-red-500';
+                            } else {
+                                // 东西方向绿灯
+                                eastGreen.className = 'w-6 h-6 rounded-full bg-green-500';
+                                westGreen.className = 'w-6 h-6 rounded-full bg-green-500';
+                                
+                                // 南北方向红灯
+                                northLight.className = 'w-6 h-6 rounded-full bg-red-500';
+                                southLight.className = 'w-6 h-6 rounded-full bg-red-500';
+                            }
+                        }
+                    }
+                    
+                    // 初始更新一次
+                    updateTrafficFlow();
+                    
+                    // 每3秒更新一次
+                    const interval = setInterval(updateTrafficFlow, 3000);
+                    
+                    // 5次后停止
+                    setTimeout(function() {
+                        clearInterval(interval);
+                        
+                        // 重置按钮文本
+                        simulateButton.innerHTML = '<i class="fas fa-play mr-2"></i>模拟交通流量变化';
+                        
+                        // 重置交通灯为初始状态
+                        northLight.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        northYellow.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        northGreen.className = 'w-6 h-6 rounded-full bg-green-500';
+                        
+                        eastLight.className = 'w-6 h-6 rounded-full bg-red-500';
+                        eastYellow.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        eastGreen.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        
+                        southLight.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        southYellow.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        southGreen.className = 'w-6 h-6 rounded-full bg-green-500';
+                        
+                        westLight.className = 'w-6 h-6 rounded-full bg-red-500';
+                        westYellow.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        westGreen.className = 'w-6 h-6 rounded-full bg-gray-700';
+                        
+                        // 重置车辆数量
+                        northSouthCount.textContent = '24';
+                        eastWestCount.textContent = '8';
+                        southNorthCount.textContent = '15';
+                        westEastCount.textContent = '11';
+                    }, 15000);
+                    
+                    // 更改按钮文本
+                    simulateButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>模拟中...';
+                });
+            }
+        }
+        
+        // 初始化路线更新功能
+        function initRouteUpdate() {
+            const updateButton = document.getElementById('update-route');
+            
+            if (updateButton) {
+                updateButton.addEventListener('click', function() {
+                    // 模拟路线更新
+                    updateButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>更新中...';
+                    
+                    setTimeout(function() {
+                        // 随机生成新的路线时间
+                        const routeATime = Math.floor(Math.random() * 10) + 15;
+                        const routeBTime = routeATime + Math.floor(Math.random() * 10) + 10;
+                        
+                        // 更新显示
+                        const routeATimeElement = document.querySelector('.grid-cols-2 .text-neon-green');
+                        const routeBTimeElement = document.querySelector('.grid-cols-2 .text-neon-red');
+                        
+                        if (routeATimeElement && routeBTimeElement) {
+                            routeATimeElement.textContent = routeATime + ' 分钟';
+                            routeBTimeElement.textContent = routeBTime + ' 分钟';
+                        }
+                        
+                        // 更新时间
+                        const timeElement = document.querySelector('.text-neon-blue');
+                        if (timeElement) {
+                            timeElement.textContent = '刚刚';
+                        }
+                        
+                        // 重置按钮文本
+                        updateButton.innerHTML = '<i class="fas fa-sync-alt mr-2"></i>更新路线';
+                    }, 1500);
+                });
+            }
+        }
+        
+        // 初始化粒子背景
+        function initParticlesBackground() {
+            // 创建画布
+            const canvas = document.createElement('canvas');
+            canvas.id = 'particles-bg';
+            document.body.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            
+            // 设置画布尺寸
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // 粒子配置
+            const particlesConfig = {
+                particles: {
+                    number: {
+                        value: 80,
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
+                    },
+                    color: {
+                        value: '#64ffda'
+                    },
+                    shape: {
+                        type: 'circle'
+                    },
+                    opacity: {
+                        value: 0.2,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 1,
+                            opacity_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    size: {
+                        value: 3,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 2,
+                            size_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: '#64ffda',
+                        opacity: 0.1,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1,
+                        direction: 'none',
+                        random: true,
+                        straight: false,
+                        out_mode: 'out',
+                        bounce: false,
+                        attract: {
+                            enable: false,
+                            rotateX: 600,
+                            rotateY: 1200
+                        }
+                    }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: {
+                            enable: true,
+                            mode: 'grab'
+                        },
+                        onclick: {
+                            enable: true,
+                            mode: 'push'
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        grab: {
+                            distance: 140,
+                            line_linked: {
+                                opacity: 0.3
+                            }
+                        },
+                        push: {
+                            particles_nb: 4
+                        }
+                    }
+                },
+                retina_detect: true
+            };
+            
+            // 创建粒子
+            const particles = [];
+            
+            for (let i = 0; i < particlesConfig.particles.number.value; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * particlesConfig.particles.size.value + particlesConfig.particles.size.value / 2,
+                    color: particlesConfig.particles.color.value,
+                    opacity: Math.random() * particlesConfig.particles.opacity.value,
+                    speedX: (Math.random() - 0.5) * particlesConfig.particles.move.speed * 2,
+                    speedY: (Math.random() - 0.5) * particlesConfig.particles.move.speed * 2,
+                    lineLinked: {
+                        distance: particlesConfig.particles.line_linked.distance,
+                        color: particlesConfig.particles.line_linked.color,
+                        opacity: particlesConfig.particles.line_linked.opacity,
+                        width: particlesConfig.particles.line_linked.width
+                    }
+                });
+            }
+            
+            // 鼠标位置
+            let mouseX = 0;
+            let mouseY = 0;
+            let mouseIsDown = false;
+            
+            // 鼠标事件
+            canvas.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            canvas.addEventListener('mousedown', function() {
+                mouseIsDown = true;
+            });
+            
+            canvas.addEventListener('mouseup', function() {
+                mouseIsDown = false;
+            });
+            
+            canvas.addEventListener('mouseleave', function() {
+                mouseX = 0;
+                mouseY = 0;
+            });
+            
+            // 动画循环
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 更新和绘制粒子
+                particles.forEach(particle => {
+                    // 更新位置
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+                    
+                    // 边界检查
+                    if (particle.x < 0 || particle.x > canvas.width) {
+                        particle.speedX *= -1;
+                    }
+                    
+                    if (particle.y < 0 || particle.y > canvas.height) {
+                        particle.speedY *= -1;
+                    }
+                    
+                    // 鼠标交互 - 吸引
+                    if (mouseX && mouseY && particlesConfig.interactivity.events.onhover.enable) {
+                        const dx = mouseX - particle.x;
+                        const dy = mouseY - particle.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (dist < particlesConfig.interactivity.modes.grab.distance) {
+                            const forceDirectionX = dx / dist;
+                            const forceDirectionY = dy / dist;
+                            const force = (particlesConfig.interactivity.modes.grab.distance - dist) / particlesConfig.interactivity.modes.grab.distance;
+                            
+                            particle.speedX += forceDirectionX * force * 0.1;
+                            particle.speedY += forceDirectionY * force * 0.1;
+                        }
+                    }
+                    
+                    // 鼠标交互 - 点击
+                    if (mouseIsDown && particlesConfig.interactivity.events.onclick.enable) {
+                        const dx = mouseX - particle.x;
+                        const dy = mouseY - particle.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (dist < 100) {
+                            particle.speedX = (Math.random() - 0.5) * 5;
+                            particle.speedY = (Math.random() - 0.5) * 5;
+                        }
+                    }
+                    
+                    // 绘制粒子
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = particle.color;
+                    ctx.globalAlpha = particle.opacity;
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                    
+                    // 绘制连接线
+                    particles.forEach(otherParticle => {
+                        if (particle !== otherParticle) {
+                            const dx = particle.x - otherParticle.x;
+                            const dy = particle.y - otherParticle.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            
+                            if (dist < particle.lineLinked.distance) {
+                                ctx.beginPath();
+                                ctx.moveTo(particle.x, particle.y);
+                                ctx.lineTo(otherParticle.x, otherParticle.y);
+                                ctx.strokeStyle = particle.lineLinked.color;
+                                ctx.globalAlpha = particle.lineLinked.opacity * (1 - dist / particle.lineLinked.distance);
+                                ctx.lineWidth = particle.lineLinked.width;
+                                ctx.stroke();
+                                ctx.globalAlpha = 1;
+                            }
+                        }
+                    });
+                });
+            }
+            
+            // 启动动画
+            animate();
+        }
+    </script>
 </body>
 </html>
