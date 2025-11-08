@@ -14,6 +14,7 @@
   </div>
 
   <header class="site-header">
+    <canvas id="header-canvas"></canvas>
     <div class="mtitle">
       <h3 class="main-title">智 能 生 活</h3>
       <p class="subtitle">这是一个介绍和提供体验智能生活的网站，了解、体验科技给我们生活带来的改变</p>
@@ -58,55 +59,117 @@
         </div>
       </a>
     </div>
-  </main>
 
-  <section class="about-us">
-    <div class="about-container">
-      <h4 class="section-title">关于我们</h4>
-      <p class="about-text">我们致力于将最新科技带入日常生活，从智能家居、智能城市、智能服务到智能人文，全面探索未来生活方式。无论你是科技爱好者，还是想体验未来生活的普通用户，这里都是你的起点。</p>
-
-      <div class="contact-us">
-        <h5 class="contact-title">联系我们</h5>
-        <ul class="contact-list">
-          <li class="contact-item">
-            <i class="fas fa-envelope text-accent mr-3"></i>
-            <span>电子邮箱: <a href="mailto:info@smartlife-demo.com">171639898@qq.com</a></span>
-          </li>
-          <li class="contact-item">
-            <i class="fas fa-phone text-accent mr-3"></i>
-            <span>电话: <a href="tel:+6512345678">+86 153 3721 7838</a></span>
-          </li>
-          <li class="contact-item">
-            <i class="fas fa-globe text-accent mr-3"></i>
-            <span>官方网站: <a href="https://www.smartlife-demo.com" target="_blank" rel="noopener">www.smartlife-demo.com</a></span>
-          </li>
-          <li class="contact-item">
-            <i class="fas fa-map-marker-alt text-accent mr-3"></i>
-            <span>地址: 武汉大学国家网络安全学院</span>
-          </li>
-        </ul>
-        <div class="subscribe-section">
-          <h6 class="subscribe-title">订阅我们的通讯</h6>
-          <div class="subscribe-form">
-            <input type="email" placeholder="您的邮箱地址" class="subscribe-input">
-            <button class="subscribe-btn">
-              <i class="fas fa-paper-plane"></i>
-            </button>
+    <section class="insights" id="insights">
+      <div class="insights-inner">
+        <h4 class="insights-title">智能生活·专题</h4>
+        <p class="insights-lead">从家庭到城市，从设备到服务，我们汇集实用案例与可落地的解决方案，帮助你更好地理解与体验智能生活。</p>
+        <div class="insights-cards">
+          <div class="insight-card">
+            <div class="ic-icon"><i class="fas fa-lightbulb"></i></div>
+            <h5>能效管理</h5>
+            <p>基于数据的能耗监测与节能策略，帮助家庭和机构降低能耗成本。</p>
+          </div>
+          <div class="insight-card">
+            <div class="ic-icon"><i class="fas fa-shield-alt"></i></div>
+            <h5>隐私与安全</h5>
+            <p>设备安全与数据治理并重，提供可控、透明的隐私保护方案。</p>
+          </div>
+          <div class="insight-card">
+            <div class="ic-icon"><i class="fas fa-users"></i></div>
+            <h5>社区互联</h5>
+            <p>以社区为单位的协同服务与共享平台，提高生活质量与参与感。</p>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="about-image">
-        <img src="about.png" alt="联系我们 插图" class="neon-border">
+    <section class="data-center" id="data-center">
+      <div class="data-inner">
+        <h4 class="data-title">数据中心</h4>
+        <p class="data-text">汇聚多源数据，提供实时分析与可视化，支持智能决策与调度。</p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <footer class="site-footer">
+    <section class="about-us" id="contact-anchor">
+      <div class="about-container">
+        <h4 class="section-title">关于我们</h4>
+        <p class="about-text">我们致力于将最新科技带入日常生活，从智能家居、智能城市、智能服务到智能人文，全面探索未来生活方式。无论你是科技爱好者，还是想体验未来生活的普通用户，这里都是你的起点。</p>
+
+        <div class="contact-revamped">
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <div class="brand-logo">
+                <div class="logo-icon"><i class="fas fa-circle-notch"></i></div>
+                <div class="brand-name">智能生活</div>
+              </div>
+              <p class="brand-desc">打造以人为本的智能城市生态系统，通过先进科技与数据分析，实现城市可持续发展与居民生活品质提升。</p>
+              <div class="socials">
+                <a href="#" class="social"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social"><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+
+            <div class="footer-links-col">
+              <h5 class="col-title">快速链接</h5>
+              <ul class="col-list">
+                <li><a class="footer-link quick-link" data-target="insights" href="#">主题</a></li>
+                <li><a class="footer-link quick-link" data-target="insights" href="#">智能场景</a></li>
+                <li><a class="footer-link quick-link" data-target="data-center" href="#">数据中心</a></li>
+                <li><a class="footer-link quick-link" data-target="contact" href="#">联系我们</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-scenes-col">
+              <h5 class="col-title">智能场景</h5>
+              <ul class="col-list">
+                <li><a class="footer-link" href="smart_city.html">智能交通</a></li>
+                <li><a class="footer-link" href="smart_service.html">能源管理</a></li>
+                <li><a class="footer-link" href="smart_home.html">数据中心</a></li>
+                <li><a class="footer-link" href="smart_culture.html">环境监测</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-contact-col" id="contact">
+              <h5 class="col-title">联系我们</h5>
+              <ul class="contact-column-list">
+                <li class="contact-row">
+                  <i class="fas fa-map-marker-alt contact-icon"></i>
+                  <div class="contact-text contact-no-wrap">武汉大学国家网络安全学院</div>
+                </li>
+                <li class="contact-row">
+                  <i class="fas fa-phone contact-icon"></i>
+                  <div class="contact-text"><a href="tel:+8615337217838" class="contact-link">+86 153 3721 7838</a></div>
+                </li>
+                <li class="contact-row">
+                  <i class="fas fa-envelope contact-icon"></i>
+                  <div class="contact-text"><a href="mailto:171639898@qq.com" class="contact-link">171639898@qq.com</a></div>
+                </li>
+              </ul>
+
+              <div class="footer-subscribe">
+                <div class="subscribe-label">订阅我们的通讯</div>
+                <div class="subscribe-inline">
+                  <input class="footer-subscribe-input" type="email" placeholder="您的邮箱地址">
+                  <button class="footer-subscribe-btn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer-contact">
     <div class="container">
       <div class="footer-content">
         <div class="copyright">
-          &copy; 2023 智能生活. 保留所有权利。
+          &copy; 2025 智能生活. 保留所有权利。
         </div>
         <div class="footer-links">
           <a href="#" class="footer-link">隐私政策</a>

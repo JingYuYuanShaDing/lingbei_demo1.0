@@ -1,12 +1,650 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>智能家居</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeoHome - 未来智能家居系统</title>
+  <script>
+    tailwind = {};
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="smart_home.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'neo-cyan': '#00f5d4',
+            'neo-indigo': '#6a0dad',
+            'neo-violet': '#9d4edd',
+            'home-dark': '#0f172a',
+            'home-layer': '#1e293b',
+            'grid-line': 'rgba(0, 245, 212, 0.08)'
+          },
+          fontFamily: {
+            'smart': ['Inter', 'system-ui', 'sans-serif']
+          },
+          animation: {
+            'pulse-soft': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float-slow': 'float 8s ease-in-out infinite',
+            'glow': 'glow 2s ease-in-out infinite alternate'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-15px)' }
+            },
+            glow: {
+              '0%': { boxShadow: '0 0 5px rgba(0, 245, 212, 0.5)' },
+              '100%': { boxShadow: '0 0 20px rgba(0, 245, 212, 0.8)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body>
-  <h1>欢迎来到智能家居页面</h1>
-  <p>这里是智能家居的介绍。</p>
-  <a href="demo1.1.html">返回主页</a>
+<body class="bg-home-dark text-white font-smart overflow-x-hidden">
+  <div class="fixed inset-0 bg-grid opacity-30 z-0"></div>
+  <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center glass-panel border-b border-neo-cyan/20">
+      <div class="flex items-center">
+        <h1 class="text-2xl font-bold text-neo-cyan text-glow">Neo<span class="text-neo-violet">Home</span></h1>
+        <span class="ml-3 hidden md:inline-block px-2 py-0.5 rounded-full text-xs bg-neo-violet/20 text-neo-violet border border-neo-violet/30">全屋智能系统</span>
+      </div>
+      <nav class="hidden md:flex items-center space-x-6">
+        <a href="index.html" class="px-3 py-2 rounded text-white/80 hover:text-neo-cyan transition-colors">返回首页</a>
+        <a href="#home" class="text-neo-cyan hover:text-white transition-colors">首页</a>
+        <a href="#control-center" class="text-white/70 hover:text-neo-cyan transition-colors">智能控制</a>
+        <a href="#scenes" class="text-white/70 hover:text-neo-cyan transition-colors">场景体验</a>
+        <a href="#energy" class="text-white/70 hover:text-neo-cyan transition-colors">能源管理</a>
+        <a href="#security" class="text-white/70 hover:text-neo-cyan transition-colors">安全防护</a>
+        <button id="top-return" class="ml-4 px-4 py-2 rounded-lg border border-neo-violet text-neo-violet hover:bg-neo-violet/10 transition-all">返回首页</button>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button class="md:hidden text-xl text-neo-cyan" id="menu-toggle"><i class="fa fa-th-large"></i></button>
+        <a href="index.html" class="hidden md:inline-block px-3 py-2 rounded bg-neo-cyan text-home-dark font-semibold">回到首页</a>
+      </div>
+    </div>
+
+    <div class="md:hidden hidden glass-panel border-b border-neo-cyan/20" id="mobile-menu">
+      <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
+        <a href="index.html" class="py-2 text-neo-cyan border-l-4 border-neo-cyan pl-3">返回首页</a>
+        <a href="#home" class="py-2 text-neo-cyan border-l-4 border-neo-cyan pl-3">首页</a>
+        <a href="#control-center" class="py-2 text-white/70 hover:text-neo-cyan border-l-4 border-transparent hover:border-neo-cyan/50 pl-3">智能控制</a>
+        <a href="#scenes" class="py-2 text-white/70 hover:text-neo-cyan border-l-4 border-transparent hover:border-neo-cyan/50 pl-3">场景体验</a>
+        <a href="#energy" class="py-2 text-white/70 hover:text-neo-cyan border-l-4 border-transparent hover:border-neo-cyan/50 pl-3">能源管理</a>
+        <a href="#security" class="py-2 text-white/70 hover:text-neo-cyan border-l-4 border-transparent hover:border-neo-cyan/50 pl-3">安全防护</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="min-h-screen pt-20 relative flex items-center">
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-neo-violet/20 rounded-full filter blur-[120px] animate-pulse-soft"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-80 h-80 bg-neo-cyan/20 rounded-full filter blur-[120px] animate-pulse-soft" style="animation-delay: 2s"></div>
+      </div>
+
+      <div class="container mx-auto px-4 z-10 grid md:grid-cols-2 gap-12 items-center py-16">
+        <div class="space-y-8 max-w-xl">
+          <div class="inline-block px-4 py-2 rounded-full bg-neo-cyan/10 text-neo-cyan border border-neo-cyan/30 text-sm">
+            <i class="fa fa-home mr-2"></i> 重新定义智能生活
+          </div>
+          <h2 class="text-4xl md:text-6xl font-bold leading-tight">让家<span class="text-neo-cyan text-glow">理解你</span>的每一个需求</h2>
+          <p class="text-white/70 text-lg leading-relaxed">NeoHome 智能家居系统通过AI学习你的生活习惯，实现设备无缝联动、场景智能切换、能源高效管理，打造安全、舒适、节能的未来居住体验。</p>
+
+          <div class="space-y-4 pt-2">
+            <div class="flex items-center">
+              <div class="w-6 h-6 rounded-full bg-neo-cyan/20 flex items-center justify-center text-neo-cyan mr-3 flex-shrink-0"><i class="fa fa-check text-xs"></i></div>
+              <p class="text-white/80">AI自适应学习，越用越懂你的生活习惯</p>
+            </div>
+            <div class="flex items-center">
+              <div class="w-6 h-6 rounded-full bg-neo-cyan/20 flex items-center justify-center text-neo-cyan mr-3 flex-shrink-0"><i class="fa fa-check text-xs"></i></div>
+              <p class="text-white/80">全场景设备联动，一键切换生活模式</p>
+            </div>
+            <div class="flex items-center">
+              <div class="w-6 h-6 rounded-full bg-neo-cyan/20 flex items-center justify-center text-neo-cyan mr-3 flex-shrink-0"><i class="fa fa-check text-xs"></i></div>
+              <p class="text-white/80">能源智能管理，最高节省35%家庭能耗</p>
+            </div>
+            <div class="flex items-center">
+              <div class="w-6 h-6 rounded-full bg-neo-cyan/20 flex items-center justify-center text-neo-cyan mr-3 flex-shrink-0"><i class="fa fa-check text-xs"></i></div>
+              <p class="text-white/80">全方位安全防护，24小时智能监控</p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-4 pt-4">
+            <button class="px-6 py-3 rounded-lg bg-neo-cyan text-home-dark font-semibold hover:animate-glow transition-all border border-neo-cyan"><i class="fa fa-play-circle mr-2"></i>观看演示</button>
+            <button class="px-6 py-3 rounded-lg border border-neo-violet text-neo-violet hover:bg-neo-violet/10 transition-all"><i class="fa fa-calculator mr-2"></i>计算节能收益</button>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div class="relative z-10 rounded-xl overflow-hidden border border-neo-cyan/30 shadow-[0_0_40px_rgba(0,245,212,0.15)] animate-float-slow">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="智能家居全景" class="w-full h-auto">
+            <div class="absolute top-6 right-6 w-48 p-3 rounded-lg glass-panel border border-neo-cyan/20 shadow-[0_0_15px_rgba(0,245,212,0.1)]">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs text-white/60">客厅状态</span>
+                <span class="text-xs px-1.5 py-0.5 rounded bg-green-500/20 text-green-400 border border-green-500/30">正常</span>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs text-white/80">温度</span>
+                  <span class="text-xs font-medium text-neo-cyan">24°C</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-xs text-white/80">湿度</span>
+                  <span class="text-xs font-medium text-neo-cyan">45%</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-xs text-white/80">照明</span>
+                  <span class="text-xs font-medium text-neo-cyan">30%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="absolute bottom-6 left-6 flex space-x-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-neo-cyan animate-pulse" title="灯光系统"></div>
+              <div class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse" style="animation-delay: 0.3s" title="安防系统"></div>
+              <div class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse" style="animation-delay: 0.6s" title="温控系统"></div>
+              <div class="w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse" style="animation-delay: 0.9s" title="影音系统"></div>
+            </div>
+          </div>
+
+          <div class="absolute -bottom-8 -left-8 w-32 h-32 border border-neo-violet/30 rounded-lg rotate-12"></div>
+          <div class="absolute -top-8 -right-8 w-28 h-28 border border-neo-cyan/30 rounded-lg -rotate-6"></div>
+        </div>
+      </div>
+
+      <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center">
+        <p class="text-sm text-white/60 mb-2">探索更多功能</p>
+        <i class="fa fa-angle-down text-neo-cyan text-xl animate-bounce"></i>
+      </div>
+    </section>
+
+    <section id="control-center" class="py-24 relative">
+      <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-block px-3 py-1.5 rounded-full bg-neo-cyan/10 text-neo-cyan border border-neo-cyan/30 text-sm mb-4"><i class="fa fa-sliders mr-1"></i> 全宅智能控制</div>
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">一个界面<span class="text-neo-cyan text-glow">掌控全屋</span>设备</h2>
+          <p class="text-white/70 text-lg">通过AI语音助手、触控面板或手机APP，实现对家中所有智能设备的集中控制，支持设备联动、定时任务和远程操作，让控制更简单直观。</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 mb-20">
+          <div class="bg-home-layer rounded-xl p-6 border border-neo-cyan/10 device-hover">
+            <div class="w-14 h-14 rounded-full bg-neo-cyan/20 flex items-center justify-center text-neo-cyan mb-6"><i class="fa fa-microphone text-2xl"></i></div>
+            <h3 class="text-xl font-bold mb-3">AI语音控制</h3>
+            <p class="text-white/70 mb-5">支持多语言自然对话，识别准确率98.7%，可同时控制多个设备，理解上下文语义，实现连续指令交互。</p>
+            <div class="space-y-3">
+              <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-cyan mr-2"></i><span>支持100+种生活场景指令</span></div>
+              <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-cyan mr-2"></i><span>离线语音识别，保护隐私</span></div>
+              <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-cyan mr-2"></i><span>可区分家庭成员声纹</span></div>
+            </div>
+          </div>
+
+          <div class="bg-home-layer rounded-xl p-6 border border-neo-cyan/10 device-hover">
+            <div class="w-14 h-14 rounded-full bg-neo-violet/20 flex items-center justify-center text-neo-violet mb-6"><i class="fa fa-mobile text-2xl"></i></div>
+            <h3 class="text-xl font-bold mb-3">移动应用控制</h3>
+            <p class="text-white/70 mb-5">跨平台APP支持远程操控，实时查看家中状态，设置自动化场景，支持设备固件在线升级，功能持续扩展。</p>
+            <div class="space-y-3">
+              <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-violet mr-2"></i><span>支持iOS/Android/鸿蒙系统</span></div>
+              <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-violet mr-2"></i><span>数据加密传输，安全可靠</span></div>
+              <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-violet mr-2"></i><span>家庭共享权限管理</span></div>
+            </div>
+          </div>
+
+          <div class="bg-home-layer rounded-xl p-6 border border-neo-cyan/10 device-hover">
+            <div class="w-14 h-14 rounded-full bg-neo-cyan/20 flex items-center justify-center text-neo-cyan mb-6"><i class="fa fa-tablet text-2xl"></i></div>
+            <h3 class="text-xl font-bold mb-3">智能触控面板</h3>
+            <p class="text-white/70 mb-5">安装于各房间的智能面板，支持触摸+语音双控，可显示环境数据，一键切换场景，离线也能正常工作。</p>
+            <div class="space-y-3">
+              <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-cyan mr-2"></i><span>10寸高清触控屏，防眩光</span></div>
+              <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-cyan mr-2"></i><span>IP65防水，适合浴室厨房</span></div>
+              <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-cyan mr-2"></i><span>低功耗设计，续航6个月</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-home-layer rounded-xl overflow-hidden border border-neo-cyan/20 shadow-[0_0_30px_rgba(0,245,212,0.05)]">
+          <div class="p-6 border-b border-neo-cyan/10">
+            <h3 class="text-xl font-bold">智能控制中心界面</h3>
+            <p class="text-white/60 text-sm mt-1">实时监控并控制家中所有智能设备</p>
+          </div>
+          <div class="p-6 grid md:grid-cols-5 gap-6">
+            <div class="md:col-span-2 space-y-4">
+              <div class="flex items-center justify-between p-3 rounded-lg bg-home-dark border border-neo-cyan/10">
+                <div class="flex items-center">
+                  <div class="w-8 h-8 rounded-full bg-neo-cyan/20 flex items-center justify-center text-neo-cyan mr-3"><i class="fa fa-lightbulb-o"></i></div>
+                  <div><div class="font-medium">客厅主灯</div><div class="text-xs text-white/60">亮度70% · 色温4000K</div></div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-neo-cyan"></div></label>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-lg bg-home-dark border border-neo-cyan/10">
+                <div class="flex items-center">
+                  <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mr-3"><i class="fa fa-thermometer-half"></i></div>
+                  <div><div class="font-medium">主卧空调</div><div class="text-xs text-white/60">制冷 · 25°C · 风速2档</div></div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div></label>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-lg bg-home-dark border border-neo-cyan/10">
+                <div class="flex items-center">
+                  <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 mr-3"><i class="fa fa-lock"></i></div>
+                  <div><div class="font-medium">前门智能锁</div><div class="text-xs text-white/60">已锁定 · 电量85%</div></div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div></label>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-lg bg-home-dark border border-neo-cyan/10">
+                <div class="flex items-center">
+                  <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 mr-3"><i class="fa fa-video-camera"></i></div>
+                  <div><div class="font-medium">客厅摄像头</div><div class="text-xs text-white/60">录制中 · 清晰度1080P</div></div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" checked class="sr-only peer"><div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div></label>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-lg bg-home-dark border border-neo-cyan/10">
+                <div class="flex items-center">
+                  <div class="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 mr-3"><i class="fa fa-tv"></i></div>
+                  <div><div class="font-medium">客厅电视</div><div class="text-xs text-white/60">关闭 · HDMI1</div></div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="sr-only peer"><div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div></label>
+              </div>
+            </div>
+
+            <div class="md:col-span-3 bg-home-dark rounded-xl p-5 border border-neo-cyan/10">
+              <div class="flex justify-between items-center mb-5">
+                <h4 class="font-bold">环境数据实时监测</h4>
+                <span class="text-xs px-2 py-0.5 rounded bg-neo-cyan/10 text-neo-cyan"><i class="fa fa-refresh mr-1"></i> 刚刚更新</span>
+              </div>
+
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="p-3 rounded-lg bg-home-layer border border-neo-cyan/10">
+                  <div class="text-xs text-white/60 mb-1">室内温度</div>
+                  <div class="flex items-end"><span class="text-2xl font-bold text-neo-cyan">24.5</span><span class="text-sm text-white/80 mb-1">°C</span></div>
+                </div>
+
+                <div class="p-3 rounded-lg bg-home-layer border border-neo-cyan/10">
+                  <div class="text-xs text-white/60 mb-1">相对湿度</div>
+                  <div class="flex items-end"><span class="text-2xl font-bold text-neo-cyan">48</span><span class="text-sm text-white/80 mb-1">%</span></div>
+                </div>
+
+                <div class="p-3 rounded-lg bg-home-layer border border-neo-cyan/10">
+                  <div class="text-xs text-white/60 mb-1">PM2.5</div>
+                  <div class="flex items-end"><span class="text-2xl font-bold text-neo-cyan">12</span><span class="text-sm text-white/80 mb-1">μg/m³</span></div>
+                </div>
+
+                <div class="p-3 rounded-lg bg-home-layer border border-neo-cyan/10">
+                  <div class="text-xs text-white/60 mb-1">CO₂浓度</div>
+                  <div class="flex items-end"><span class="text-2xl font-bold text-neo-cyan">426</span><span class="text-sm text-white/80 mb-1">ppm</span></div>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-bold mb-3">快捷场景</h4>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  <button class="p-3 rounded-lg bg-home-layer border border-neo-cyan/10 hover:border-neo-cyan/30 transition-colors text-left">
+                    <div class="flex items-center mb-1"><i class="fa fa-moon-o text-neo-cyan mr-2"></i><span class="font-medium">睡眠模式</span></div>
+                    <p class="text-xs text-white/60">关闭主灯，拉窗帘，调低温度</p>
+                  </button>
+                  <button class="p-3 rounded-lg bg-home-layer border border-neo-cyan/10 hover:border-neo-cyan/30 transition-colors text-left">
+                    <div class="flex items-center mb-1"><i class="fa fa-film text-neo-cyan mr-2"></i><span class="font-medium">观影模式</span></div>
+                    <p class="text-xs text-white/60">调暗灯光，打开电视，静音通知</p>
+                  </button>
+                  <button class="p-3 rounded-lg bg-home-layer border border-neo-cyan/10 hover:border-neo-cyan/30 transition-colors text-left">
+                    <div class="flex items-center mb-1"><i class="fa fa-suitcase text-neo-cyan mr-2"></i><span class="font-medium">离家模式</span></div>
+                    <p class="text-xs text-white/60">关闭所有设备，启动安防系统</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="scenes" class="py-24 relative bg-gradient-to-b from-home-dark to-home-layer">
+      <div class="absolute inset-0 overflow-hidden opacity-20">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neo-violet/30 rounded-full filter blur-[150px]"></div>
+      </div>
+
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-block px-3 py-1.5 rounded-full bg-neo-violet/10 text-neo-violet border border-neo-violet/30 text-sm mb-4"><i class="fa fa-film mr-1"></i> 全场景智能体验</div>
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">为每个<span class="text-neo-violet text-glow">生活场景</span>量身定制</h2>
+          <p class="text-white/70 text-lg">从清晨唤醒到深夜休憩，从家庭聚会到专注工作，NeoHome 为家中每个空间、每个时刻打造专属智能场景，让科技自然融入生活的每个细节。</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+          <div class="scene-card rounded-xl overflow-hidden group relative device-hover">
+            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="智能卧室场景" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="scene-overlay">
+              <div class="inline-block px-2.5 py-1 rounded bg-neo-violet/20 text-neo-violet text-xs mb-3 border border-neo-violet/30">卧室空间</div>
+              <h3 class="text-xl font-bold mb-2">智能唤醒系统</h3>
+              <p class="text-white/80 text-sm mb-4">模拟日出光线缓缓亮起，配合轻柔音乐渐强，智能窗帘逐步打开，让你自然醒来精力充沛。</p>
+              <div class="flex flex-wrap gap-2"><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">智能灯光</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">电动窗帘</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">智能音箱</span></div>
+            </div>
+          </div>
+
+          <div class="scene-card rounded-xl overflow-hidden group relative device-hover">
+            <img src="https://images.unsplash.com/photo-1556912167-f556f1f39fdf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="智能厨房场景" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="scene-overlay">
+              <div class="inline-block px-2.5 py-1 rounded bg-neo-violet/20 text-neo-violet text-xs mb-3 border border-neo-violet/30">厨房空间</div>
+              <h3 class="text-xl font-bold mb-2">烹饪辅助系统</h3>
+              <p class="text-white/80 text-sm mb-4">智能烟灶联动，菜谱语音指导，食材过期提醒，水电气安全监测，让烹饪更轻松安全。</p>
+              <div class="flex flex-wrap gap-2"><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">智能烟灶</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">食材管理</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">安全监测</span></div>
+            </div>
+          </div>
+
+          <div class="scene-card rounded-xl overflow-hidden group relative device-hover">
+            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="智能客厅场景" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="scene-overlay">
+              <div class="inline-block px-2.5 py-1 rounded bg-neo-violet/20 text-neo-violet text-xs mb-3 border border-neo-violet/30">客厅空间</div>
+              <h3 class="text-xl font-bold mb-2">娱乐互动中心</h3>
+              <p class="text-white/80 text-sm mb-4">影音设备智能联动，环境光随内容变化，手势控制与语音交互，打造沉浸式体验。</p>
+              <div class="flex flex-wrap gap-2"><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">影音联动</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">环境光效</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">智能交互</span></div>
+            </div>
+          </div>
+
+          <div class="scene-card rounded-xl overflow-hidden group relative device-hover">
+            <img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="智能书房场景" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="scene-overlay">
+              <div class="inline-block px-2.5 py-1 rounded bg-neo-violet/20 text-neo-violet text-xs mb-3 border border-neo-violet/30">书房空间</div>
+              <h3 class="text-xl font-bold mb-2">专注工作模式</h3>
+              <p class="text-white/80 text-sm mb-4">自动调节至最佳光线亮度，维持适宜温度，屏蔽外界干扰，营造高效专注的工作环境。</p>
+              <div class="flex flex-wrap gap-2"><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">智能照明</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">环境调节</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">干扰屏蔽</span></div>
+            </div>
+          </div>
+
+          <div class="scene-card rounded-xl overflow-hidden group relative device-hover">
+            <img src="https://images.unsplash.com/photo-1584622650111-993d426f5fdf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="智能浴室场景" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="scene-overlay">
+              <div class="inline-block px-2.5 py-1 rounded bg-neo-violet/20 text-neo-violet text-xs mb-3 border border-neo-violet/30">浴室空间</div>
+              <h3 class="text-xl font-bold mb-2">舒适洗浴系统</h3>
+              <p class="text-white/80 text-sm mb-4">提前预热浴室温度，智能控制水温水压，防潮音响播放音乐，自动换气保持空气清新。</p>
+              <div class="flex flex-wrap gap-2"><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">恒温控制</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">智能换气</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">防水娱乐</span></div>
+            </div>
+          </div>
+
+          <div class="scene-card rounded-xl overflow-hidden group relative device-hover">
+            <img src="https://images.unsplash.com/photo-1584622650111-993d426f5fdf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="智能阳台场景" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="scene-overlay">
+              <div class="inline-block px-2.5 py-1 rounded bg-neo-violet/20 text-neo-violet text-xs mb-3 border border-neo-violet/30">阳台空间</div>
+              <h3 class="text-xl font-bold mb-2">智能绿植养护</h3>
+              <p class="text-white/80 text-sm mb-4">自动监测土壤湿度，定时灌溉施肥，智能调节光照强度，让植物健康生长，打造绿色生态空间。</p>
+              <div class="flex flex-wrap gap-2"><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">自动灌溉</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">光照控制</span><span class="px-2 py-1 bg-home-dark/50 rounded text-xs">环境监测</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="energy" class="py-24 relative">
+      <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-block px-3 py-1.5 rounded-full bg-neo-cyan/10 text-neo-cyan border border-neo-cyan/30 text-sm mb-4"><i class="fa fa-bolt mr-1"></i> 智能能源管理</div>
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">高效节能，<span class="text-neo-cyan text-glow">绿色生活</span></h2>
+          <p class="text-white/70 text-lg">实时监控家庭能耗，智能调节设备运行状态，优化能源使用效率，通过AI算法预测用电高峰，自动调整设备运行策略，最高可节省35%家庭能耗。</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+          <div class="space-y-8">
+            <div class="bg-home-layer rounded-xl p-6 border border-neo-cyan/10 device-hover">
+              <div class="w-14 h-14 rounded-full bg-neo-cyan/20 flex items-center justify-center text-neo-cyan mb-6"><i class="fa fa-line-chart text-2xl"></i></div>
+              <h3 class="text-xl font-bold mb-3">实时能耗监测</h3>
+              <p class="text-white/70 mb-4">精确追踪每个设备的用电情况，生成可视化报表，识别高能耗设备，提供节能建议和优化方案。</p>
+              <div class="space-y-3">
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-cyan mr-2"></i><span>设备级能耗追踪，精度达99.5%</span></div>
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-cyan mr-2"></i><span>实时异常用电警报</span></div>
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-cyan mr-2"></i><span>历史数据对比分析</span></div>
+              </div>
+            </div>
+
+            <div class="bg-home-layer rounded-xl p-6 border border-neo-cyan/10 device-hover">
+              <div class="w-14 h-14 rounded-full bg-neo-violet/20 flex items-center justify-center text-neo-violet mb-6"><i class="fa fa-sun-o text-2xl"></i></div>
+              <h3 class="text-xl font-bold mb-3">太阳能智能调度</h3>
+              <p class="text-white/70 mb-4">智能调度太阳能发电与储能系统，优先使用清洁能源，在电价低谷时充电，高峰时放电，最大化经济效益。</p>
+              <div class="space-y-3">
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-violet mr-2"></i><span>太阳能发电效率提升25%</span></div>
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-violet mr-2"></i><span>智能峰谷电策略</span></div>
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-neo-violet mr-2"></i><span>储能系统寿命延长30%</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-home-layer rounded-xl p-6 border border-neo-cyan/20">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-xl font-bold">今日能耗概览</h3>
+              <span class="text-xs px-2 py-1 rounded bg-green-500/20 text-green-400 border border-green-500/30"><i class="fa fa-arrow-down mr-1"></i> 同比节省18%</span>
+            </div>
+
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between items-center mb-2"><span class="text-white/80">总用电量</span><span class="font-bold text-neo-cyan">24.8 kWh</span></div>
+                <div class="w-full bg-home-dark rounded-full h-2"><div class="bg-neo-cyan h-2 rounded-full" style="width: 65%"></div></div>
+              </div>
+
+              <div>
+                <div class="flex justify-between items-center mb-2"><span class="text-white/80">太阳能发电</span><span class="font-bold text-amber-400">18.2 kWh</span></div>
+                <div class="w-full bg-home-dark rounded-full h-2"><div class="bg-amber-400 h-2 rounded-full" style="width: 73%"></div></div>
+              </div>
+
+              <div>
+                <div class="flex justify-between items-center mb-2"><span class="text-white/80">电网购电</span><span class="font-bold text-blue-400">6.6 kWh</span></div>
+                <div class="w-full bg-home-dark rounded-full h-2"><div class="bg-blue-400 h-2 rounded-full" style="width: 27%"></div></div>
+              </div>
+
+              <div>
+                <div class="flex justify-between items-center mb-2"><span class="text-white/80">储能状态</span><span class="font-bold text-green-400">78%</span></div>
+                <div class="w-full bg-home-dark rounded-full h-2"><div class="bg-green-400 h-2 rounded-full" style="width: 78%"></div></div>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-neo-cyan/10">
+              <h4 class="font-bold mb-3">节能建议</h4>
+              <div class="space-y-3">
+                <div class="flex items-start">
+                  <i class="fa fa-lightbulb-o text-neo-cyan mt-1 mr-2"></i>
+                  <div><p class="text-sm font-medium">空调温度设定优化</p><p class="text-xs text-white/60">建议将客厅空调温度从22°C调整至24°C，预计每小时节省0.5kWh</p></div>
+                </div>
+                <div class="flex items-start">
+                  <i class="fa fa-clock-o text-neo-cyan mt=1 mr-2"></i>
+                  <div><p class="text-sm font-medium">热水器定时调整</p><p class="text-xs text-white/60">检测到使用习惯，建议将加热时段调整至电价低谷期</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-home-layer rounded-xl p-8 border border-neo-cyan/20">
+          <h3 class="text-2xl font-bold mb-6 text-center">月度节能成效</h3>
+          <div class="grid md:grid-cols-4 gap-6">
+            <div class="text-center"><div class="text-3xl font-bold text-neo-cyan mb-2">35%</div><div class="text-white/70 text-sm">平均节能率</div></div>
+            <div class="text-center"><div class="text-3xl font-bold text-green-400 mb-2">¥286</div><div class="text-white/70 text-sm">月度节省电费</div></div>
+            <div class="text-center"><div class="text-3xl font-bold text-amber-400 mb-2">82%</div><div class="text-white/70 text-sm">清洁能源使用率</div></div>
+            <div class="text-center"><div class="text-3xl font-bold text-blue-400 mb-2">156kg</div><div class="text-white/70 text-sm">月度碳减排量</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="security" class="py-24 relative bg-gradient-to-b from-home-layer to-home-dark">
+      <div class="absolute inset-0 overflow-hidden opacity-20">
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-500/20 rounded-full filter blur-[150px]"></div>
+      </div>
+
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-block px-3 py-1.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/30 text-sm mb-4"><i class="fa fa-shield mr-1"></i> 全方位安全防护</div>
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">24小时<span class="text-red-400 text-glow">智能守护</span>家人安全</h2>
+          <p class="text-white/70 text-lg">多层次安防体系，智能识别潜在风险，实时预警快速响应，从门窗安防到火灾预警，从老人看护到儿童安全，全方位守护家的每一处角落。</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-12 mb-16">
+          <div class="space-y-8">
+            <div class="bg-home-layer rounded-xl p-6 border border-red-400/10 device-hover">
+              <div class="w-14 h-14 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 mb-6"><i class="fa fa-video-camera text-2xl"></i></div>
+              <h3 class="text-xl font-bold mb-3">智能视频监控</h3>
+              <p class="text-white/70 mb-4">高清摄像头配合AI行为分析，智能识别异常活动，人脸识别区分家人与陌生人，减少误报提升安防效率。</p>
+              <div class="space-y-3">
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-red-400 mr-2"></i><span>AI行为分析，准确率98.2%</span></div>
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-red-400 mr-2"></i><span>红外夜视，24小时清晰监控</span></div>
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-red-400 mr-2"></i><span>隐私模式，保护家庭隐私</span></div>
+              </div>
+            </div>
+
+            <div class="bg-home-layer rounded-xl p-6 border border-red-400/10 device-hover">
+              <div class="w-14 h-14 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 mb-6"><i class="fa fa-fire-extinguisher text-2xl"></i></div>
+              <h3 class="text-xl font-bold mb-3">灾害预警系统</h3>
+              <p class="text-white/70 mb-4">烟雾、燃气、水浸等多重传感器实时监测，发现异常立即报警并联动处置，最大限度降低灾害损失。</p>
+              <div class="space-y-3">
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-red-400 mr-2"></i><span>0.5秒内识别烟雾并报警</span></div>
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-red-400 mr-2"></i><span>自动关闭燃气阀门</span></div>
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-red-400 mr-2"></i><span>联动物业和消防部门</span></div>
+              </div>
+            </div>
+
+            <div class="bg-home-layer rounded-xl p-6 border border-red-400/10 device-hover">
+              <div class="w-14 h-14 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 mb-6"><i class="fa fa-user-md text-2xl"></i></div>
+              <h3 class="text-xl font-bold mb-3">老人儿童看护</h3>
+              <p class="text-white/70 mb-4">跌倒检测、电子围栏、活动异常预警，实时关注家人安全状况，紧急情况一键求助。</p>
+              <div class="space-y-3">
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-red-400 mr-2"></i><span>跌倒检测准确率96.8%</span></div>
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-red-400 mr-2"></i><span>活动异常15分钟内预警</span></div>
+                <div class="flex items-center text-sm"><i class="fa fa-check-circle text-red-400 mr-2"></i><span>一键SOS紧急求助</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-home-layer rounded-xl p-6 border border-red-400/20">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="text-xl font-bold">安防状态总览</h3>
+              <span class="text-xs px-2 py-1 rounded bg-green-500/20 text-green-400 border border-green-500/30"><i class="fa fa-check mr-1"></i> 全部正常</span>
+            </div>
+
+            <div class="space-y-6 mb-8">
+              <div class="flex items-center justify-between p-4 rounded-lg bg-home-dark border border-green-500/20">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 mr-4"><i class="fa fa-lock"></i></div>
+                  <div><div class="font-medium">门窗安防</div><div class="text-xs text-white/60">12个传感器 · 全部正常</div></div>
+                </div>
+                <span class="text-green-400 text-sm font-medium">已布防</span>
+              </div>
+
+              <div class="flex items-center justify-between p-4 rounded-lg bg-home-dark border border-green-500/20">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 mr-4"><i class="fa fa-video-camera"></i></div>
+                  <div><div class="font-medium">视频监控</div><div class="text-xs text-white/60">6个摄像头 · 运行中</div></div>
+                </div>
+                <span class="text-green-400 text-sm font-medium">在线</span>
+              </div>
+
+              <div class="flex items-center justify-between p-4 rounded-lg bg-home-dark border border-green-500/20">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 mr-4"><i class="fa fa-shield"></i></div>
+                  <div><div class="font-medium">灾害监测</div><div class="text-xs text-white/60">烟雾/燃气/水浸 · 正常</div></div>
+                </div>
+                <span class="text-green-400 text-sm font-medium">监测中</span>
+              </div>
+            </div>
+
+            <div class="border-t border-red-400/10 pt-6">
+              <h4 class="font-bold mb-4">紧急联系人</h4>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between p-3 rounded-lg bg-home-dark border border-red-400/10">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 mr-3"><i class="fa fa-user"></i></div>
+                    <div><div class="font-medium">张先生</div><div class="text-xs text-white/60">配偶 · 138****1234</div></div>
+                  </div>
+                  <button class="text-xs px-2 py-1 rounded bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30 transition-colors">一键呼叫</button>
+                </div>
+
+                <div class="flex items-center justify-between p-3 rounded-lg bg-home-dark border border-red-400/10">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mr-3"><i class="fa fa-building"></i></div>
+                    <div><div class="font-medium">物业中心</div><div class="text-xs text-white/60">24小时值班</div></div>
+                  </div>
+                  <button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30 hover:bg-blue-500/30 transition-colors">联系物业</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-home-layer rounded-xl p-6 text-center border border-red-400/10">
+            <div class="text-3xl font-bold text-red-400 mb-2">0</div>
+            <div class="text-white/70">本月安全事件</div>
+            <div class="text-xs text-green-400 mt-1">连续安全运行89天</div>
+          </div>
+
+          <div class="bg-home-layer rounded-xl p-6 text-center border border-red-400/10">
+            <div class="text-3xl font-bold text-green-400 mb-2">42</div>
+            <div class="text-white/70">成功阻止异常访问</div>
+            <div class="text-xs text-green-400 mt-1">最近一次: 2小时前</div>
+          </div>
+
+          <div class="bg-home-layer rounded-xl p-6 text-center border border-red-400/10">
+            <div class="text-3xl font-bold text-blue-400 mb-2">100%</div>
+            <div class="text-white/70">设备在线率</div>
+            <div class="text-xs text-green-400 mt-1">所有传感器正常运行</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-home-layer border-t border-neo-cyan/10 py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold text-neo-cyan mb-4">NeoHome</h3>
+          <p class="text-white/70 text-sm mb-4">重新定义智能生活，让科技温暖每一个家庭。</p>
+          <div class="flex space-x-4">
+            <a href="#" class="w-8 h-8 rounded-full bg-home-dark flex items-center justify-center text-neo-cyan hover:bg-neo-cyan hover:text-home-dark transition-colors social"><i class="fa fa-weixin"></i></a>
+            <a href="#" class="w-8 h-8 rounded-full bg-home-dark flex items-center justify-center text-neo-cyan hover:bg-neo-cyan hover:text-home-dark transition-colors social"><i class="fa fa-weibo"></i></a>
+            <a href="#" class="w-8 h-8 rounded-full bg-home-dark flex items-center justify-center text-neo-cyan hover:bg-neo-cyan hover:text-home-dark transition-colors social"><i class="fa fa-github"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-bold mb-4">产品服务</h4>
+          <ul class="space-y-2 text-sm text-white/70">
+            <li><a href="#" class="hover:text-neo-cyan transition-colors">智能家居套装</a></li>
+            <li><a href="#" class="hover:text-neo-cyan transition-colors">定制解决方案</a></li>
+            <li><a href="#" class="hover:text-neo-cyan transition-colors">安装服务</a></li>
+            <li><a href="#" class="hover:text-neo-cyan transition-colors">售后服务</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold mb-4">技术支持</h4>
+          <ul class="space-y-2 text-sm text-white/70">
+            <li><a href="#" class="hover:text-neo-cyan transition-colors">使用指南</a></li>
+            <li><a href="#" class="hover:text-neo-cyan transition-colors">常见问题</a></li>
+            <li><a href="#" class="hover:text-neo-cyan transition-colors">下载中心</a></li>
+            <li><a href="#" class="hover:text-neo-cyan transition-colors">联系我们</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold mb-4">联系我们</h4>
+          <div class="space-y-2 text-sm text-white/70">
+            <div class="flex items-start"><i class="fa fa-phone text-neo-cyan mt-1 mr-2"></i><span>+86 153 3721 7838</span></div>
+            <div class="flex items-start"><i class="fa fa-envelope text-neo-cyan mt-1 mr-2"></i><span>171639898@qq.com</span></div>
+            <div class="flex items-start"><i class="fa fa-map-marker text-neo-cyan mt-1 mr-2"></i><span>武汉大学国家网络安全学院</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-neo-cyan/10 mt-8 pt-8 text-center text-sm text-white/60">
+        <p>© 2025 NeoHome 智能家居系统. 保留所有权利.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="smart_home.js"></script>
 </body>
 </html>
