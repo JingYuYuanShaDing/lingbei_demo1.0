@@ -282,6 +282,12 @@ header.site-header::before {
   border-color: rgba(100, 255, 218, 0.5);
 }
 
+.card:hover .card-desc {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.36s ease, opacity 0.36s ease;
+}
+
 .insights {
   background-color: rgba(0, 0, 0, 0.02);
   padding: 36px 20px;
