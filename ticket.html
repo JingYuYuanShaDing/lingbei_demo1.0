@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>车票预订 - 赛博智能服务</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a14;
+            --bg-card: #121225;
+            --neon-blue: #0ff0fc;
+            --neon-pink: #ff00ff;
+            --neon-purple: #8a2be2;
+            --text-light: #e0e0ff;
+            --grid-color: rgba(10, 200, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            color: var(--neon-blue);
+            animation: glitch 3s infinite;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink);
+            margin-bottom: 10px;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: var(--neon-blue);
+            text-align: center;
+            margin: 60px 0 30px 0;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .search-form {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(10, 200, 255, 0.3);
+            box-shadow: 0 0 20px rgba(10, 200, 255, 0.1);
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--neon-blue);
+            font-size: 0.9rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(10, 10, 20, 0.7);
+            border: 1px solid rgba(10, 200, 255, 0.3);
+            border-radius: 6px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(10, 200, 255, 0.3);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: rgba(10, 200, 255, 0.2);
+            border: 1px solid var(--neon-blue);
+            border-radius: 25px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .btn-disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-disabled:hover {
+            background: rgba(10, 200, 255, 0.2);
+            color: var(--neon-blue);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--neon-blue);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .message.success {
+            background-color: rgba(0, 255, 157, 0.1);
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            color: #00ff9d;
+        }
+        
+        .message.error {
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff5555;
+        }
+        
+        .message.info {
+            background-color: rgba(10, 200, 255, 0.1);
+            border: 1px solid rgba(10, 200, 255, 0.3);
+            color: var(--neon-blue);
+        }
+        
+        .ticket-list {
+            display: grid;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .ticket-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(10, 200, 255, 0.3);
+            box-shadow: 0 0 20px rgba(10, 200, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ticket-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .ticket-card:hover::before {
+            left: 100%;
+        }
+        
+        .ticket-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(10, 200, 255, 0.3);
+            border-color: var(--neon-blue);
+        }
+        
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(10, 200, 255, 0.2);
+        }
+        
+        .ticket-route {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .route-station {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .route-arrow {
+            color: var(--neon-pink);
+            font-size: 1.5rem;
+        }
+        
+        .ticket-price {
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+        
+        .ticket-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 0.8rem;
+            color: #a0a0c0;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+        
+        .ticket-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        /* 选座位模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-card);
+            border: 2px solid var(--neon-blue);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            box-shadow: 0 0 50px rgba(10, 200, 255, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(10, 200, 255, 0.3);
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--neon-pink);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        /* 飞机座位图 */
+        .airplane-layout {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .airplane-body {
+            width: 400px;
+            height: 200px;
+            background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
+            border: 2px solid var(--neon-blue);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .airplane-cockpit {
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 80px;
+            background: #333355;
+            border-radius: 50%;
+            border: 2px solid var(--neon-blue);
+        }
+        
+        .airplane-tail {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 60px;
+            background: #333355;
+            border-radius: 10px;
+            border: 2px solid var(--neon-blue);
+        }
+        
+        .seats-container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            padding: 20px;
+        }
+        
+        .seat-row {
+            display: contents;
+        }
+        
+        .seat {
+            width: 40px;
+            height: 40px;
+            background: #2a2a4a;
+            border: 1px solid var(--neon-blue);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+        }
+        
+        .seat:hover {
+            background: rgba(10, 200, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .seat.selected {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .seat.occupied {
+            background: #ff5555;
+            border-color: #ff5555;
+            cursor: not-allowed;
+        }
+        
+        .aisle {
+            grid-column: 3 / 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neon-pink);
+            font-weight: bold;
+        }
+        
+        /* 火车座位图 */
+        .train-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .train-carriage {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .carriage-number {
+            width: 60px;
+            text-align: center;
+            color: var(--neon-pink);
+            font-weight: bold;
+        }
+        
+        .carriage-seats {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .train-seat {
+            width: 35px;
+            height: 35px;
+            background: #2a2a4a;
+            border: 1px solid var(--neon-blue);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.7rem;
+        }
+        
+        .train-seat:hover {
+            background: rgba(10, 200, 255, 0.3);
+        }
+        
+        .train-seat.selected {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+        }
+        
+        /* 汽车座位图 */
+        .bus-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .bus-driver {
+            width: 60px;
+            height: 60px;
+            background: #333355;
+            border: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+        }
+        
+        .bus-seats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .bus-seat {
+            width: 45px;
+            height: 45px;
+            background: #2a2a4a;
+            border: 1px solid var(--neon-blue);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .bus-seat:hover {
+            background: rgba(10, 200, 255, 0.3);
+        }
+        
+        .bus-seat.selected {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+        }
+        
+        /* 大屏查询样式 */
+        .screen-query {
+            margin-top: 40px;
+        }
+        
+        .screen-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .screen-results {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(10, 200, 255, 0.3);
+            min-height: 300px;
+        }
+        
+        .flight-board, .train-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .board-item {
+            background: rgba(10, 10, 20, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(10, 200, 255, 0.2);
+        }
+        
+        .board-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(10, 200, 255, 0.2);
+        }
+        
+        .flight-number, .train-number {
+            color: var(--neon-blue);
+            font-weight: bold;
+        }
+        
+        .status {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        
+        .status.on-time {
+            background: rgba(0, 255, 157, 0.2);
+            color: #00ff9d;
+        }
+        
+        .status.delayed {
+            background: rgba(255, 170, 0, 0.2);
+            color: #ffaa00;
+        }
+        
+        .status.cancelled {
+            background: rgba(255, 85, 85, 0.2);
+            color: #ff5555;
+        }
+        
+        .home-link {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 10px 25px;
+            background: rgba(10, 200, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 25px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .home-link:hover {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 30px;
+            color: #707090;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(10, 200, 255, 0.2);
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            2% { transform: translate(-2px, 2px); }
+            4% { transform: translate(-2px, -2px); }
+            6% { transform: translate(2px, 2px); }
+            8% { transform: translate(2px, -2px); }
+            10% { transform: translate(0); }
+            100% { transform: translate(0); }
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .ticket-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .ticket-actions {
+                justify-content: stretch;
+            }
+            
+            .btn {
+                flex: 1;
+            }
+            
+            .airplane-body {
+                width: 300px;
+            }
+            
+            .seats-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .screen-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .form-group {
+                min-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>车票预订</h1>
+            <p class="subtitle">智能出行，轻松预订</p>
+            <p>火车、飞机、汽车票一站式预订服务</p>
+        </header>
+        
+        <!-- 车票预订部分 -->
+        <h2 class="section-title">🚕 车票预订</h2>
+        <div class="search-form">
+            <div id="messageArea"></div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="departure">出发地</label>
+                    <input type="text" id="departure" class="form-control" placeholder="例如: 北京">
+                </div>
+                <div class="form-group">
+                    <label for="destination">目的地</label>
+                    <input type="text" id="destination" class="form-control" placeholder="例如: 上海">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="depart-date">出发日期</label>
+                    <input type="date" id="depart-date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="ticket-type">票种</label>
+                    <select id="ticket-type" class="form-control">
+                        <option value="train">火车票</option>
+                        <option value="flight">飞机票</option>
+                        <option value="bus">汽车票</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="searchBtn" class="btn btn-block" onclick="searchTickets()">搜索车票</button>
+        </div>
+        
+        <div class="ticket-list" id="ticketList">
+            <!-- 车票列表将在这里动态生成 -->
+        </div>
+
+        <!-- 大屏查询部分 -->
+        <h2 class="section-title">📺 机场/火车站大屏查询</h2>
+        <div class="screen-query">
+            <div class="screen-controls">
+                <div class="form-group" style="min-width: 200px;">
+                    <label for="city">城市</label>
+                    <select id="city" class="form-control" onchange="loadStations()">
+                        <option value="">请选择城市</option>
+                        <option value="北京">北京市</option>
+                        <option value="上海">上海市</option>
+                        <option value="广州">广州市</option>
+                        <option value="天津">天津市</option>
+                        <option value="武汉">武汉市</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="min-width: 200px;">
+                    <label for="station-type">站点类型</label>
+                    <select id="station-type" class="form-control" onchange="loadStations()">
+                        <option value="airport">机场</option>
+                        <option value="train-station">火车站</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="min-width: 200px;">
+                    <label for="station">站点</label>
+                    <select id="station" class="form-control" onchange="queryScreen()">
+                        <option value="">请选择站点</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="screen-results" id="screenResults">
+                <p style="text-align: center; color: #a0a0c0; line-height: 250px;">
+                    请选择城市和站点类型查看大屏信息
+                </p>
+            </div>
+        </div>
+        
+        <!-- 选座位模态框 -->
+        <div id="seatModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalTitle">选择座位</h3>
+                    <button class="close-btn" onclick="closeSeatModal()">×</button>
+                </div>
+                <div id="seatLayout">
+                    <!-- 座位布局将在这里动态生成 -->
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="confirmSeatSelection()">确认选座</button>
+                    <button class="btn" onclick="closeSeatModal()" style="margin-left: 10px; background: rgba(255, 0, 0, 0.2); border-color: #ff5555; color: #ff5555;">取消</button>
+                </div>
+            </div>
+        </div>
+        
+        <a href="../index.html" class="home-link">返回首页</a>
+        
+        <footer>
+            <p>© 2023 赛博智能服务 | 未来科技，服务生活</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #555580;">车票预订服务支持火车、飞机、汽车等多种出行方式</p>
+        </footer>
+    </div>
+
+    <script>
+        // 配置信息
+        const CT_CONFIG = {
+            appKey: 'YOUR_APP_KEY',
+            appSecurity: 'YOUR_APP_SECURITY',
+            employeeID: 'YOUR_EMPLOYEE_ID'
+        };
+
+        // 站点数据（只保留北上广天津武汉）
+        const CITY_STATIONS = {
+            '北京': {
+                'airport': ['北京首都国际机场', '北京大兴国际机场'],
+                'train-station': ['北京站', '北京西站', '北京南站', '北京北站']
+            },
+            '上海': {
+                'airport': ['上海浦东国际机场', '上海虹桥国际机场'],
+                'train-station': ['上海站', '上海虹桥站', '上海南站']
+            },
+            '广州': {
+                'airport': ['广州白云国际机场'],
+                'train-station': ['广州站', '广州南站', '广州东站']
+            },
+            '天津': {
+                'airport': ['天津滨海国际机场'],
+                'train-station': ['天津站', '天津西站', '天津南站']
+            },
+            '武汉': {
+                'airport': ['武汉天河国际机场'],
+                'train-station': ['武汉站', '汉口站', '武昌站']
+            }
+        };
+
+        // 当前选中的座位
+        let selectedSeat = null;
+        let currentVehicleType = null;
+
+        // 页面加载初始化
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 1s';
+            
+            setTimeout(function() {
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            // 设置默认日期为明天
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const formattedDate = tomorrow.toISOString().split('T')[0];
+            document.getElementById('depart-date').value = formattedDate;
+        });
+
+        // 加载站点数据
+        function loadStations() {
+            const city = document.getElementById('city').value;
+            const stationType = document.getElementById('station-type').value;
+            const stationSelect = document.getElementById('station');
+            
+            stationSelect.innerHTML = '<option value="">请选择站点</option>';
+            
+            if (city && CITY_STATIONS[city] && CITY_STATIONS[city][stationType]) {
+                CITY_STATIONS[city][stationType].forEach(station => {
+                    const option = document.createElement('option');
+                    option.value = station;
+                    option.textContent = station;
+                    stationSelect.appendChild(option);
+                });
+            }
+        }
+
+        // 查询大屏信息
+        function queryScreen() {
+            const city = document.getElementById('city').value;
+            const station = document.getElementById('station').value;
+            const stationType = document.getElementById('station-type').value;
+            
+            if (!city || !station) {
+                document.getElementById('screenResults').innerHTML = 
+                    '<p style="text-align: center; color: #a0a0c0; line-height: 250px;">请选择城市和站点查看大屏信息</p>';
+                return;
+            }
+            
+            const results = document.getElementById('screenResults');
+            results.innerHTML = '<div class="loading" style="margin: 20px auto;"></div><p style="text-align: center;">正在查询大屏信息...</p>';
+            
+            setTimeout(() => {
+                if (stationType === 'airport') {
+                    displayFlightBoard(city, station);
+                } else {
+                    displayTrainBoard(city, station);
+                }
+            }, 1000);
+        }
+
+        // 显示航班大屏
+        function displayFlightBoard(city, airport) {
+            // 为不同城市生成不同的航班数据
+            const flightData = {
+                '北京': [
+                    { number: 'CA1501', destination: '上海虹桥', time: '10:20', status: 'on-time', gate: 'A12' },
+                    { number: 'MU5101', destination: '广州白云', time: '11:45', status: 'delayed', gate: 'B05' },
+                    { number: 'CZ3101', destination: '深圳宝安', time: '13:20', status: 'on-time', gate: 'C08' },
+                    { number: 'HU7801', destination: '成都天府', time: '14:35', status: 'cancelled', gate: 'D15' }
+                ],
+                '上海': [
+                    { number: 'FM9101', destination: '北京首都', time: '08:30', status: 'on-time', gate: 'A01' },
+                    { number: 'MU5301', destination: '广州白云', time: '09:45', status: 'on-time', gate: 'B12' },
+                    { number: 'HO1071', destination: '深圳宝安', time: '11:20', status: 'delayed', gate: 'C05' }
+                ],
+                '广州': [
+                    { number: 'CZ3101', destination: '北京首都', time: '07:45', status: 'on-time', gate: 'A08' },
+                    { number: 'CA1301', destination: '上海浦东', time: '09:30', status: 'on-time', gate: 'B03' },
+                    { number: 'MU5302', destination: '成都天府', time: '12:15', status: 'delayed', gate: 'C12' }
+                ],
+                '天津': [
+                    { number: 'GS7890', destination: '上海虹桥', time: '08:15', status: 'on-time', gate: 'A05' },
+                    { number: 'CA2801', destination: '广州白云', time: '10:40', status: 'on-time', gate: 'B08' }
+                ],
+                '武汉': [
+                    { number: 'MU2451', destination: '北京大兴', time: '07:20', status: 'on-time', gate: 'A03' },
+                    { number: 'CZ3345', destination: '上海虹桥', time: '09:50', status: 'delayed', gate: 'B06' },
+                    { number: 'HU7251', destination: '广州白云', time: '11:30', status: 'on-time', gate: 'C02' }
+                ]
+            };
+            
+            const mockFlights = flightData[city] || flightData['北京'];
+            const results = document.getElementById('screenResults');
+            let html = `<h3 style="color: var(--neon-blue); margin-bottom: 20px; text-align: center;">${airport} - 航班动态</h3>`;
+            html += '<div class="flight-board">';
+            
+            mockFlights.forEach(flight => {
+                let statusText = '', statusClass = '';
+                switch(flight.status) {
+                    case 'on-time': statusText = '准时'; statusClass = 'on-time'; break;
+                    case 'delayed': statusText = '延误'; statusClass = 'delayed'; break;
+                    case 'cancelled': statusText = '取消'; statusClass = 'cancelled'; break;
+                }
+                
+                html += `
+                    <div class="board-item">
+                        <div class="board-header">
+                            <span class="flight-number">${flight.number}</span>
+                            <span class="status ${statusClass}">${statusText}</span>
+                        </div>
+                        <div>目的地: ${flight.destination}</div>
+                        <div>计划时间: ${flight.time}</div>
+                        <div>登机口: ${flight.gate}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            results.innerHTML = html;
+        }
+
+        // 显示火车大屏
+        function displayTrainBoard(city, station) {
+            // 为不同城市生成不同的火车数据
+            const trainData = {
+                '北京': [
+                    { number: 'G1', destination: '上海虹桥', time: '09:00', status: 'on-time', platform: '1' },
+                    { number: 'G67', destination: '广州南', time: '10:30', status: 'on-time', platform: '2' },
+                    { number: 'D21', destination: '长春西', time: '12:15', status: 'delayed', platform: '3' }
+                ],
+                '上海': [
+                    { number: 'G2', destination: '北京南', time: '09:30', status: 'on-time', platform: '4' },
+                    { number: 'G85', destination: '广州南', time: '11:00', status: 'on-time', platform: '5' },
+                    { number: 'D953', destination: '南京南', time: '13:45', status: 'on-time', platform: '6' }
+                ],
+                '广州': [
+                    { number: 'G66', destination: '北京西', time: '08:00', status: 'on-time', platform: '7' },
+                    { number: 'G86', destination: '上海虹桥', time: '10:15', status: 'delayed', platform: '8' },
+                    { number: 'D362', destination: '武汉', time: '12:30', status: 'on-time', platform: '9' }
+                ],
+                '天津': [
+                    { number: 'G261', destination: '上海虹桥', time: '08:45', status: 'on-time', platform: '10' },
+                    { number: 'G292', destination: '广州南', time: '11:20', status: 'on-time', platform: '11' }
+                ],
+                '武汉': [
+                    { number: 'G516', destination: '北京西', time: '07:30', status: 'on-time', platform: '12' },
+                    { number: 'G1722', destination: '上海虹桥', time: '09:45', status: 'on-time', platform: '13' },
+                    { number: 'G1101', destination: '广州南', time: '11:15', status: 'delayed', platform: '14' }
+                ]
+            };
+            
+            const mockTrains = trainData[city] || trainData['北京'];
+            const results = document.getElementById('screenResults');
+            let html = `<h3 style="color: var(--neon-blue); margin-bottom: 20px; text-align: center;">${station} - 列车动态</h3>`;
+            html += '<div class="train-board">';
+            
+            mockTrains.forEach(train => {
+                let statusText = '', statusClass = '';
+                switch(train.status) {
+                    case 'on-time': statusText = '正点'; statusClass = 'on-time'; break;
+                    case 'delayed': statusText = '晚点'; statusClass = 'delayed'; break;
+                    case 'cancelled': statusText = '停运'; statusClass = 'cancelled'; break;
+                }
+                
+                html += `
+                    <div class="board-item">
+                        <div class="board-header">
+                            <span class="train-number">${train.number}</span>
+                            <span class="status ${statusClass}">${statusText}</span>
+                        </div>
+                        <div>目的地: ${train.destination}</div>
+                        <div>发车时间: ${train.time}</div>
+                        <div>站台: ${train.platform}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            results.innerHTML = html;
+        }
+
+        // 显示消息
+        function showMessage(message, type = 'info') {
+            const messageArea = document.getElementById('messageArea');
+            messageArea.innerHTML = `<div class="message ${type}">${message}</div>`;
+            
+            if (type === 'error' || type === 'success') {
+                setTimeout(() => {
+                    messageArea.innerHTML = '';
+                }, 5000);
+            }
+        }
+
+        // 设置按钮状态
+        function setButtonState(loading) {
+            const searchBtn = document.getElementById('searchBtn');
+            
+            if (loading) {
+                searchBtn.disabled = true;
+                searchBtn.classList.add('btn-disabled');
+                searchBtn.innerHTML = '<span class="loading"></span>查询中...';
+            } else {
+                searchBtn.disabled = false;
+                searchBtn.classList.remove('btn-disabled');
+                searchBtn.innerHTML = '搜索车票';
+            }
+        }
+
+        // 搜索车票
+        function searchTickets() {
+            const departure = document.getElementById('departure').value.trim();
+            const destination = document.getElementById('destination').value.trim();
+            const date = document.getElementById('depart-date').value;
+            const ticketType = document.getElementById('ticket-type').value;
+            
+            if (!departure || !destination || !date) {
+                showMessage('请填写完整的搜索条件', 'error');
+                return;
+            }
+            
+            setButtonState(true);
+            
+            // 模拟搜索过程
+            setTimeout(() => {
+                displayMockTickets(departure, destination, date, ticketType);
+                setButtonState(false);
+            }, 1500);
+        }
+
+        // 显示模拟车票数据
+        function displayMockTickets(departure, destination, date, type) {
+            const ticketList = document.getElementById('ticketList');
+            ticketList.innerHTML = '';
+            
+            const mockTickets = generateMockTickets(departure, destination, date, type);
+            
+            mockTickets.forEach(ticket => {
+                const ticketCard = createTicketCard(ticket, type);
+                ticketList.appendChild(ticketCard);
+            });
+        }
+
+        // 生成模拟车票数据
+        function generateMockTickets(departure, destination, date, type) {
+            const tickets = [];
+            
+            if (type === 'train') {
+                tickets.push({
+                    id: 'T001',
+                    from: departure,
+                    to: destination,
+                    number: 'G123',
+                    departureTime: '08:30',
+                    arrivalTime: '13:45',
+                    duration: '5小时15分',
+                    seatType: '二等座',
+                    price: '553',
+                    remaining: '充足'
+                });
+                
+                tickets.push({
+                    id: 'T002',
+                    from: departure,
+                    to: destination,
+                    number: 'T109',
+                    departureTime: '20:05',
+                    arrivalTime: '09:25',
+                    duration: '13小时20分',
+                    seatType: '硬卧',
+                    price: '298',
+                    remaining: '充足'
+                });
+            } else if (type === 'flight') {
+                tickets.push({
+                    id: 'F001',
+                    from: departure,
+                    to: destination,
+                    number: 'CA1501',
+                    departureTime: '10:20',
+                    arrivalTime: '12:35',
+                    duration: '2小时15分',
+                    seatType: '经济舱',
+                    price: '1240',
+                    remaining: '充足'
+                });
+            } else {
+                tickets.push({
+                    id: 'B001',
+                    from: departure,
+                    to: destination,
+                    number: '客运大巴',
+                    departureTime: '07:30',
+                    arrivalTime: '12:00',
+                    duration: '4小时30分',
+                    seatType: '普通座',
+                    price: '156',
+                    remaining: '充足'
+                });
+            }
+            
+            return tickets;
+        }
+
+        // 创建车票卡片
+        function createTicketCard(ticket, type) {
+            const card = document.createElement('div');
+            card.className = 'ticket-card';
+            card.innerHTML = `
+                <div class="ticket-header">
+                    <div class="ticket-route">
+                        <div class="route-station">${ticket.from}</div>
+                        <div class="route-arrow">→</div>
+                        <div class="route-station">${ticket.to}</div>
+                    </div>
+                    <div class="ticket-price">¥${ticket.price}</div>
+                </div>
+                
+                <div class="ticket-details">
+                    <div class="detail-item">
+                        <span class="detail-label">车次/航班</span>
+                        <span class="detail-value">${ticket.number}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">出发时间</span>
+                        <span class="detail-value">${ticket.departureTime}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">到达时间</span>
+                        <span class="detail-value">${ticket.arrivalTime}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">历时</span>
+                        <span class="detail-value">${ticket.duration}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">席别/舱位</span>
+                        <span class="detail-value">${ticket.seatType}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">余票</span>
+                        <span class="detail-value">${ticket.remaining}</span>
+                    </div>
+                </div>
+                
+                <div class="ticket-actions">
+                    <button class="btn" onclick="selectSeat('${ticket.id}', '${type}')">选择座位</button>
+                    <button class="btn" onclick="bookTicket('${ticket.id}')">立即预订</button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // 选择座位
+        function selectSeat(ticketId, vehicleType) {
+            currentVehicleType = vehicleType;
+            selectedSeat = null;
+            
+            const modal = document.getElementById('seatModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const seatLayout = document.getElementById('seatLayout');
+            
+            modalTitle.textContent = `选择座位 - ${getVehicleName(vehicleType)}`;
+            
+            // 根据车辆类型生成不同的座位布局
+            if (vehicleType === 'flight') {
+                generateAirplaneSeats(seatLayout);
+            } else if (vehicleType === 'train') {
+                generateTrainSeats(seatLayout);
+            } else {
+                generateBusSeats(seatLayout);
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        // 获取车辆类型名称
+        function getVehicleName(type) {
+            switch(type) {
+                case 'flight': return '飞机';
+                case 'train': return '火车';
+                case 'bus': return '汽车';
+                default: return '车辆';
+            }
+        }
+
+        // 生成飞机座位布局
+        function generateAirplaneSeats(container) {
+            container.innerHTML = `
+                <div class="airplane-layout">
+                    <div class="airplane-body">
+                        <div class="airplane-cockpit"></div>
+                        <div class="airplane-tail"></div>
+                        <div class="seats-container" id="seatsGrid">
+                            ${generateAirplaneSeatGrid()}
+                        </div>
+                    </div>
+                    <div style="color: var(--neon-blue); margin-top: 20px;">
+                        <span style="display: inline-block; width: 20px; height: 20px; background: var(--neon-blue); margin-right: 10px;"></span>可选
+                        <span style="display: inline-block; width: 20px; height: 20px; background: #ff5555; margin: 0 10px;"></span>已选
+                        <span style="display: inline-block; width: 20px; height: 20px; background: #2a2a4a; border: 1px solid var(--neon-blue); margin-left: 10px;"></span>可选
+                    </div>
+                </div>
+            `;
+            
+            // 添加座位点击事件
+            setTimeout(() => {
+                const seats = document.querySelectorAll('.seat:not(.occupied)');
+                seats.forEach(seat => {
+                    seat.addEventListener('click', function() {
+                        const seatNumber = this.getAttribute('data-seat');
+                        selectThisSeat(seatNumber);
+                    });
+                });
+            }, 100);
+        }
+
+        // 生成飞机座位网格
+        function generateAirplaneSeatGrid() {
+            let html = '';
+            const rows = 10;
+            const occupiedSeats = ['1A', '3C', '5F', '7B', '9D'];
+            
+            for (let row = 1; row <= rows; row++) {
+                html += `<div class="seat-row">`;
+                
+                // 左侧座位 (A, B)
+                html += `<div class="seat ${occupiedSeats.includes(row + 'A') ? 'occupied' : ''}" data-seat="${row}A">${row}A</div>`;
+                html += `<div class="seat ${occupiedSeats.includes(row + 'B') ? 'occupied' : ''}" data-seat="${row}B">${row}B</div>`;
+                
+                // 过道
+                if (row === 1) {
+                    html += `<div class="aisle" rowspan="${rows}">过道</div>`;
+                }
+                
+                // 右侧座位 (C, D, E, F)
+                html += `<div class="seat ${occupiedSeats.includes(row + 'C') ? 'occupied' : ''}" data-seat="${row}C">${row}C</div>`;
+                html += `<div class="seat ${occupiedSeats.includes(row + 'D') ? 'occupied' : ''}" data-seat="${row}D">${row}D</div>`;
+                html += `<div class="seat ${occupiedSeats.includes(row + 'E') ? 'occupied' : ''}" data-seat="${row}E">${row}E</div>`;
+                html += `<div class="seat ${occupiedSeats.includes(row + 'F') ? 'occupied' : ''}" data-seat="${row}F">${row}F</div>`;
+                
+                html += `</div>`;
+            }
+            
+            return html;
+        }
+
+        // 生成火车座位布局
+        function generateTrainSeats(container) {
+            container.innerHTML = `
+                <div class="train-layout">
+                    <h4 style="color: var(--neon-pink); text-align: center; margin-bottom: 15px;">车厢座位分布</h4>
+                    ${generateTrainCarriages()}
+                    <div style="color: var(--neon-blue); margin-top: 20px; text-align: center;">
+                        <span style="display: inline-block; width: 20px; height: 20px; background: var(--neon-blue); margin-right: 10px;"></span>可选
+                        <span style="display: inline-block; width: 20px; height: 20px; background: #2a2a4a; border: 1px solid var(--neon-blue); margin: 0 10px;"></span>可选
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                const seats = document.querySelectorAll('.train-seat');
+                seats.forEach(seat => {
+                    seat.addEventListener('click', function() {
+                        const seatNumber = this.getAttribute('data-seat');
+                        selectThisSeat(seatNumber);
+                    });
+                });
+            }, 100);
+        }
+
+        // 生成火车车厢
+        function generateTrainCarriages() {
+            let html = '';
+            const carriages = 5;
+            const occupiedSeats = ['1-05A', '2-08B', '3-12C', '4-03D'];
+            
+            for (let i = 1; i <= carriages; i++) {
+                html += `<div class="train-carriage">`;
+                html += `<div class="carriage-number">${i}号车厢</div>`;
+                html += `<div class="carriage-seats">`;
+                
+                for (let seatNum = 1; seatNum <= 40; seatNum++) {
+                    const row = Math.ceil(seatNum / 4);
+                    const col = String.fromCharCode(64 + ((seatNum - 1) % 4) + 1);
+                    const seatId = `${i}-${row}${col}`;
+                    const isOccupied = occupiedSeats.includes(seatId);
+                    
+                    html += `<div class="train-seat ${isOccupied ? 'occupied' : ''}" data-seat="${seatId}">${row}${col}</div>`;
+                }
+                
+                html += `</div></div>`;
+            }
+            
+            return html;
+        }
+
+        // 生成汽车座位布局
+        function generateBusSeats(container) {
+            container.innerHTML = `
+                <div class="bus-layout">
+                    <div style="text-align: center;">
+                        <div class="bus-driver">司机</div>
+                    </div>
+                    <div class="bus-seats">
+                        ${generateBusSeatGrid()}
+                    </div>
+                    <div style="color: var(--neon-blue); margin-top: 20px; text-align: center;">
+                        <span style="display: inline-block; width: 20px; height: 20px; background: var(--neon-blue); margin-right: 10px;"></span>可选
+                        <span style="display: inline-block; width: 20px; height: 20px; background: #2a2a4a; border: 1px solid var(--neon-blue); margin: 0 10px;"></span>可选
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                const seats = document.querySelectorAll('.bus-seat');
+                seats.forEach(seat => {
+                    seat.addEventListener('click', function() {
+                        const seatNumber = this.getAttribute('data-seat');
+                        selectThisSeat(seatNumber);
+                    });
+                });
+            }, 100);
+        }
+
+        // 生成汽车座位网格
+        function generateBusSeatGrid() {
+            let html = '';
+            const totalSeats = 20;
+            const occupiedSeats = ['3', '8', '15', '19'];
+            
+            for (let i = 1; i <= totalSeats; i++) {
+                const isOccupied = occupiedSeats.includes(i.toString());
+                html += `<div class="bus-seat ${isOccupied ? 'occupied' : ''}" data-seat="${i}">${i}</div>`;
+            }
+            
+            return html;
+        }
+
+        // 选择座位
+        function selectThisSeat(seatNumber) {
+            // 取消之前选中的座位
+            document.querySelectorAll('.seat.selected, .train-seat.selected, .bus-seat.selected').forEach(seat => {
+                seat.classList.remove('selected');
+            });
+            
+            // 选中新座位
+            const newSeat = document.querySelector(`[data-seat="${seatNumber}"]`);
+            if (newSeat && !newSeat.classList.contains('occupied')) {
+                newSeat.classList.add('selected');
+                selectedSeat = seatNumber;
+            }
+        }
+
+        // 确认选座
+        function confirmSeatSelection() {
+            if (!selectedSeat) {
+                showMessage('请先选择一个座位', 'error');
+                return;
+            }
+            
+            showMessage(`已成功选择座位: ${selectedSeat}`, 'success');
+            closeSeatModal();
+        }
+
+        // 关闭选座模态框
+        function closeSeatModal() {
+            document.getElementById('seatModal').style.display = 'none';
+            selectedSeat = null;
+        }
+
+        // 预订车票
+        function bookTicket(ticketId) {
+            showMessage('开始预订车票，将跳转到携程商旅平台', 'info');
+        }
+
+        // 点击模态框外部关闭
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('seatModal');
+            if (event.target === modal) {
+                closeSeatModal();
+            }
+        });
+    </script>
+</body>
+</html>

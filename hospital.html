@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛博智能服务 - 远程医疗</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a14;
+            --bg-card: #121225;
+            --neon-blue: #0ff0fc;
+            --neon-pink: #ff00ff;
+            --neon-purple: #8a2be2;
+            --text-light: #e0e0ff;
+            --grid-color: rgba(10, 200, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            color: var(--neon-blue);
+            animation: glitch 3s infinite;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink);
+            margin-bottom: 10px;
+        }
+        
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(10, 200, 255, 0.3);
+        }
+        
+        .tab {
+            padding: 15px 30px;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: var(--neon-blue);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .departments {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .department {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(10, 200, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .department:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(10, 200, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+        
+        .department.active {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(10, 200, 255, 0.3);
+        }
+        
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .doctor-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(10, 200, 255, 0.3);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .doctor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .doctor-card:hover::before {
+            left: 100%;
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(10, 200, 255, 0.3);
+            border-color: var(--neon-blue);
+        }
+        
+        .doctor-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            image-rendering: pixelated;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+            overflow: hidden;
+        }
+        
+        .doctor-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .doctor-name {
+            font-size: 1.4rem;
+            color: var(--neon-blue);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .doctor-title {
+            color: var(--neon-pink);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .doctor-desc {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #b0b0d0;
+            margin-bottom: 20px;
+        }
+        
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .calendar-day {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 15px 10px;
+            text-align: center;
+            border: 1px solid rgba(10, 200, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .calendar-day:hover {
+            border-color: var(--neon-blue);
+        }
+        
+        .calendar-day.selected {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(10, 200, 255, 0.3);
+        }
+        
+        .calendar-day.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .time-slot {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(10, 200, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .time-slot:hover {
+            border-color: var(--neon-blue);
+        }
+        
+        .time-slot.selected {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(10, 200, 255, 0.3);
+        }
+        
+        .time-slot.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .symptoms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .symptom {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(10, 200, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .symptom:hover {
+            border-color: var(--neon-blue);
+        }
+        
+        .symptom.selected {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(10, 200, 255, 0.3);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: rgba(10, 200, 255, 0.2);
+            border: 1px solid var(--neon-blue);
+            border-radius: 25px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .result-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(10, 200, 255, 0.3);
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .result-card.active {
+            display: block;
+        }
+        
+        .result-title {
+            font-size: 1.6rem;
+            color: var(--neon-blue);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .result-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #b0b0d0;
+            margin-bottom: 20px;
+        }
+        
+        .prescription {
+            background: rgba(10, 200, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .prescription-title {
+            font-size: 1.2rem;
+            color: var(--neon-pink);
+            margin-bottom: 15px;
+        }
+        
+        .prescription-list {
+            list-style-type: none;
+        }
+        
+        .prescription-list li {
+            padding: 8px 0;
+            font-size: 0.9rem;
+            color: #a0a0c0;
+            position: relative;
+            padding-left: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .prescription-list li::before {
+            content: '💊';
+            position: absolute;
+            left: 0;
+            color: var(--neon-pink);
+        }
+        
+        .medicine-info {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .prescription-type {
+            color: var(--neon-blue);
+            font-size: 0.8rem;
+        }
+        
+        .prescription-price {
+            color: #ffaa00;
+            font-size: 0.8rem;
+        }
+        
+        .home-link {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 10px 25px;
+            background: rgba(10, 200, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 25px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .home-link:hover {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 30px;
+            color: #707090;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(10, 200, 255, 0.2);
+        }
+        
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(10, 200, 255, 0.5);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            margin-bottom: 20px;
+        }
+        
+        .modal-info {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+        
+        .modal-info p {
+            margin-bottom: 10px;
+            color: #b0b0d0;
+        }
+        
+        .modal-info strong {
+            color: var(--neon-pink);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .modal-btn {
+            padding: 10px 25px;
+            border-radius: 20px;
+            border: 1px solid var(--neon-blue);
+            background: rgba(10, 200, 255, 0.2);
+            color: var(--neon-blue);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-btn:hover {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+        }
+        
+        .modal-btn.confirm {
+            background: rgba(0, 255, 85, 0.2);
+            border-color: #00ff55;
+            color: #00ff55;
+        }
+        
+        .modal-btn.confirm:hover {
+            background: #00ff55;
+            color: var(--bg-dark);
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            2% { transform: translate(-2px, 2px); }
+            4% { transform: translate(-2px, -2px); }
+            6% { transform: translate(2px, 2px); }
+            8% { transform: translate(2px, -2px); }
+            10% { transform: translate(0); }
+            100% { transform: translate(0); }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .doctors-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .symptoms-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>远程医疗</h1>
+            <p class="subtitle">专业医疗资源触手可及</p>
+            <p>在线挂号、远程问诊，为您提供便捷的医疗服务</p>
+        </header>
+        
+        <div class="tab-container">
+            <button class="tab active" data-tab="appointment">在线挂号</button>
+            <button class="tab" data-tab="consultation">线上问诊</button>
+        </div>
+        
+        <!-- 在线挂号 -->
+        <div class="tab-content active" id="appointment">
+            <h2 style="text-align: center; margin-bottom: 30px; color: var(--neon-blue);">选择科室</h2>
+            
+            <div class="departments">
+                <div class="department active" data-department="internal">内科</div>
+                <div class="department" data-department="surgery">外科</div>
+                <div class="department" data-department="pediatrics">儿科</div>
+                <div class="department" data-department="ent">耳鼻喉科</div>
+                <div class="department" data-department="dermatology">皮肤科</div>
+                <div class="department" data-department="ophthalmology">眼科</div>
+            </div>
+            
+            <h2 style="text-align: center; margin: 40px 0 30px; color: var(--neon-blue);">选择医生</h2>
+            
+            <div class="doctors-grid" id="doctors-container">
+                <!-- 医生卡片将通过JS动态生成 -->
+                <div class="no-doctor-message" style="text-align: center; grid-column: 1 / -1; padding: 40px; color: #707090;">
+                    <p>请先选择科室查看医生信息</p>
+                </div>
+            </div>
+            
+            <h2 style="text-align: center; margin: 40px 0 30px; color: var(--neon-blue); display: none;" id="time-selection-title">选择就诊时间</h2>
+            
+            <div class="calendar" id="calendar" style="display: none;">
+                <!-- 日历将通过JS动态生成 -->
+            </div>
+            
+            <h3 style="text-align: center; margin: 30px 0 20px; color: var(--neon-pink); display: none;" id="time-slot-title">选择时段</h3>
+            
+            <div class="time-slots" id="time-slots" style="display: none;">
+                <div class="time-slot" data-time="morning">上午 (8:00-12:00)</div>
+                <div class="time-slot" data-time="afternoon">下午 (14:00-18:00)</div>
+            </div>
+            
+            <button class="btn btn-block" id="confirm-appointment" style="display: none;">确认挂号</button>
+        </div>
+        
+        <!-- 线上问诊 -->
+        <div class="tab-content" id="consultation">
+            <h2 style="text-align: center; margin-bottom: 30px; color: var(--neon-blue);">感冒症状自诊</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #b0b0d0;">请选择您出现的症状，系统将为您分析可能的感冒类型并提供参考药方</p>
+            
+            <h3 style="margin-bottom: 20px; color: var(--neon-pink);">请选择症状：</h3>
+            
+            <div class="symptoms-grid">
+                <div class="symptom" data-symptom="headache">头痛</div>
+                <div class="symptom" data-symptom="dizziness">头晕</div>
+                <div class="symptom" data-symptom="runny-nose-clear">流清鼻涕</div>
+                <div class="symptom" data-symptom="runny-nose-yellow">流黄鼻涕</div>
+                <div class="symptom" data-symptom="sore-throat">喉咙痛</div>
+                <div class="symptom" data-symptom="cough">咳嗽</div>
+                <div class="symptom" data-symptom="fever">发烧</div>
+                <div class="symptom" data-symptom="chills">发冷</div>
+                <div class="symptom" data-symptom="body-ache">全身酸痛</div>
+                <div class="symptom" data-symptom="fatigue">疲劳乏力</div>
+            </div>
+            
+            <button class="btn btn-block" id="analyze-symptoms" style="margin-top: 30px;">分析症状</button>
+            
+            <div class="result-card" id="diagnosis-result">
+                <h3 class="result-title" id="diagnosis-type">诊断结果</h3>
+                <p class="result-desc" id="diagnosis-desc">根据您选择的症状，我们初步判断您可能患有...</p>
+                
+                <div class="prescription">
+                    <h4 class="prescription-title">参考药方</h4>
+                    <ul class="prescription-list" id="prescription-list">
+                        <!-- 药方内容将通过JS动态生成 -->
+                    </ul>
+                </div>
+                
+                <p style="margin-top: 20px; font-size: 0.9rem; color: #707090; text-align: center;">
+                    注意：此诊断结果仅供参考，不能替代专业医生的诊断。如有严重症状，请及时就医。
+                </p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="../index.html" class="home-link">返回首页</a>
+        </div>
+        
+        <footer>
+            <p>© 2023 赛博智能服务 | 未来科技，服务生活</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #555580;">温馨提示：在线问诊结果仅供参考，具体诊断请以医生面诊为准</p>
+        </footer>
+    </div>
+
+    <!-- 挂号确认弹窗 -->
+    <div class="modal" id="appointment-modal">
+        <div class="modal-content">
+            <h3 class="modal-title">挂号确认</h3>
+            <div class="modal-info" id="appointment-info">
+                <!-- 挂号信息将通过JS动态生成 -->
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn" id="cancel-appointment">取消</button>
+                <button class="modal-btn confirm" id="confirm-modal">确认挂号</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 科室映射
+        const departmentMap = {
+            'internal': '内科',
+            'surgery': '外科',
+            'pediatrics': '儿科',
+            'ent': '耳鼻喉科',
+            'dermatology': '皮肤科',
+            'ophthalmology': '眼科'
+        };
+
+        // 医生数据
+        const doctorsData = {
+            internal: [
+                {
+                    name: "张明远",
+                    title: "主任医师 | 20年经验",
+                    desc: "毕业于北京医科大学，擅长心血管疾病、高血压、糖尿病等内科常见病、多发病的诊断与治疗。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=zhang&backgroundColor=0ff0fc",
+                    schedule: {
+                        days: [0, 1, 3, 4, 6], // 周日、周一、周三、周四、周六上班
+                        times: ['morning', 'afternoon'] // 上午和下午都上班
+                    }
+                },
+                {
+                    name: "李静",
+                    title: "副主任医师 | 15年经验",
+                    desc: "医学博士，擅长消化系统疾病、呼吸系统疾病的诊治，尤其对慢性胃炎、胃溃疡有深入研究。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=li&backgroundColor=ff00ff",
+                    schedule: {
+                        days: [1, 2, 4, 5], // 周一、周二、周四、周五上班
+                        times: ['morning'] // 只上上午班
+                    }
+                }
+            ],
+            surgery: [
+                {
+                    name: "王建国",
+                    title: "主任医师 | 25年经验",
+                    desc: "普外科专家，擅长甲状腺、乳腺、胃肠等疾病的诊断与手术治疗，完成各类手术5000余例。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=wang&backgroundColor=00ff9d",
+                    schedule: {
+                        days: [0, 2, 3, 5, 6], // 周日、周三、周四、周五、周六上班
+                        times: ['afternoon'] // 只上下午班
+                    }
+                },
+                {
+                    name: "赵海",
+                    title: "副主任医师 | 12年经验",
+                    desc: "骨科专家，擅长关节疾病、骨折、脊柱疾病的诊断与治疗，尤其对微创手术有丰富经验。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=zhao&backgroundColor=ffaa00",
+                    schedule: {
+                        days: [1, 2, 3, 4], // 周二、周三、周四、周五上班
+                        times: ['morning', 'afternoon'] // 上午和下午都上班
+                    }
+                }
+            ],
+            pediatrics: [
+                {
+                    name: "陈晓梅",
+                    title: "主任医师 | 18年经验",
+                    desc: "儿科专家，擅长儿童呼吸系统疾病、消化系统疾病及儿童生长发育问题的诊断与治疗。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=chen&backgroundColor=00aaff",
+                    schedule: {
+                        days: [0, 1, 2, 4, 5], // 周日、周一、周二、周四、周五上班
+                        times: ['morning'] // 只上上午班
+                    }
+                },
+                {
+                    name: "刘小芳",
+                    title: "副主任医师 | 10年经验",
+                    desc: "儿科专家，擅长新生儿疾病、儿童营养与保健，对儿童过敏性疾病有深入研究。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=liu&backgroundColor=9d00ff",
+                    schedule: {
+                        days: [1, 3, 5, 6], // 周二、周四、周五、周六上班
+                        times: ['afternoon'] // 只上下午班
+                    }
+                }
+            ],
+            ent: [
+                {
+                    name: "刘文华",
+                    title: "副主任医师 | 14年经验",
+                    desc: "耳鼻喉科专家，擅长鼻炎、咽炎、中耳炎等常见病的诊治，对微创手术有丰富经验。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=liuwen&backgroundColor=ff5500",
+                    schedule: {
+                        days: [0, 2, 4, 6], // 周日、周三、周五、周六上班
+                        times: ['morning', 'afternoon'] // 上午和下午都上班
+                    }
+                },
+                {
+                    name: "周明",
+                    title: "主任医师 | 16年经验",
+                    desc: "耳鼻喉科专家，擅长鼻窦炎、扁桃体炎、听力障碍等疾病的诊断与治疗。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=zhou&backgroundColor=00ff55",
+                    schedule: {
+                        days: [1, 3, 5], // 周二、周四、周五上班
+                        times: ['morning'] // 只上上午班
+                    }
+                }
+            ],
+            dermatology: [
+                {
+                    name: "杨雪",
+                    title: "主任医师 | 16年经验",
+                    desc: "皮肤科专家，擅长痤疮、湿疹、银屑病等皮肤病的诊治，对激光美容治疗有深入研究。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=yang&backgroundColor=ff00aa",
+                    schedule: {
+                        days: [0, 1, 3, 5], // 周日、周一、周三、周五上班
+                        times: ['afternoon'] // 只上下午班
+                    }
+                },
+                {
+                    name: "黄文静",
+                    title: "副主任医师 | 12年经验",
+                    desc: "皮肤科专家，擅长皮肤过敏、真菌感染、色素性皮肤病的诊断与治疗。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=huang&backgroundColor=00ffcc",
+                    schedule: {
+                        days: [2, 4, 6], // 周三、周五、周六上班
+                        times: ['morning', 'afternoon'] // 上午和下午都上班
+                    }
+                }
+            ],
+            ophthalmology: [
+                {
+                    name: "周明",
+                    title: "副主任医师 | 13年经验",
+                    desc: "眼科专家，擅长白内障、青光眼、近视等眼部疾病的诊断与治疗，完成眼科手术3000余例。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=zhouming&backgroundColor=aa00ff",
+                    schedule: {
+                        days: [0, 1, 2, 3, 4, 5, 6], // 每天都上班
+                        times: ['morning'] // 只上上午班
+                    }
+                },
+                {
+                    name: "吴小华",
+                    title: "主任医师 | 20年经验",
+                    desc: "眼科专家，擅长眼底病、角膜病、眼外伤等复杂眼病的诊断与手术治疗。",
+                    avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=wu&backgroundColor=00aaff",
+                    schedule: {
+                        days: [1, 2, 4, 5], // 周二、周三、周五、周六上班
+                        times: ['afternoon'] // 只上下午班
+                    }
+                }
+            ]
+        };
+
+        // 药方数据
+        const prescriptionsData = {
+            "风寒感冒": [
+                { name: "感冒清热颗粒", type: "非处方药", price: "25元" },
+                { name: "正柴胡饮颗粒", type: "非处方药", price: "32元" },
+                { name: "荆防颗粒", type: "非处方药", price: "28元" }
+            ],
+            "风热感冒": [
+                { name: "银翘解毒片", type: "非处方药", price: "18元" },
+                { name: "板蓝根颗粒", type: "非处方药", price: "15元" },
+                { name: "双黄连口服液", type: "非处方药", price: "35元" }
+            ],
+            "病毒性感冒": [
+                { name: "奥司他韦胶囊", type: "处方药", price: "120元" },
+                { name: "连花清瘟胶囊", type: "非处方药", price: "28元" },
+                { name: "抗病毒口服液", type: "非处方药", price: "25元" }
+            ],
+            "普通感冒": [
+                { name: "感冒灵颗粒", type: "非处方药", price: "20元" },
+                { name: "维生素C泡腾片", type: "非处方药", price: "35元" },
+                { name: "多喝温水", type: "非药物", price: "免费" }
+            ]
+        };
+
+        // 全局变量存储当前选中的医生
+        let selectedDoctor = null;
+
+        // 页面加载动画
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 1s';
+            
+            setTimeout(function() {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+        
+        // 标签切换功能
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有标签和内容的active类
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // 为当前标签和对应内容添加active类
+                this.classList.add('active');
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // 科室选择功能
+        document.querySelectorAll('.department').forEach(dept => {
+            dept.addEventListener('click', function() {
+                // 移除所有科室的active类
+                document.querySelectorAll('.department').forEach(d => d.classList.remove('active'));
+                
+                // 为当前科室添加active类
+                this.classList.add('active');
+                
+                const department = this.getAttribute('data-department');
+                
+                // 显示对应科室的医生
+                displayDoctors(department);
+                
+                // 重置时间和日期选择
+                resetTimeSelection();
+            });
+        });
+        
+        // 显示医生
+        function displayDoctors(department) {
+            const doctorsContainer = document.getElementById('doctors-container');
+            doctorsContainer.innerHTML = '';
+            
+            if (doctorsData[department]) {
+                doctorsData[department].forEach(doctor => {
+                    const doctorCard = document.createElement('div');
+                    doctorCard.className = 'doctor-card';
+                    doctorCard.setAttribute('data-department', department);
+                    
+                    doctorCard.innerHTML = `
+                        <div class="doctor-avatar">
+                            <img src="${doctor.avatar}" alt="${doctor.name}医生头像">
+                        </div>
+                        <h3 class="doctor-name">${doctor.name}</h3>
+                        <p class="doctor-title">${doctor.title}</p>
+                        <p class="doctor-desc">${doctor.desc}</p>
+                        <button class="btn btn-select-doctor">选择医生</button>
+                    `;
+                    
+                    doctorsContainer.appendChild(doctorCard);
+                });
+                
+                // 添加医生选择事件
+                document.querySelectorAll('.btn-select-doctor').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // 移除所有医生的选中状态
+                        document.querySelectorAll('.doctor-card').forEach(card => {
+                            card.style.borderColor = 'rgba(10, 200, 255, 0.3)';
+                            card.style.boxShadow = 'none';
+                        });
+                        
+                        // 为当前医生添加选中状态
+                        const card = this.closest('.doctor-card');
+                        card.style.borderColor = 'var(--neon-blue)';
+                        card.style.boxShadow = '0 0 15px rgba(10, 200, 255, 0.5)';
+                        
+                        // 获取医生信息
+                        const doctorName = card.querySelector('.doctor-name').textContent;
+                        const department = card.getAttribute('data-department');
+                        
+                        // 找到完整的医生数据
+                        const doctorData = doctorsData[department].find(d => d.name === doctorName);
+                        
+                        // 存储选中的医生信息
+                        selectedDoctor = {
+                            name: doctorName,
+                            title: card.querySelector('.doctor-title').textContent,
+                            department: department,
+                            schedule: doctorData.schedule
+                        };
+                        
+                        // 显示时间选择
+                        showTimeSelection();
+                    });
+                });
+            }
+        }
+        
+        // 显示时间选择
+        function showTimeSelection() {
+            document.getElementById('time-selection-title').style.display = 'block';
+            document.getElementById('calendar').style.display = 'grid';
+            document.getElementById('time-slot-title').style.display = 'block';
+            document.getElementById('time-slots').style.display = 'grid';
+            document.getElementById('confirm-appointment').style.display = 'block';
+            
+            // 生成日历
+            generateCalendar();
+        }
+        
+        // 重置时间选择
+        function resetTimeSelection() {
+            document.getElementById('time-selection-title').style.display = 'none';
+            document.getElementById('calendar').style.display = 'none';
+            document.getElementById('time-slot-title').style.display = 'none';
+            document.getElementById('time-slots').style.display = 'none';
+            document.getElementById('confirm-appointment').style.display = 'none';
+            
+            // 重置选中状态
+            document.querySelectorAll('.calendar-day').forEach(day => day.classList.remove('selected'));
+            document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
+            
+            // 重置选中的医生
+            selectedDoctor = null;
+        }
+        
+        // 生成7天日历
+        function generateCalendar() {
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+            
+            const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+            const today = new Date();
+            
+            for (let i = 0; i < 7; i++) {
+                const date = new Date();
+                date.setDate(today.getDate() + i);
+                
+                const dayOfWeek = date.getDay(); // 0=周日, 1=周一, ..., 6=周六
+                
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.setAttribute('data-date', date.toISOString().split('T')[0]);
+                dayElement.setAttribute('data-day', dayOfWeek);
+                
+                const dayName = days[dayOfWeek];
+                const dayNumber = date.getDate();
+                const month = date.getMonth() + 1;
+                
+                dayElement.innerHTML = `
+                    <div>${month}月${dayNumber}日</div>
+                    <div>${dayName}</div>
+                `;
+                
+                // 检查医生是否在这一天上班
+                if (selectedDoctor && selectedDoctor.schedule && !selectedDoctor.schedule.days.includes(dayOfWeek)) {
+                    dayElement.classList.add('disabled');
+                    dayElement.innerHTML += `<div style="font-size: 0.7rem; color: var(--neon-pink); margin-top: 5px;">休息</div>`;
+                }
+                
+                // 添加点击事件
+                dayElement.addEventListener('click', function() {
+                    if (this.classList.contains('disabled')) return;
+                    
+                    // 移除所有日期的选中状态
+                    document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+                    
+                    // 为当前日期添加选中状态
+                    this.classList.add('selected');
+                    
+                    // 更新时段选择
+                    updateTimeSlots(parseInt(this.getAttribute('data-day')));
+                });
+                
+                calendar.appendChild(dayElement);
+            }
+            
+            // 默认选中今天（如果医生今天上班）
+            const todayElement = calendar.children[0];
+            if (!todayElement.classList.contains('disabled')) {
+                todayElement.classList.add('selected');
+                updateTimeSlots(parseInt(todayElement.getAttribute('data-day')));
+            }
+        }
+        
+        // 更新时段选择
+        function updateTimeSlots(dayOfWeek) {
+            const timeSlots = document.querySelectorAll('.time-slot');
+            
+            timeSlots.forEach(slot => {
+                const time = slot.getAttribute('data-time');
+                
+                // 重置状态
+                slot.classList.remove('selected', 'disabled');
+                
+                // 检查医生是否在这个时段上班
+                if (selectedDoctor && selectedDoctor.schedule && 
+                    !selectedDoctor.schedule.times.includes(time)) {
+                    slot.classList.add('disabled');
+                    slot.innerHTML = `${slot.textContent.split(' ')[0]} <span style="color: var(--neon-pink); font-size: 0.8rem;">(休息)</span>`;
+                } else {
+                    slot.innerHTML = slot.textContent.split(' (')[0]; // 移除之前的休息标记
+                }
+            });
+        }
+        
+        // 时段选择功能
+        document.querySelectorAll('.time-slot').forEach(slot => {
+            slot.addEventListener('click', function() {
+                if (this.classList.contains('disabled')) return;
+                
+                // 移除所有时段的选中状态
+                document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+                
+                // 为当前时段添加选中状态
+                this.classList.add('selected');
+            });
+        });
+        
+        // 症状选择功能
+        document.querySelectorAll('.symptom').forEach(symptom => {
+            symptom.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+        });
+        
+        // 分析症状功能
+        document.getElementById('analyze-symptoms').addEventListener('click', function() {
+            const selectedSymptoms = Array.from(document.querySelectorAll('.symptom.selected'))
+                .map(s => s.getAttribute('data-symptom'));
+            
+            if (selectedSymptoms.length === 0) {
+                alert('请至少选择一个症状');
+                return;
+            }
+            
+            // 根据症状判断感冒类型
+            let diagnosisType = '';
+            let diagnosisDesc = '';
+            
+            // 判断逻辑
+            if (selectedSymptoms.includes('runny-nose-clear') && selectedSymptoms.includes('chills')) {
+                diagnosisType = '风寒感冒';
+                diagnosisDesc = '风寒感冒通常由受凉引起，症状包括流清鼻涕、发冷、头痛等。';
+            } else if (selectedSymptoms.includes('runny-nose-yellow') && selectedSymptoms.includes('sore-throat')) {
+                diagnosisType = '风热感冒';
+                diagnosisDesc = '风热感冒通常由热邪入侵引起，症状包括流黄鼻涕、喉咙痛、发烧等。';
+            } else if (selectedSymptoms.includes('fatigue') && selectedSymptoms.includes('body-ache')) {
+                diagnosisType = '病毒性感冒';
+                diagnosisDesc = '病毒性感冒通常症状较重，包括全身酸痛、疲劳乏力、高烧等。';
+            } else {
+                diagnosisType = '普通感冒';
+                diagnosisDesc = '您的症状较为常见，属于普通感冒，注意休息和多喝水。';
+            }
+            
+            // 更新诊断结果
+            document.getElementById('diagnosis-type').textContent = diagnosisType;
+            document.getElementById('diagnosis-desc').textContent = diagnosisDesc;
+            
+            // 更新药方
+            const prescriptionList = document.getElementById('prescription-list');
+            prescriptionList.innerHTML = '';
+            
+            if (prescriptionsData[diagnosisType]) {
+                prescriptionsData[diagnosisType].forEach(med => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        ${med.name}
+                        <div class="medicine-info">
+                            <span class="prescription-type">${med.type}</span>
+                            <span class="prescription-price">${med.price}</span>
+                        </div>
+                    `;
+                    prescriptionList.appendChild(li);
+                });
+            }
+            
+            // 显示结果
+            document.getElementById('diagnosis-result').classList.add('active');
+        });
+        
+        // 确认挂号功能
+        document.getElementById('confirm-appointment').addEventListener('click', function() {
+            const selectedDate = document.querySelector('.calendar-day.selected');
+            const selectedTime = document.querySelector('.time-slot.selected');
+            
+            if (!selectedDoctor || !selectedDate || !selectedTime) {
+                alert('请选择医生、日期和时段');
+                return;
+            }
+            
+            const dateText = selectedDate.querySelector('div').textContent;
+            const dayName = selectedDate.querySelector('div:nth-child(2)').textContent;
+            const timeText = selectedTime.textContent.split(' (')[0]; // 移除可能的休息标记
+            
+            // 显示挂号确认弹窗
+            const modal = document.getElementById('appointment-modal');
+            const appointmentInfo = document.getElementById('appointment-info');
+            
+            appointmentInfo.innerHTML = `
+                <p><strong>医生：</strong>${selectedDoctor.name}</p>
+                <p><strong>职称：</strong>${selectedDoctor.title}</p>
+                <p><strong>科室：</strong>${departmentMap[selectedDoctor.department]}</p>
+                <p><strong>日期：</strong>${dateText} ${dayName}</p>
+                <p><strong>时段：</strong>${timeText}</p>
+                <p><strong>挂号费：</strong>25元</p>
+                <p><strong>就诊地点：</strong>赛博智能医院3楼</p>
+            `;
+            
+            modal.style.display = 'flex';
+        });
+        
+        // 弹窗功能
+        document.getElementById('cancel-appointment').addEventListener('click', function() {
+            document.getElementById('appointment-modal').style.display = 'none';
+        });
+        
+        document.getElementById('confirm-modal').addEventListener('click', function() {
+            document.getElementById('appointment-modal').style.display = 'none';
+            alert('挂号成功！我们已发送确认短信到您的手机。');
+        });
+        
+        // 初始化页面
+        displayDoctors('internal');
+    </script>
+</body>
+</html>
