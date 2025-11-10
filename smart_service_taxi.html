@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能打车 - 赛博智能服务</title>
+    <link rel="stylesheet" href="smart_service_taxi.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="smart_service.html" class="nav-logo">赛博智能服务</a>
+            <ul class="nav-menu">
+                <li><a href="smart_service.html" class="nav-link">返回智能服务</a></li>
+                <li><a href="#route" class="nav-link">路线规划</a></li>
+                <li><a href="#call-taxi" class="nav-link">立即叫车</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <div class="service-header">
+                <div class="service-icon">🚕</div>
+                <h1>智能打车</h1>
+            </div>
+            <p>快速叫车，智能路线规划，实时路况导航</p>
+        </header>
+        
+        <div class="debug-info" id="debugInfo" style="display: none;"></div>
+        
+        <section class="service-section" id="route">
+            <h2 class="section-title">路线规划</h2>
+            <div class="taxi-interface">
+                <div>
+                    <div class="input-group">
+                        <div class="input-field">
+                            <input type="text" placeholder="起点位置" id="start-location" value="武汉大学信息学部" readonly>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="输入终点位置" id="end-location" value="武汉站">
+                        </div>
+                    </div>
+                    
+                    <button id="route-btn" onclick="calculateRoute()">规划路线</button>
+                    
+                    <div class="result-area" id="route-result">
+                        <h3>当前位置</h3>
+                        <p><strong>起点：</strong>武汉大学信息学部</p>
+                        <p><strong>地址：</strong>武汉市洪山区珞瑜路129号</p>
+                        <p>请输入终点位置开始规划路线</p>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <div id="map-container"></div>
+                    <div class="map-controls">
+                        <span class="icon">🔍</span>
+                        <span>使用鼠标滚轮控制地图缩放</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="service-section">
+            <h2 class="section-title">选择车型</h2>
+            <div class="car-options">
+                <div class="car-option" onclick="selectCarType('economy')">
+                    <div style="font-size: 40px; margin-bottom: 10px;">🚗</div>
+                    <h4>经济型</h4>
+                    <small>舒适出行</small>
+                    <div class="car-price" id="economy-price">-- 元</div>
+                </div>
+                <div class="car-option" onclick="selectCarType('comfort')">
+                    <div style="font-size: 40px; margin-bottom: 10px;">🚙</div>
+                    <h4>舒适型</h4>
+                    <small>宽敞空间</small>
+                    <div class="car-price" id="comfort-price">-- 元</div>
+                </div>
+                <div class="car-option" onclick="selectCarType('premium')">
+                    <div style="font-size: 40px; margin-bottom: 10px;">🏎️</div>
+                    <h4>豪华型</h4>
+                    <small>尊享体验</small>
+                    <div class="car-price" id="premium-price">-- 元</div>
+                </div>
+                <div class="car-option" onclick="selectCarType('suv')">
+                    <div style="font-size: 40px; margin-bottom: 10px;">🚐</div>
+                    <h4>商务SUV</h4>
+                    <small>多人出行</small>
+                    <div class="car-price" id="suv-price">-- 元</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="service-section" id="call-taxi">
+            <h2 class="section-title">叫车服务</h2>
+            <div class="input-group">
+                <div class="input-field time-selector">
+                    <div class="time-display" id="timeDisplay" onclick="toggleTimeOptions()">
+                        <span>立即出发</span>
+                    </div>
+                    <div class="time-options" id="timeOptions">
+                        <div class="time-option selected" onclick="selectTime('立即出发')">立即出发</div>
+                        <div class="time-option" onclick="selectTime('15分钟后')">15分钟后</div>
+                        <div class="time-option" onclick="selectTime('30分钟后')">30分钟后</div>
+                        <div class="time-option" onclick="selectTime('1小时后')">1小时后</div>
+                    </div>
+                </div>
+            </div>
+            <button style="background: linear-gradient(45deg, #ff00ff, #8a2be2); padding: 15px; font-size: 1.2rem;" onclick="showCallTaxiModal()">
+                🚗 立即叫车
+            </button>
+        </section>
+        
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="smart_service.html" class="home-link">返回智能服务</a>
+        </div>
+        
+        <footer>
+            <p>© 2025 赛博智能服务 | 智能打车平台</p>
+            <p style="margin-top: 8px; font-size: 0.8rem; color: #888;">当前起点：武汉大学信息学部</p>
+        </footer>
+    </div>
+
+    <!-- 叫车成功模态框 -->
+    <div class="modal" id="callTaxiModal">
+        <div class="modal-content">
+            <div class="modal-icon">🚕</div>
+            <h2 class="modal-title">叫车成功！</h2>
+            <div class="modal-details" id="modalDetails"></div>
+            <button class="modal-close" onclick="closeCallTaxiModal()">确认</button>
+        </div>
+    </div>
+
+    <!-- 高德地图JavaScript API -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=e33eed904106c653683c232f78ba5160&plugin=AMap.Driving"></script>
+    
+    <script src="smart_service_taxi.js"></script>
+</body>
+</html>

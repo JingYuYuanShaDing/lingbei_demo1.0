@@ -1,375 +1,197 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>赛博智能服务 - 首页</title>
-    <style>
-        :root {
-            --bg-dark: #0a0a14;
-            --bg-card: #121225;
-            --neon-blue: #0ff0fc;
-            --neon-pink: #ff00ff;
-            --neon-purple: #8a2be2;
-            --text-light: #e0e0ff;
-            --grid-color: rgba(10, 200, 255, 0.1);
-        }
+<!DOCTYPE html><html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>赛博智能服务 - 首页</title> <link rel="stylesheet" href="smart_service.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> </head> <body> <nav class="navbar"> <div class="nav-container"> <a href="../index.html" class="nav-logo">赛博智能服务</a> <ul class="nav-menu"> <li><a href="../index.html" class="nav-link">首页</a></li> <li><a href="#services" class="nav-link">服务</a></li> <li><a href="#contact" class="nav-link">联系我们</a></li> </ul> </div> </nav>
+
+<div class="container">
+    <header>
+        <h1>赛博智能服务</h1>
+        <p class="subtitle">未来生活，触手可及</p>
+        <p>一体化智能服务平台，满足您的日常需求</p>
+    </header>
+    
+    <div class="services-grid" id="services">
+        <a href="smart_service_taxi.html" class="service-card">
+            <div class="service-icon taxi">🚕</div>
+            <h3 class="service-title">智能打车</h3>
+            <p class="service-desc">快速叫车，智能路线规划，实时路况导航，让出行更便捷</p>
+            <ul class="service-features">
+                <li>输入起点和终点</li>
+                <li>实时预估价格</li>
+                <li>多种车型选择</li>
+                <li>司机实时位置</li>
+            </ul>
+            <span class="enter-btn">进入服务 →</span>
+        </a>
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-        }
+        <a href="smart_service_hospital.html" class="service-card">
+            <div class="service-icon hospital">🏥</div>
+            <h3 class="service-title">远程医疗</h3>
+            <p class="service-desc">在线挂号、远程问诊，专业医疗资源触手可及</p>
+            <ul class="service-features">
+                <li>远程挂号</li>
+                <li>在线问诊</li>
+                <li>电子处方</li>
+                <li>药品配送</li>
+            </ul>
+            <span class="enter-btn">进入服务 →</span>
+        </a>
         
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            min-height: 100vh;
-            background-image: 
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
+        <a href="smart_service_ticket.html" class="service-card">
+            <div class="service-icon ticket">🎫</div>
+            <h3 class="service-title">车票预订</h3>
+            <p class="service-desc">火车、飞机、汽车票一站式预订服务</p>
+            <ul class="service-features">
+                <li>多类型车票预订</li>
+                <li>在线选座功能</li>
+                <li>车站大屏查询</li>
+                <li>行程提醒服务</li>
+            </ul>
+            <span class="enter-btn">进入服务 →</span>
+        </a>
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        <a href="smart_service_hotel.html" class="service-card">
+            <div class="service-icon hotel">🏨</div>
+            <h3 class="service-title">酒店预订</h3>
+            <p class="service-desc">海量酒店资源，智能筛选，最优价格保障</p>
+            <ul class="service-features">
+                <li>智能搜索筛选</li>
+                <li>价格日历显示</li>
+                <li>真实用户评价</li>
+                <li>地图定位查看</li>
+            </ul>
+            <span class="enter-btn">进入服务 →</span>
+        </a>
         
-        header {
-            text-align: center;
-            padding: 40px 0;
-            margin-bottom: 40px;
-            position: relative;
-        }
+        <a href="smart_service_food.html" class="service-card">
+            <div class="service-icon food">🍔</div>
+            <h3 class="service-title">美食外卖</h3>
+            <p class="service-desc">附近美食一键下单，快速配送上门</p>
+            <ul class="service-features">
+                <li>商家点餐界面</li>
+                <li>菜品价格展示</li>
+                <li>智能推荐系统</li>
+                <li>实时配送追踪</li>
+            </ul>
+            <span class="enter-btn">进入服务 →</span>
+        </a>
         
-        h1 {
-            font-size: 3.5rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
-            color: var(--neon-blue);
-            animation: glitch 3s infinite;
-        }
+        <a href="smart_service_delivery.html" class="service-card">
+            <div class="service-icon delivery">📦</div>
+            <h3 class="service-title">快递服务</h3>
+            <p class="service-desc">一键寄件，多快递公司比价，实时追踪</p>
+            <ul class="service-features">
+                <li>在线下单寄件</li>
+                <li>快递公司选择</li>
+                <li>实时价格比较</li>
+                <li>包裹追踪服务</li>
+            </ul>
+            <span class="enter-btn">进入服务 →</span>
+        </a>
         
-        .subtitle {
-            font-size: 1.2rem;
-            color: var(--neon-pink);
-            text-shadow: 0 0 5px var(--neon-pink);
-            margin-bottom: 10px;
-        }
+        <a href="smart_service_payment.html" class="service-card">
+            <div class="service-icon payment">💳</div>
+            <h3 class="service-title">生活缴费</h3>
+            <p class="service-desc">电费、水费、话费一站式缴纳平台</p>
+            <ul class="service-features">
+                <li>电费缴纳</li>
+                <li>水费缴纳</li>
+                <li>话费充值</li>
+                <li>缴费记录查询</li>
+            </ul>
+            <span class="enter-btn">进入服务 →</span>
+        </a>
         
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-        
-        .service-card {
-            background-color: var(--bg-card);
-            border-radius: 12px;
-            padding: 30px 25px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(10, 200, 255, 0.3);
-            box-shadow: 0 0 20px rgba(10, 200, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: 0.5s;
-        }
-        
-        .service-card:hover::before {
-            left: 100%;
-        }
-        
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(10, 200, 255, 0.3);
-            border-color: var(--neon-blue);
-        }
-        
-        .service-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 15px currentColor;
-        }
-        
-        .service-title {
-            font-size: 1.6rem;
-            margin-bottom: 15px;
-            color: var(--neon-blue);
-        }
-        
-        .service-desc {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: #b0b0d0;
-            margin-bottom: 20px;
-        }
-        
-        .service-features {
-            margin-top: 20px;
-            list-style-type: none;
-        }
-        
-        .service-features li {
-            padding: 8px 0;
-            font-size: 0.9rem;
-            color: #a0a0c0;
-            position: relative;
-            padding-left: 20px;
-        }
-        
-        .service-features li::before {
-            content: '▶';
-            position: absolute;
-            left: 0;
-            color: var(--neon-pink);
-            font-size: 0.8rem;
-        }
-        
-        .enter-btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 8px 20px;
-            background: rgba(10, 200, 255, 0.2);
-            border: 1px solid var(--neon-blue);
-            border-radius: 20px;
-            color: var(--neon-blue);
-            text-decoration: none;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-        
-        .service-card:hover .enter-btn {
-            background: var(--neon-blue);
-            color: var(--bg-dark);
-        }
-        
-        .taxi { color: var(--neon-blue); }
-        .hospital { color: #00ff9d; }
-        .ticket { color: #ffaa00; }
-        .hotel { color: var(--neon-pink); }
-        .food { color: #ff5500; }
-        .delivery { color: #9d00ff; }
-        .payment { color: #00ff55; }
-        .sports { color: #00aaff; }
-        
-        .home-link {
-            display: inline-block;
-            margin-top: 40px;
-            padding: 10px 25px;
-            background: rgba(10, 200, 255, 0.1);
-            border: 1px solid var(--neon-blue);
-            border-radius: 25px;
-            color: var(--neon-blue);
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .home-link:hover {
-            background: var(--neon-blue);
-            color: var(--bg-dark);
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 80px;
-            padding: 30px;
-            color: #707090;
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(10, 200, 255, 0.2);
-        }
-        
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            2% { transform: translate(-2px, 2px); }
-            4% { transform: translate(-2px, -2px); }
-            6% { transform: translate(2px, 2px); }
-            8% { transform: translate(2px, -2px); }
-            10% { transform: translate(0); }
-            100% { transform: translate(0); }
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>赛博智能服务</h1>
-            <p class="subtitle">未来生活，触手可及</p>
-            <p>一体化智能服务平台，满足您的日常需求</p>
-        </header>
-        
-        <div class="services-grid">
-            <!-- 打车服务 -->
-            <a href="page/taxi.html" class="service-card">
-                <div class="service-icon taxi">🚕</div>
-                <h3 class="service-title">智能打车</h3>
-                <p class="service-desc">快速叫车，智能路线规划，实时路况导航，让出行更便捷</p>
-                <ul class="service-features">
-                    <li>输入起点和终点</li>
-                    <li>实时预估价格</li>
-                    <li>多种车型选择</li>
-                    <li>司机实时位置</li>
-                </ul>
-                <span class="enter-btn">进入服务 →</span>
-            </a>
-            
-            <!-- 医院服务 -->
-            <a href="page/hospital.html" class="service-card">
-                <div class="service-icon hospital">🏥</div>
-                <h3 class="service-title">远程医疗</h3>
-                <p class="service-desc">在线挂号、远程问诊，专业医疗资源触手可及</p>
-                <ul class="service-features">
-                    <li>远程挂号</li>
-                    <li>在线问诊</li>
-                    <li>电子处方</li>
-                    <li>药品配送</li>
-                </ul>
-                <span class="enter-btn">进入服务 →</span>
-            </a>
-            
-            <!-- 车票预订 -->
-            <a href="page/ticket.html" class="service-card">
-                <div class="service-icon ticket">🎫</div>
-                <h3 class="service-title">车票预订</h3>
-                <p class="service-desc">火车、飞机、汽车票一站式预订服务</p>
-                <ul class="service-features">
-                    <li>多类型车票预订</li>
-                    <li>在线选座功能</li>
-                    <li>车站大屏查询</li>
-                    <li>行程提醒服务</li>
-                </ul>
-                <span class="enter-btn">进入服务 →</span>
-            </a>
-            
-            <!-- 酒店预订 -->
-            <a href="hotel.html" class="service-card">
-                <div class="service-icon hotel">🏨</div>
-                <h3 class="service-title">酒店预订</h3>
-                <p class="service-desc">海量酒店资源，智能筛选，最优价格保障</p>
-                <ul class="service-features">
-                    <li>智能搜索筛选</li>
-                    <li>价格日历显示</li>
-                    <li>真实用户评价</li>
-                    <li>地图定位查看</li>
-                </ul>
-                <span class="enter-btn">进入服务 →</span>
-            </a>
-            
-            <!-- 外卖点餐 -->
-            <a href="food.html" class="service-card">
-                <div class="service-icon food">🍔</div>
-                <h3 class="service-title">美食外卖</h3>
-                <p class="service-desc">附近美食一键下单，快速配送上门</p>
-                <ul class="service-features">
-                    <li>商家点餐界面</li>
-                    <li>菜品价格展示</li>
-                    <li>智能推荐系统</li>
-                    <li>实时配送追踪</li>
-                </ul>
-                <span class="enter-btn">进入服务 →</span>
-            </a>
-            
-            <!-- 寄快递 -->
-            <a href="delivery.html" class="service-card">
-                <div class="service-icon delivery">📦</div>
-                <h3 class="service-title">快递服务</h3>
-                <p class="service-desc">一键寄件，多快递公司比价，实时追踪</p>
-                <ul class="service-features">
-                    <li>在线下单寄件</li>
-                    <li>快递公司选择</li>
-                    <li>实时价格比较</li>
-                    <li>包裹追踪服务</li>
-                </ul>
-                <span class="enter-btn">进入服务 →</span>
-            </a>
-            
-            <!-- 生活缴费 -->
-            <a href="payment.html" class="service-card">
-                <div class="service-icon payment">💳</div>
-                <h3 class="service-title">生活缴费</h3>
-                <p class="service-desc">电费、水费、话费一站式缴纳平台</p>
-                <ul class="service-features">
-                    <li>电费缴纳</li>
-                    <li>水费缴纳</li>
-                    <li>话费充值</li>
-                    <li>缴费记录查询</li>
-                </ul>
-                <span class="enter-btn">进入服务 →</span>
-            </a>
-            
-            <!-- 体育馆预约 -->
-            <a href="sports.html" class="service-card">
-                <div class="service-icon sports">🏸</div>
-                <h3 class="service-title">场馆预约</h3>
-                <p class="service-desc">在线预约体育场馆，实时查看空闲时段</p>
-                <ul class="service-features">
-                    <li>场地状态可视化</li>
-                    <li>空闲(绿色)/占用(红色)</li>
-                    <li>按小时分块预约</li>
-                    <li>多种场馆类型</li>
-                </ul>
-                <span class="enter-btn">进入服务 →</span>
-            </a>
-        </div>
-        
-        <footer>
-            <p>© 2023 赛博智能服务 | 未来科技，服务生活</p>
-            <p style="margin-top: 10px; font-size: 0.8rem; color: #555580;">点击各项服务卡片进入详细功能页面</p>
-        </footer>
+        <a href="smart_service_sports.html" class="service-card">
+            <div class="service-icon sports">🏸</div>
+            <h3 class="service-title">场馆预约</h3>
+            <p class="service-desc">在线预约体育场馆，实时查看空闲时段</p>
+            <ul class="service-features">
+                <li>场地状态可视化</li>
+                <li>空闲(绿色)/占用(红色)</li>
+                <li>按小时分块预约</li>
+                <li>多种场馆类型</li>
+            </ul>
+            <span class="enter-btn">进入服务 →</span>
+        </a>
     </div>
 
-    <script>
-        // 页面加载动画
-        window.addEventListener('load', function() {
-            document.body.style.opacity = '0';
-            document.body.style.transition = 'opacity 1s';
-            
-            setTimeout(function() {
-                document.body.style.opacity = '1';
-            }, 100);
-            
-            // 卡片逐个显示动画
-            const cards = document.querySelectorAll('.service-card');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px)';
-                
-                setTimeout(() => {
-                    card.style.transition = 'opacity 0.6s, transform 0.6s';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, 200 + index * 100);
-            });
-        });
-    </script>
-</body>
-</html>
+    <footer class="site-footer" id="footer-contact">
+        <div class="container">
+            <div class="contact-revamped" id="contact">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <div class="brand-logo">
+                            <div class="logo-icon"><i class="fas fa-circle-notch"></i></div>
+                            <div class="brand-name">赛博智能服务</div>
+                        </div>
+                        <p class="brand-desc">打造以人为本的智能服务生态系统，通过先进科技与数据分析，实现生活服务智能化与居民生活品质提升。</p>
+                        <div class="socials">
+                            <a href="#" class="social"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-links-col">
+                        <h5 class="col-title">快速链接</h5>
+                        <ul class="col-list">
+                            <li><a class="footer-link" href="#services">服务列表</a></li>
+                            <li><a class="footer-link" href="#footer-contact">联系我们</a></li>
+                            <li><a class="footer-link" href="#">关于我们</a></li>
+                            <li><a class="footer-link" href="#">帮助中心</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-scenes-col">
+                        <h5 class="col-title">热门服务</h5>
+                        <ul class="col-list">
+                            <li><a class="footer-link" href="page/taxi.html">智能打车</a></li>
+                            <li><a class="footer-link" href="page/hospital.html">远程医疗</a></li>
+                            <li><a class="footer-link" href="page/ticket.html">车票预订</a></li>
+                            <li><a class="footer-link" href="food.html">美食外卖</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-contact-col">
+                        <h5 class="col-title">联系我们</h5>
+                        <ul class="contact-column-list">
+                            <li class="contact-row">
+                                <i class="fas fa-map-marker-alt contact-icon"></i>
+                                <div class="contact-text contact-no-wrap">武汉大学国家网络安全学院</div>
+                            </li>
+                            <li class="contact-row">
+                                <i class="fas fa-phone contact-icon"></i>
+                                <div class="contact-text"><a href="tel:+8615337217838" class="contact-link">+86 153 3721 7838</a></div>
+                            </li>
+                            <li class="contact-row">
+                                <i class="fas fa-envelope contact-icon"></i>
+                                <div class="contact-text"><a href="mailto:171639898@qq.com" class="contact-link">171639898@qq.com</a></div>
+                            </li>
+                        </ul>
+
+                        <div class="footer-subscribe">
+                            <div class="subscribe-label">订阅我们的通讯</div>
+                            <div class="subscribe-inline">
+                                <input class="footer-subscribe-input" type="email" placeholder="您的邮箱地址">
+                                <button class="footer-subscribe-btn"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-content">
+                <div class="copyright">
+                    &copy; 2025 赛博智能服务. 保留所有权利。
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">隐私政策</a>
+                    <a href="#" class="footer-link">使用条款</a>
+                    <a href="#" class="footer-link">Cookie 政策</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="smart_service.js"></script>
+</body> </html>

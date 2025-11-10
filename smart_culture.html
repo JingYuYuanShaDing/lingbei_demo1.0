@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>赛博人文 · 智能中华</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="smart_culture.css">
+</head>
+<body>
+<div id="top"></div>
+<div id="preloader">
+  <div class="loader-wrap">
+    <svg class="loader-ring" viewBox="0 0 50 50">
+      <circle cx="25" cy="25" r="20" stroke-width="4" stroke-linecap="round" fill="none"></circle>
+    </svg>
+    <div class="loader-percent">0%</div>
+    <div class="loader-text">正在加载 赛博人文</div>
+  </div>
+</div>
+<div id="scroll-progress"></div>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <span class="logo-tech">赛博</span>
+      <span class="logo-ancient">人文</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#top">主题</a></li>
+      <li><a href="#relics">智能文物</a></li>
+      <li><a href="#history">智能历史</a></li>
+      <li><a href="#poetry">智能诗词</a></li>
+      <li><a href="#creation">智能创作</a></li>
+      <li><a href="#contact">联系我们</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a class="home-btn" href="../index.html"><i class="fas fa-home"></i> 返回首页</a>
+      <button id="nav-toggle"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</nav>
+<header class="hero">
+  <canvas id="particle-canvas"></canvas>
+  <div class="hero-inner">
+    <h1 class="hero-title"><span class="tech">Cyber</span><span class="ancient">人文</span></h1>
+    <p class="hero-sub">当高科技与古风相遇，历史与创意被重新点亮</p>
+  </div>
+</header>
+<main class="main">
+  <section class="intro">
+    <div class="intro-card reveal">
+      <h2>四大模块 · 一站体验</h2>
+      <p>在这里可探索可旋转文物模型、交互时间线、诗词检索与智能作诗。点击任意板块进入详细页面。</p>
+    </div>
+  </section>
+  <section class="panels">
+    <article class="panel reveal" id="relics">
+      <div class="panel-media">
+        <a href="smart_culture_relics.html" class="panel-link">
+          <div class="panel-badge">智能文物</div>
+          <div class="panel-img relics-img" data-bg="smart_culture_relics.png"></div>
+        </a>
+      </div>
+      <div class="panel-body">
+        <h3 class="panel-title">智能文物</h3>
+        <p class="panel-desc">查看多件文物卡片，点击卡片查看详细信息与可旋转 3D 模型，获取年代、材质、出土地与智能解析。</p>
+        <a class="enter" href="smart_culture_relics.html">进入文物库 →</a>
+      </div>
+    </article>
+    <article class="panel reveal reverse" id="history">
+      <div class="panel-media">
+        <a href="smart_culture_history.html" class="panel-link">
+          <div class="panel-badge">智能历史</div>
+          <div class="panel-img history-img" data-bg="smart_culture_history.png"></div>
+        </a>
+      </div>
+      <div class="panel-body">
+        <h3 class="panel-title">智能历史</h3>
+        <p class="panel-desc">交互式时间线支持缩放与悬停查看事件详情，提供人物与事件检索并展示配图与来源。</p>
+        <a class="enter" href="smart_culture_history.html">进入时间线 →</a>
+      </div>
+    </article>
+    <article class="panel reveal" id="poetry">
+      <div class="panel-media">
+        <a href="smart_culture_poetry.html" class="panel-link">
+          <div class="panel-badge">智能诗词</div>
+          <div class="panel-img poetry-img" data-bg="smart_culture_poem.png"></div>
+        </a>
+      </div>
+      <div class="panel-body">
+        <h3 class="panel-title">智能诗词</h3>
+        <p class="panel-desc">支持按作者、题材、朝代检索古诗词，查看注释与赏析，并展示作者相关配图与诗词手写/碑刻图像。</p>
+        <a class="enter" href="smart_culture_poetry.html">进入诗词检索 →</a>
+      </div>
+    </article>
+    <article class="panel reveal reverse" id="creation">
+      <div class="panel-media">
+        <a href="smart_culture_creation.html" class="panel-link">
+          <div class="panel-badge">智能创作</div>
+          <div class="panel-img creation-img" data-bg="smart_culture_create.png"></div>
+        </a>
+      </div>
+      <div class="panel-body">
+        <h3 class="panel-title">智能创作</h3>
+        <p class="panel-desc">根据描述或关键词自动生成古风诗词，提供多版本与格律建议，并可下载配图素材。</p>
+        <a class="enter" href="smart_culture_creation.html">前往创作 →</a>
+      </div>
+    </article>
+  </section>
+</main>
+<footer class="site-footer" id="contact">
+  <div class="container">
+    <div class="contact-revamped" id="contact-block">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="logo-icon"><i class="fas fa-circle-notch"></i></div>
+            <div class="brand-name">赛博人文</div>
+          </div>
+          <p class="brand-desc">用科技还原历史细节，用交互传承文化记忆，让知识既可看也可触摸。</p>
+          <div class="socials">
+            <a href="#" class="social"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="footer-links-col">
+          <h5 class="col-title">快速链接</h5>
+          <ul class="col-list">
+            <li><a class="footer-link" href="#relics">智能文物</a></li>
+            <li><a class="footer-link" href="#history">智能历史</a></li>
+            <li><a class="footer-link" href="#poetry">智能诗词</a></li>
+            <li><a class="footer-link" href="#creation">智能创作</a></li>
+          </ul>
+        </div>
+        <div class="footer-scenes-col">
+          <h5 class="col-title">热门服务</h5>
+          <ul class="col-list">
+            <li><a class="footer-link" href="#">文物检索</a></li>
+            <li><a class="footer-link" href="#">时间线浏览</a></li>
+            <li><a class="footer-link" href="#">诗词生成</a></li>
+            <li><a class="footer-link" href="#">学术资源</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact-col">
+          <h5 class="col-title">联系我们</h5>
+          <ul class="contact-column-list">
+            <li class="contact-row">
+              <i class="fas fa-map-marker-alt contact-icon"></i>
+              <div class="contact-text contact-no-wrap">武汉大学国家网络安全学院</div>
+            </li>
+            <li class="contact-row">
+              <i class="fas fa-phone contact-icon"></i>
+              <div class="contact-text"><a href="tel:+8615337217838" class="contact-link">+86 153 3721 7838</a></div>
+            </li>
+            <li class="contact-row">
+              <i class="fas fa-envelope contact-icon"></i>
+              <div class="contact-text"><a href="mailto:171639898@qq.com" class="contact-link">171639898@qq.com</a></div>
+            </li>
+          </ul>
+          <div class="footer-subscribe">
+            <div class="subscribe-label">订阅我们的通讯</div>
+            <div class="subscribe-inline">
+              <input class="footer-subscribe-input" type="email" placeholder="您的邮箱地址">
+              <button class="footer-subscribe-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-content">
+      <div class="copyright">
+        &copy; 2025 赛博人文. 保留所有权利。
+      </div>
+      <div class="footer-links-bottom">
+        <a href="privacy.html" class="footer-link">隐私政策</a>
+        <a href="terms.html" class="footer-link">使用条款</a>
+        <a href="contact.html" class="footer-link">Cookie 政策</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="smart_culture.js"></script>
+</body>
+</html>

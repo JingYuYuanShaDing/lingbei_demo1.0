@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>车票预订 - 赛博智能服务</title>
+    <link rel="stylesheet" href="smart_service_ticket.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="smart_service.html" class="nav-logo">赛博智能服务</a>
+            <ul class="nav-menu">
+                <li><a href="smart_service.html" class="nav-link">返回智能服务</a></li>
+                <li><a href="#ticket-booking" class="nav-link">车票预订</a></li>
+                <li><a href="#screen-query" class="nav-link">大屏查询</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>车票预订</h1>
+            <p class="subtitle">智能出行，轻松预订</p>
+            <p>火车、飞机、汽车票一站式预订服务</p>
+        </header>
+        
+        <!-- 车票预订部分 -->
+        <h2 class="section-title">🚕 车票预订</h2>
+        <div class="search-form" id="ticket-booking">
+            <div id="messageArea"></div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="departure">出发地</label>
+                    <input type="text" id="departure" class="form-control" placeholder="例如: 北京">
+                </div>
+                <div class="form-group">
+                    <label for="destination">目的地</label>
+                    <input type="text" id="destination" class="form-control" placeholder="例如: 上海">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="depart-date">出发日期</label>
+                    <input type="date" id="depart-date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="ticket-type">票种</label>
+                    <select id="ticket-type" class="form-control">
+                        <option value="train">火车票</option>
+                        <option value="flight">飞机票</option>
+                        <option value="bus">汽车票</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="searchBtn" class="btn btn-block" onclick="searchTickets()">搜索车票</button>
+        </div>
+        
+        <div class="ticket-list" id="ticketList"></div>
+
+        <!-- 大屏查询部分 -->
+        <h2 class="section-title">📺 机场/火车站大屏查询</h2>
+        <div class="screen-query" id="screen-query">
+            <div class="screen-controls">
+                <div class="form-group" style="min-width: 200px;">
+                    <label for="city">城市</label>
+                    <select id="city" class="form-control" onchange="loadStations()">
+                        <option value="">请选择城市</option>
+                        <option value="北京">北京市</option>
+                        <option value="上海">上海市</option>
+                        <option value="广州">广州市</option>
+                        <option value="天津">天津市</option>
+                        <option value="武汉">武汉市</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="min-width: 200px;">
+                    <label for="station-type">站点类型</label>
+                    <select id="station-type" class="form-control" onchange="loadStations()">
+                        <option value="airport">机场</option>
+                        <option value="train-station">火车站</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="min-width: 200px;">
+                    <label for="station">站点</label>
+                    <select id="station" class="form-control" onchange="queryScreen()">
+                        <option value="">请选择站点</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="screen-results" id="screenResults">
+                <p style="text-align: center; color: #a0a0c0; line-height: 250px;">
+                    请选择城市和站点类型查看大屏信息
+                </p>
+            </div>
+        </div>
+        
+        <!-- 选座位模态框 -->
+        <div id="seatModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalTitle">选择座位</h3>
+                    <button class="close-btn" onclick="closeSeatModal()">×</button>
+                </div>
+                <div id="seatLayout"></div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="confirmSeatSelection()">确认选座</button>
+                    <button class="btn" onclick="closeSeatModal()" style="margin-left: 10px; background: rgba(255, 0, 0, 0.2); border-color: #ff5555; color: #ff5555;">取消</button>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="smart_service.html" class="home-link">返回智能服务</a>
+        </div>
+        
+        <footer>
+            <p>© 2025 赛博智能服务 | 未来科技，服务生活</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #555580;">车票预订服务支持火车、飞机、汽车等多种出行方式</p>
+        </footer>
+    </div>
+
+    <script src="smart_service_ticket.js"></script>
+</body>
+</html>

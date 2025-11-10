@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛博智能服务 - 远程医疗</title>
+    <link rel="stylesheet" href="smart_service_hospital.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="smart_service.html" class="nav-logo">赛博智能服务</a>
+            <ul class="nav-menu">
+                <li><a href="smart_service.html" class="nav-link">返回智能服务</a></li>
+                <li><a href="#appointment" class="nav-link">在线挂号</a></li>
+                <li><a href="#consultation" class="nav-link">线上问诊</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>远程医疗</h1>
+            <p class="subtitle">专业医疗资源触手可及</p>
+            <p>在线挂号、远程问诊，为您提供便捷的医疗服务</p>
+        </header>
+        
+        <div class="tab-container">
+            <button class="tab active" data-tab="appointment">在线挂号</button>
+            <button class="tab" data-tab="consultation">线上问诊</button>
+        </div>
+        
+        <!-- 在线挂号 -->
+        <div class="tab-content active" id="appointment">
+            <h2 style="text-align: center; margin-bottom: 30px; color: var(--neon-blue);">选择科室</h2>
+            
+            <div class="departments">
+                <div class="department active" data-department="internal">内科</div>
+                <div class="department" data-department="surgery">外科</div>
+                <div class="department" data-department="pediatrics">儿科</div>
+                <div class="department" data-department="ent">耳鼻喉科</div>
+                <div class="department" data-department="dermatology">皮肤科</div>
+                <div class="department" data-department="ophthalmology">眼科</div>
+            </div>
+            
+            <h2 style="text-align: center; margin: 40px 0 30px; color: var(--neon-blue);">选择医生</h2>
+            
+            <div class="doctors-grid" id="doctors-container">
+                <div class="no-doctor-message" style="text-align: center; grid-column: 1 / -1; padding: 40px; color: #707090;">
+                    <p>请先选择科室查看医生信息</p>
+                </div>
+            </div>
+            
+            <h2 style="text-align: center; margin: 40px 0 30px; color: var(--neon-blue); display: none;" id="time-selection-title">选择就诊时间</h2>
+            
+            <div class="calendar" id="calendar" style="display: none;"></div>
+            
+            <h3 style="text-align: center; margin: 30px 0 20px; color: var(--neon-pink); display: none;" id="time-slot-title">选择时段</h3>
+            
+            <div class="time-slots" id="time-slots" style="display: none;">
+                <div class="time-slot" data-time="morning">上午 (8:00-12:00)</div>
+                <div class="time-slot" data-time="afternoon">下午 (14:00-18:00)</div>
+            </div>
+            
+            <button class="btn btn-block" id="confirm-appointment" style="display: none;">确认挂号</button>
+        </div>
+        
+        <!-- 线上问诊 -->
+        <div class="tab-content" id="consultation">
+            <h2 style="text-align: center; margin-bottom: 30px; color: var(--neon-blue);">感冒症状自诊</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #b0b0d0;">请选择您出现的症状，系统将为您分析可能的感冒类型并提供参考药方</p>
+            
+            <h3 style="margin-bottom: 20px; color: var(--neon-pink);">请选择症状：</h3>
+            
+            <div class="symptoms-grid">
+                <div class="symptom" data-symptom="headache">头痛</div>
+                <div class="symptom" data-symptom="dizziness">头晕</div>
+                <div class="symptom" data-symptom="runny-nose-clear">流清鼻涕</div>
+                <div class="symptom" data-symptom="runny-nose-yellow">流黄鼻涕</div>
+                <div class="symptom" data-symptom="sore-throat">喉咙痛</div>
+                <div class="symptom" data-symptom="cough">咳嗽</div>
+                <div class="symptom" data-symptom="fever">发烧</div>
+                <div class="symptom" data-symptom="chills">发冷</div>
+                <div class="symptom" data-symptom="body-ache">全身酸痛</div>
+                <div class="symptom" data-symptom="fatigue">疲劳乏力</div>
+            </div>
+            
+            <button class="btn btn-block" id="analyze-symptoms" style="margin-top: 30px;">分析症状</button>
+            
+            <div class="result-card" id="diagnosis-result">
+                <h3 class="result-title" id="diagnosis-type">诊断结果</h3>
+                <p class="result-desc" id="diagnosis-desc">根据您选择的症状，我们初步判断您可能患有...</p>
+                
+                <div class="prescription">
+                    <h4 class="prescription-title">参考药方</h4>
+                    <ul class="prescription-list" id="prescription-list"></ul>
+                </div>
+                
+                <p style="margin-top: 20px; font-size: 0.9rem; color: #707090; text-align: center;">
+                    注意：此诊断结果仅供参考，不能替代专业医生的诊断。如有严重症状，请及时就医。
+                </p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="smart_service.html" class="home-link">返回智能服务</a>
+        </div>
+        
+        <footer>
+            <p>© 2025 赛博智能服务 | 未来科技，服务生活</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #555580;">温馨提示：在线问诊结果仅供参考，具体诊断请以医生面诊为准</p>
+        </footer>
+    </div>
+
+    <!-- 挂号确认弹窗 -->
+    <div class="modal" id="appointment-modal">
+        <div class="modal-content">
+            <h3 class="modal-title">挂号确认</h3>
+            <div class="modal-info" id="appointment-info"></div>
+            <div class="modal-buttons">
+                <button class="modal-btn" id="cancel-appointment">取消</button>
+                <button class="modal-btn confirm" id="confirm-modal">确认挂号</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="smart_service_hospital.js"></script>
+</body>
+</html>

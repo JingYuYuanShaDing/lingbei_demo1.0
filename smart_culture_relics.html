@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>智能文物 · 赛博人文</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="smart_culture_relics.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" href="smart_culture.html">
+      <span class="logo-tech">赛博</span>
+      <span class="logo-ancient">人文</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="smart_culture.html">主题</a></li>
+      <li><a href="smart_culture_relics.html">智能文物</a></li>
+      <li><a href="smart_culture_history.html">智能历史</a></li>
+      <li><a href="smart_culture_poetry.html">智能诗词</a></li>
+      <li><a href="smart_culture_creation.html">智能创作</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a class="home-btn" href="../index.html"><i class="fas fa-home"></i> 返回首页</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <h1>智能文物库</h1>
+    <p>检索 · 浏览 · 放大细节 · 在线交互</p>
+  </div>
+</header>
+
+<main class="main">
+  <section class="search-panel">
+    <div class="search-row">
+      <input id="search-text" type="text" placeholder="名称/朝代/材质" aria-label="搜索文物">
+      <select id="filter-era">
+        <option value="">全部朝代</option>
+        <option>商</option>
+        <option>周</option>
+        <option>春秋</option>
+        <option>秦</option>
+        <option>汉</option>
+        <option>唐</option>
+        <option>宋</option>
+        <option>明</option>
+        <option>清</option>
+      </select>
+      <select id="filter-material">
+        <option value="">全部材质</option>
+        <option>青铜</option>
+        <option>玉</option>
+        <option>瓷器</option>
+        <option>漆器</option>
+        <option>石刻</option>
+        <option>书画</option>
+      </select>
+      <button id="search-btn"><i class="fas fa-search"></i> 搜索</button>
+      <button id="reset-btn">重置</button>
+    </div>
+    <div class="search-info" id="search-info">共 <span id="count">0</span> 件结果</div>
+  </section>
+
+  <section class="relics-list" id="relics-list">
+    <article class="relic" data-name="西周青铜鼎" data-era="周" data-material="青铜">
+      <div class="relic-left">
+        <div class="thumb" style="background-image:url('relics/qingtong_ding.jpg')"></div>
+      </div>
+      <div class="relic-right">
+        <div class="relic-head">
+          <h2 class="relic-title">西周青铜鼎</h2>
+          <div class="relic-meta">朝代：周 · 材质：青铜 · 编号：R-0001</div>
+        </div>
+        <div class="relic-summary">青铜鼎为西周重要祭器，器形敦厚，纹饰规整，铭文清晰，可用于研究西周礼制与工艺。</div>
+        <div class="relic-actions">
+          <button class="toggle-detail">展开详情</button>
+        </div>
+        <div class="relic-detail">
+          <div class="detail-columns">
+            <div class="detail-text">
+              <h3>器物描述</h3>
+              <p>通高约32厘米，口沿微撇，三足鼎式。表面保留部分铸造痕迹与青绿锈斑。铭文22字，记载邑名与祭祀系谱。</p>
+              <h4>出土信息</h4>
+              <p>出土于湖北某墓葬，出土层位保存良好，随葬器物包含玉饰与陶器。</p>
+              <h4>学术价值</h4>
+              <p>铭文对于西周早期政治史与礼制研究具有重要价值，同时为金属冶炼工艺研究提供实物依据。</p>
+            </div>
+            <div class="detail-model">
+              <div class="model-toolbar">
+                <button class="model-rotate" data-action="auto">自动旋转</button>
+                <button class="model-rotate" data-action="stop">停止</button>
+                <div class="model-hint">拖拽以旋转模型</div>
+              </div>
+              <div class="model-view" tabindex="0" role="img" aria-label="3D 模型占位">
+                <div class="cube">
+                  <div class="face f1"></div>
+                  <div class="face f2"></div>
+                  <div class="face f3"></div>
+                  <div class="face f4"></div>
+                  <div class="face f5"></div>
+                  <div class="face f6"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-tags">标签：青铜、祭器、铭文、周代</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="relic" data-name="唐代彩绘陶俑" data-era="唐" data-material="陶">
+      <div class="relic-left">
+        <div class="thumb" style="background-image:url('relics/tang_taoyong.jpg')"></div>
+      </div>
+      <div class="relic-right">
+        <div class="relic-head">
+          <h2 class="relic-title">唐代彩绘陶俑</h2>
+          <div class="relic-meta">朝代：唐 · 材质：陶 · 编号：R-0005</div>
+        </div>
+        <div class="relic-summary">此类陶俑常见于唐代陵墓随葬，工艺细腻，保存了当时服饰与面貌特征。</div>
+        <div class="relic-actions">
+          <button class="toggle-detail">展开详情</button>
+        </div>
+        <div class="relic-detail">
+          <div class="detail-columns">
+            <div class="detail-text">
+              <h3>器物描述</h3>
+              <p>彩绘层以红、绿、白为主，局部脱落但整体纹饰与衣纹保留完整。姿态自然，表情生动。</p>
+              <h4>出土信息</h4>
+              <p>出土于陕西某唐代墓葬，伴随有金属器、丝织品残片与陶器群。</p>
+              <h4>学术价值</h4>
+              <p>为研究唐代风俗、服饰与随葬制度提供实证材料。</p>
+            </div>
+            <div class="detail-model">
+              <div class="model-toolbar">
+                <button class="model-rotate" data-action="auto">自动旋转</button>
+                <button class="model-rotate" data-action="stop">停止</button>
+                <div class="model-hint">拖拽以旋转模型</div>
+              </div>
+              <div class="model-view" tabindex="0" role="img" aria-label="3D 模型占位">
+                <div class="cube">
+                  <div class="face f1"></div>
+                  <div class="face f2"></div>
+                  <div class="face f3"></div>
+                  <div class="face f4"></div>
+                  <div class="face f5"></div>
+                  <div class="face f6"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-tags">标签：唐代、彩绘、陶俑、陪葬</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="relic" data-name="宋代青瓷盘" data-era="宋" data-material="瓷器">
+      <div class="relic-left">
+        <div class="thumb" style="background-image:url('relics/song_qingci.jpg')"></div>
+      </div>
+      <div class="relic-right">
+        <div class="relic-head">
+          <h2 class="relic-title">宋代青瓷盘</h2>
+          <div class="relic-meta">朝代：宋 · 材质：瓷器 · 编号：R-0022</div>
+        </div>
+        <div class="relic-summary">釉面温润、胎质细腻，为宋代日常器物与贡瓷代表。</div>
+        <div class="relic-actions">
+          <button class="toggle-detail">展开详情</button>
+        </div>
+        <div class="relic-detail">
+          <div class="detail-columns">
+            <div class="detail-text">
+              <h3>器物描述</h3>
+              <p>釉色呈蓝绿，盘心施划花纹，整体无明显破损，边缘有复修痕迹。</p>
+              <h4>出土信息</h4>
+              <p>出土于浙江沿海一次沉船残骸，随葬有大量瓷器与贸易物品。</p>
+              <h4>学术价值</h4>
+              <p>有助于研究宋代瓷器制作工艺及海外贸易路线。</p>
+            </div>
+            <div class="detail-model">
+              <div class="model-toolbar">
+                <button class="model-rotate" data-action="auto">自动旋转</button>
+                <button class="model-rotate" data-action="stop">停止</button>
+                <div class="model-hint">拖拽以旋转模型</div>
+              </div>
+              <div class="model-view" tabindex="0" role="img" aria-label="3D 模型占位">
+                <div class="cube">
+                  <div class="face f1"></div>
+                  <div class="face f2"></div>
+                  <div class="face f3"></div>
+                  <div class="face f4"></div>
+                  <div class="face f5"></div>
+                  <div class="face f6"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-tags">标签：宋代、青瓷、贸易、考古</div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="brand">赛博人文 · 智能文物库</div>
+    <div class="copyright">© 2025</div>
+  </div>
+</footer>
+
+<script src="smart_culture_relics.js"></script>
+</body>
+</html>
