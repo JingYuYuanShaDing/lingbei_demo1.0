@@ -28,10 +28,6 @@ const CITY_STATIONS = {
     }
 };
 
-// 当前选中的座位
-let selectedSeat = null;
-let currentVehicleType = null;
-
 // 页面加载初始化
 window.addEventListener('load', function() {
     document.body.style.opacity = '0';
@@ -333,19 +329,6 @@ function generateMockTickets(departure, destination, date, type) {
             price: '1240',
             remaining: '充足'
         });
-    } else {
-        tickets.push({
-            id: 'B001',
-            from: departure,
-            to: destination,
-            number: '客运大巴',
-            departureTime: '07:30',
-            arrivalTime: '12:00',
-            duration: '4小时30分',
-            seatType: '普通座',
-            price: '156',
-            remaining: '充足'
-        });
     }
     
     return tickets;
@@ -393,7 +376,6 @@ function createTicketCard(ticket, type) {
         </div>
         
         <div class="ticket-actions">
-            <button class="btn" onclick="selectSeat('${ticket.id}', '${type}')">选择座位</button>
             <button class="btn" onclick="bookTicket('${ticket.id}')">立即预订</button>
         </div>
     `;
@@ -401,233 +383,16 @@ function createTicketCard(ticket, type) {
     return card;
 }
 
-// 选择座位
-function selectSeat(ticketId, vehicleType) {
-    currentVehicleType = vehicleType;
-    selectedSeat = null;
-    
-    const modal = document.getElementById('seatModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const seatLayout = document.getElementById('seatLayout');
-    
-    modalTitle.textContent = `选择座位 - ${getVehicleName(vehicleType)}`;
-    
-    // 根据车辆类型生成不同的座位布局
-    if (vehicleType === 'flight') {
-        generateAirplaneSeats(seatLayout);
-    } else if (vehicleType === 'train') {
-        generateTrainSeats(seatLayout);
-    } else {
-        generateBusSeats(seatLayout);
-    }
-    
-    modal.style.display = 'block';
-}
-
-// 获取车辆类型名称
-function getVehicleName(type) {
-    switch(type) {
-        case 'flight': return '飞机';
-        case 'train': return '火车';
-        case 'bus': return '汽车';
-        default: return '车辆';
-    }
-}
-
-// 生成飞机座位布局
-function generateAirplaneSeats(container) {
-    container.innerHTML = `
-        <div class="airplane-layout">
-            <div class="airplane-body">
-                <div class="airplane-cockpit"></div>
-                <div class="airplane-tail"></div>
-                <div class="seats-container" id="seatsGrid">
-                    ${generateAirplaneSeatGrid()}
-                </div>
-            </div>
-            <div style="color: var(--neon-blue); margin-top: 20px;">
-                <span style="display: inline-block; width: 20px; height: 20px; background: var(--neon-blue); margin-right: 10px;"></span>可选
-                <span style="display: inline-block; width: 20px; height: 20px; background: #ff5555; margin: 0 10px;"></span>已选
-                <span style="display: inline-block; width: 20px; height: 20px; background: #2a2a4a; border: 1px solid var(--neon-blue); margin-left: 10px;"></span>可选
-            </div>
-        </div>
-    `;
-    
-    // 添加座位点击事件
-    setTimeout(() => {
-        const seats = document.querySelectorAll('.seat:not(.occupied)');
-        seats.forEach(seat => {
-            seat.addEventListener('click', function() {
-                const seatNumber = this.getAttribute('data-seat');
-                selectThisSeat(seatNumber);
-            });
-        });
-    }, 100);
-}
-
-// 生成飞机座位网格
-function generateAirplaneSeatGrid() {
-    let html = '';
-    const rows = 10;
-    const occupiedSeats = ['1A', '3C', '5F', '7B', '9D'];
-    
-    for (let row = 1; row <= rows; row++) {
-        html += `<div class="seat-row">`;
-        
-        // 左侧座位 (A, B)
-        html += `<div class="seat ${occupiedSeats.includes(row + 'A') ? 'occupied' : ''}" data-seat="${row}A">${row}A</div>`;
-        html += `<div class="seat ${occupiedSeats.includes(row + 'B') ? 'occupied' : ''}" data-seat="${row}B">${row}B</div>`;
-        
-        // 过道
-        if (row === 1) {
-            html += `<div class="aisle" rowspan="${rows}">过道</div>`;
-        }
-        
-        // 右侧座位 (C, D, E, F)
-        html += `<div class="seat ${occupiedSeats.includes(row + 'C') ? 'occupied' : ''}" data-seat="${row}C">${row}C</div>`;
-        html += `<div class="seat ${occupiedSeats.includes(row + 'D') ? 'occupied' : ''}" data-seat="${row}D">${row}D</div>`;
-        html += `<div class="seat ${occupiedSeats.includes(row + 'E') ? 'occupied' : ''}" data-seat="${row}E">${row}E</div>`;
-        html += `<div class="seat ${occupiedSeats.includes(row + 'F') ? 'occupied' : ''}" data-seat="${row}F">${row}F</div>`;
-        
-        html += `</div>`;
-    }
-    
-    return html;
-}
-
-// 生成火车座位布局
-function generateTrainSeats(container) {
-    container.innerHTML = `
-        <div class="train-layout">
-            <h4 style="color: var(--neon-pink); text-align: center; margin-bottom: 15px;">车厢座位分布</h4>
-            ${generateTrainCarriages()}
-            <div style="color: var(--neon-blue); margin-top: 20px; text-align: center;">
-                <span style="display: inline-block; width: 20px; height: 20px; background: var(--neon-blue); margin-right: 10px;"></span>可选
-                <span style="display: inline-block; width: 20px; height: 20px; background: #2a2a4a; border: 1px solid var(--neon-blue); margin: 0 10px;"></span>可选
-            </div>
-        </div>
-    `;
-    
-    setTimeout(() => {
-        const seats = document.querySelectorAll('.train-seat');
-        seats.forEach(seat => {
-            seat.addEventListener('click', function() {
-                const seatNumber = this.getAttribute('data-seat');
-                selectThisSeat(seatNumber);
-            });
-        });
-    }, 100);
-}
-
-// 生成火车车厢
-function generateTrainCarriages() {
-    let html = '';
-    const carriages = 5;
-    const occupiedSeats = ['1-05A', '2-08B', '3-12C', '4-03D'];
-    
-    for (let i = 1; i <= carriages; i++) {
-        html += `<div class="train-carriage">`;
-        html += `<div class="carriage-number">${i}号车厢</div>`;
-        html += `<div class="carriage-seats">`;
-        
-        for (let seatNum = 1; seatNum <= 40; seatNum++) {
-            const row = Math.ceil(seatNum / 4);
-            const col = String.fromCharCode(64 + ((seatNum - 1) % 4) + 1);
-            const seatId = `${i}-${row}${col}`;
-            const isOccupied = occupiedSeats.includes(seatId);
-            
-            html += `<div class="train-seat ${isOccupied ? 'occupied' : ''}" data-seat="${seatId}">${row}${col}</div>`;
-        }
-        
-        html += `</div></div>`;
-    }
-    
-    return html;
-}
-
-// 生成汽车座位布局
-function generateBusSeats(container) {
-    container.innerHTML = `
-        <div class="bus-layout">
-            <div style="text-align: center;">
-                <div class="bus-driver">司机</div>
-            </div>
-            <div class="bus-seats">
-                ${generateBusSeatGrid()}
-            </div>
-            <div style="color: var(--neon-blue); margin-top: 20px; text-align: center;">
-                <span style="display: inline-block; width: 20px; height: 20px; background: var(--neon-blue); margin-right: 10px;"></span>可选
-                <span style="display: inline-block; width: 20px; height: 20px; background: #2a2a4a; border: 1px solid var(--neon-blue); margin: 0 10px;"></span>可选
-            </div>
-        </div>
-    `;
-    
-    setTimeout(() => {
-        const seats = document.querySelectorAll('.bus-seat');
-        seats.forEach(seat => {
-            seat.addEventListener('click', function() {
-                const seatNumber = this.getAttribute('data-seat');
-                selectThisSeat(seatNumber);
-            });
-        });
-    }, 100);
-}
-
-// 生成汽车座位网格
-function generateBusSeatGrid() {
-    let html = '';
-    const totalSeats = 20;
-    const occupiedSeats = ['3', '8', '15', '19'];
-    
-    for (let i = 1; i <= totalSeats; i++) {
-        const isOccupied = occupiedSeats.includes(i.toString());
-        html += `<div class="bus-seat ${isOccupied ? 'occupied' : ''}" data-seat="${i}">${i}</div>`;
-    }
-    
-    return html;
-}
-
-// 选择座位
-function selectThisSeat(seatNumber) {
-    // 取消之前选中的座位
-    document.querySelectorAll('.seat.selected, .train-seat.selected, .bus-seat.selected').forEach(seat => {
-        seat.classList.remove('selected');
-    });
-    
-    // 选中新座位
-    const newSeat = document.querySelector(`[data-seat="${seatNumber}"]`);
-    if (newSeat && !newSeat.classList.contains('occupied')) {
-        newSeat.classList.add('selected');
-        selectedSeat = seatNumber;
-    }
-}
-
-// 确认选座
-function confirmSeatSelection() {
-    if (!selectedSeat) {
-        showMessage('请先选择一个座位', 'error');
-        return;
-    }
-    
-    showMessage(`已成功选择座位: ${selectedSeat}`, 'success');
-    closeSeatModal();
-}
-
-// 关闭选座模态框
-function closeSeatModal() {
-    document.getElementById('seatModal').style.display = 'none';
-    selectedSeat = null;
-}
-
 // 预订车票
 function bookTicket(ticketId) {
-    showMessage('开始预订车票，将跳转到携程商旅平台', 'info');
+    // 立即滚动到页面顶部
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+    
+    // 显示预订消息
+    setTimeout(() => {
+        showMessage('开始预订车票，将跳转到携程商旅平台', 'info');
+    }, 500);
 }
-
-// 点击模态框外部关闭
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('seatModal');
-    if (event.target === modal) {
-        closeSeatModal();
-    }
-});

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -24,7 +23,7 @@
         <header>
             <h1>车票预订</h1>
             <p class="subtitle">智能出行，轻松预订</p>
-            <p>火车、飞机、汽车票一站式预订服务</p>
+            <p>火车、飞机票一站式预订服务</p>
         </header>
         
         <!-- 车票预订部分 -->
@@ -53,7 +52,6 @@
                     <select id="ticket-type" class="form-control">
                         <option value="train">火车票</option>
                         <option value="flight">飞机票</option>
-                        <option value="bus">汽车票</option>
                     </select>
                 </div>
             </div>
@@ -102,28 +100,13 @@
             </div>
         </div>
         
-        <!-- 选座位模态框 -->
-        <div id="seatModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="modalTitle">选择座位</h3>
-                    <button class="close-btn" onclick="closeSeatModal()">×</button>
-                </div>
-                <div id="seatLayout"></div>
-                <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn" onclick="confirmSeatSelection()">确认选座</button>
-                    <button class="btn" onclick="closeSeatModal()" style="margin-left: 10px; background: rgba(255, 0, 0, 0.2); border-color: #ff5555; color: #ff5555;">取消</button>
-                </div>
-            </div>
-        </div>
-        
         <div style="text-align: center; margin-top: 50px;">
             <a href="smart_service.html" class="home-link">返回智能服务</a>
         </div>
         
         <footer>
             <p>© 2025 赛博智能服务 | 未来科技，服务生活</p>
-            <p style="margin-top: 10px; font-size: 0.8rem; color: #555580;">车票预订服务支持火车、飞机、汽车等多种出行方式</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #555580;">车票预订服务支持火车、飞机等多种出行方式</p>
         </footer>
     </div>
 

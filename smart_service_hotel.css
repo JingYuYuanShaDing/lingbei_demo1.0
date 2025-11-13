@@ -1,0 +1,458 @@
+:root {
+    --bg-dark: #0a0a14;
+    --bg-card: #121225;
+    --neon-blue: #0ff0fc;
+    --neon-pink: #ff00ff;
+    --neon-purple: #8a2be2;
+    --text-light: #e0e0ff;
+    --grid-color: rgba(10, 200, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    min-height: 100vh;
+    background-image: 
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 30px 30px;
+    padding-top: 70px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(10, 25, 47, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+.nav-logo {
+    color: var(--neon-blue);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    text-shadow: 0 0 10px var(--neon-blue);
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-link {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-size: 0.9rem;
+}
+
+.nav-link:hover {
+    color: var(--neon-blue);
+}
+
+.home-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(10, 200, 255, 0.2);
+    border: 1px solid var(--neon-blue, #0ff0fc);
+    border-radius: 25px;
+    padding: 10px 20px;
+    color: var(--neon-blue, #0ff0fc);
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.home-btn:hover {
+    background: var(--neon-blue, #0ff0fc);
+    color: var(--bg-dark, #0a0a14);
+    box-shadow: 0 0 15px var(--neon-blue, #0ff0fc);
+}
+
+header {
+    text-align: center;
+    padding: 40px 0;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+h1 {
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+    color: var(--neon-blue);
+    animation: glitch 3s infinite;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--neon-pink);
+    text-shadow: 0 0 5px var(--neon-pink);
+    margin-bottom: 10px;
+}
+
+/* 搜索区域样式 */
+.search-section {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(10, 200, 255, 0.3);
+    box-shadow: 0 0 20px rgba(10, 200, 255, 0.1);
+}
+
+.search-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    margin-bottom: 8px;
+    color: var(--neon-blue);
+    font-size: 0.9rem;
+}
+
+.form-input, .form-select {
+    background-color: rgba(10, 25, 47, 0.7);
+    border: 1px solid rgba(10, 200, 255, 0.3);
+    border-radius: 6px;
+    padding: 12px 15px;
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 10px rgba(10, 200, 255, 0.3);
+}
+
+.form-input:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.search-btn {
+    background: rgba(10, 200, 255, 0.2);
+    border: 1px solid var(--neon-blue);
+    border-radius: 6px;
+    color: var(--neon-blue);
+    padding: 12px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    align-self: end;
+}
+
+.search-btn:hover {
+    background: var(--neon-blue);
+    color: var(--bg-dark);
+    box-shadow: 0 0 15px var(--neon-blue);
+}
+
+/* 筛选区域样式 */
+.filter-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.filter-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: rgba(10, 200, 255, 0.1);
+    border: 1px solid rgba(10, 200, 255, 0.3);
+    border-radius: 20px;
+    padding: 8px 16px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.filter-btn.active {
+    background: var(--neon-blue);
+    color: var(--bg-dark);
+    border-color: var(--neon-blue);
+}
+
+.sort-select {
+    background: rgba(10, 25, 47, 0.7);
+    border: 1px solid rgba(10, 200, 255, 0.3);
+    border-radius: 6px;
+    padding: 8px 15px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+/* 酒店列表样式 */
+.hotels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.hotel-card {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(10, 200, 255, 0.3);
+    box-shadow: 0 0 20px rgba(10, 200, 255, 0.1);
+    position: relative;
+}
+
+.hotel-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(10, 200, 255, 0.3);
+    border-color: var(--neon-blue);
+}
+
+.hotel-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(10, 200, 255, 0.3);
+}
+
+.hotel-info {
+    padding: 20px;
+}
+
+.hotel-name {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: var(--neon-blue);
+}
+
+.hotel-location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: #b0b0d0;
+    font-size: 0.9rem;
+}
+
+.hotel-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.rating-stars {
+    color: #ffaa00;
+}
+
+.rating-value {
+    color: #b0b0d0;
+    font-size: 0.9rem;
+}
+
+.hotel-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.feature-tag {
+    background: rgba(10, 200, 255, 0.1);
+    border: 1px solid rgba(10, 200, 255, 0.3);
+    border-radius: 12px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    color: var(--neon-blue);
+}
+
+.hotel-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.price-amount {
+    font-size: 1.5rem;
+    color: var(--neon-pink);
+    text-shadow: 0 0 5px var(--neon-pink);
+}
+
+.price-unit {
+    font-size: 0.9rem;
+    color: #b0b0d0;
+}
+
+.book-btn {
+    background: rgba(10, 200, 255, 0.2);
+    border: 1px solid var(--neon-blue);
+    border-radius: 20px;
+    padding: 8px 20px;
+    color: var(--neon-blue);
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.book-btn:hover {
+    background: var(--neon-blue);
+    color: var(--bg-dark);
+}
+
+/* 分页样式 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    gap: 10px;
+}
+
+.page-btn {
+    background: rgba(10, 200, 255, 0.1);
+    border: 1px solid rgba(10, 200, 255, 0.3);
+    border-radius: 6px;
+    padding: 8px 15px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.page-btn.active {
+    background: var(--neon-blue);
+    color: var(--bg-dark);
+    border-color: var(--neon-blue);
+}
+
+.page-btn:hover:not(.active) {
+    background: rgba(10, 200, 255, 0.2);
+    border-color: var(--neon-blue);
+}
+
+/* 无结果提示 */
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: #b0b0d0;
+    font-size: 1.2rem;
+}
+
+/* 页脚样式 */
+.site-footer {
+    background-color: rgba(10,25,47,0.95);
+    border-top: 1px solid rgba(100,255,218,0.06);
+    color: var(--text-secondary);
+    padding: 20px 0;
+    font-size: 14px;
+    margin-top: 80px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-links {
+    display: flex;
+    gap: 18px;
+}
+
+.footer-link {
+    color: #8892b0;
+    text-decoration: none;
+    transition: color 0.18s;
+}
+
+.footer-link:hover {
+    color: #64ffda;
+}
+
+/* 动画 */
+@keyframes glitch {
+    0% { transform: translate(0); }
+    2% { transform: translate(-2px, 2px); }
+    4% { transform: translate(-2px, -2px); }
+    6% { transform: translate(2px, 2px); }
+    8% { transform: translate(2px, -2px); }
+    10% { transform: translate(0); }
+    100% { transform: translate(0); }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    .search-form {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .hotels-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .nav-menu {
+        gap: 15px;
+    }
+}

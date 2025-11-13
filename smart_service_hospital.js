@@ -1,4 +1,3 @@
-
 const departmentMap = {
     'internal': '内科',
     'surgery': '外科',
@@ -15,7 +14,6 @@ const doctorsData = {
             name: "张明远",
             title: "主任医师 | 20年经验",
             desc: "毕业于北京医科大学，擅长心血管疾病、高血压、糖尿病等内科常见病、多发病的诊断与治疗。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=zhang&backgroundColor=0ff0fc",
             schedule: {
                 days: [0, 1, 3, 4, 6],
                 times: ['morning', 'afternoon']
@@ -25,7 +23,6 @@ const doctorsData = {
             name: "李静",
             title: "副主任医师 | 15年经验",
             desc: "医学博士，擅长消化系统疾病、呼吸系统疾病的诊治，尤其对慢性胃炎、胃溃疡有深入研究。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=li&backgroundColor=ff00ff",
             schedule: {
                 days: [1, 2, 4, 5],
                 times: ['morning']
@@ -37,7 +34,6 @@ const doctorsData = {
             name: "王建国",
             title: "主任医师 | 25年经验",
             desc: "普外科专家，擅长甲状腺、乳腺、胃肠等疾病的诊断与手术治疗，完成各类手术5000余例。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=wang&backgroundColor=00ff9d",
             schedule: {
                 days: [0, 2, 3, 5, 6],
                 times: ['afternoon']
@@ -47,7 +43,6 @@ const doctorsData = {
             name: "赵海",
             title: "副主任医师 | 12年经验",
             desc: "骨科专家，擅长关节疾病、骨折、脊柱疾病的诊断与治疗，尤其对微创手术有丰富经验。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=zhao&backgroundColor=ffaa00",
             schedule: {
                 days: [1, 2, 3, 4],
                 times: ['morning', 'afternoon']
@@ -59,7 +54,6 @@ const doctorsData = {
             name: "陈晓梅",
             title: "主任医师 | 18年经验",
             desc: "儿科专家，擅长儿童呼吸系统疾病、消化系统疾病及儿童生长发育问题的诊断与治疗。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=chen&backgroundColor=00aaff",
             schedule: {
                 days: [0, 1, 2, 4, 5],
                 times: ['morning']
@@ -69,7 +63,6 @@ const doctorsData = {
             name: "刘小芳",
             title: "副主任医师 | 10年经验",
             desc: "儿科专家，擅长新生儿疾病、儿童营养与保健，对儿童过敏性疾病有深入研究。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=liu&backgroundColor=9d00ff",
             schedule: {
                 days: [1, 3, 5, 6],
                 times: ['afternoon']
@@ -81,7 +74,6 @@ const doctorsData = {
             name: "刘文华",
             title: "副主任医师 | 14年经验",
             desc: "耳鼻喉科专家，擅长鼻炎、咽炎、中耳炎等常见病的诊治，对微创手术有丰富经验。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=liuwen&backgroundColor=ff5500",
             schedule: {
                 days: [0, 2, 4, 6],
                 times: ['morning', 'afternoon']
@@ -91,7 +83,6 @@ const doctorsData = {
             name: "周明",
             title: "主任医师 | 16年经验",
             desc: "耳鼻喉科专家，擅长鼻窦炎、扁桃体炎、听力障碍等疾病的诊断与治疗。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=zhou&backgroundColor=00ff55",
             schedule: {
                 days: [1, 3, 5],
                 times: ['morning']
@@ -103,7 +94,6 @@ const doctorsData = {
             name: "杨雪",
             title: "主任医师 | 16年经验",
             desc: "皮肤科专家，擅长痤疮、湿疹、银屑病等皮肤病的诊治，对激光美容治疗有深入研究。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=yang&backgroundColor=ff00aa",
             schedule: {
                 days: [0, 1, 3, 5],
                 times: ['afternoon']
@@ -113,7 +103,6 @@ const doctorsData = {
             name: "黄文静",
             title: "副主任医师 | 12年经验",
             desc: "皮肤科专家，擅长皮肤过敏、真菌感染、色素性皮肤病的诊断与治疗。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=huang&backgroundColor=00ffcc",
             schedule: {
                 days: [2, 4, 6],
                 times: ['morning', 'afternoon']
@@ -125,7 +114,6 @@ const doctorsData = {
             name: "周明",
             title: "副主任医师 | 13年经验",
             desc: "眼科专家，擅长白内障、青光眼、近视等眼部疾病的诊断与治疗，完成眼科手术3000余例。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=zhouming&backgroundColor=aa00ff",
             schedule: {
                 days: [0, 1, 2, 3, 4, 5, 6],
                 times: ['morning']
@@ -135,7 +123,6 @@ const doctorsData = {
             name: "吴小华",
             title: "主任医师 | 20年经验",
             desc: "眼科专家，擅长眼底病、角膜病、眼外伤等复杂眼病的诊断与手术治疗。",
-            avatar: "https://api.dicebear.com/7.x/pixel-art/svg?seed=wu&backgroundColor=00aaff",
             schedule: {
                 days: [1, 2, 4, 5],
                 times: ['afternoon']
@@ -220,9 +207,6 @@ function displayDoctors(department) {
             doctorCard.setAttribute('data-department', department);
             
             doctorCard.innerHTML = `
-                <div class="doctor-avatar">
-                    <img src="${doctor.avatar}" alt="${doctor.name}医生头像">
-                </div>
                 <h3 class="doctor-name">${doctor.name}</h3>
                 <p class="doctor-title">${doctor.title}</p>
                 <p class="doctor-desc">${doctor.desc}</p>

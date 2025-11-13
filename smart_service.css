@@ -183,9 +183,7 @@ color: var(--bg-dark);
 .ticket { color: #ffaa00; }
 .hotel { color: var(--neon-pink); }
 .food { color: #ff5500; }
-.delivery { color: #9d00ff; }
 .payment { color: #00ff55; }
-.sports { color: #00aaff; }
 .home-link {
 display: inline-block;
 margin-top: 40px;

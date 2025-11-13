@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美食外卖 - 赛博智能服务</title>
+    <link rel="stylesheet" href="smart_service_food.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <a href="smart_service.html" class="home-btn">
+        <i class="fas fa-home"></i> 返回首页
+    </a>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="smart_service.html" class="nav-logo">赛博智能服务</a>
+            <ul class="nav-menu">
+                <li><a href="smart_service.html" class="nav-link">返回智能服务</a></li>
+                <li><a href="#restaurants" class="nav-link">商家</a></li>
+                <li><a href="#menu" class="nav-link">菜单</a></li>
+                <li><a href="#cart" class="nav-link">购物车</a></li>
+                <li><a href="#orders" class="nav-link">订单</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>美食外卖</h1>
+            <p class="subtitle">附近美食一键下单，快速配送上门</p>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="搜索商家或美食...">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+        </header>
+        
+        <div class="restaurant-section" id="restaurants">
+            <h2>附近商家 <span class="selected-restaurant" id="selected-restaurant-name"></span></h2>
+            <div class="restaurant-grid" id="restaurant-grid">
+                <!-- 商家内容会通过JS加载 -->
+                <div class="loading">加载中...</div>
+            </div>
+        </div>
+        
+        <div class="menu-section" id="menu">
+            <h2>菜单</h2>
+            <div class="menu-grid" id="menu-grid">
+                <!-- 菜单内容会通过JS加载 -->
+                <div class="no-restaurant-selected">
+                    <i class="fas fa-utensils"></i>
+                    <p>请先选择一个商家查看菜单</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cart-section" id="cart">
+            <h2>购物车</h2>
+            <div class="cart-content">
+                <div class="cart-items" id="cart-items">
+                    <!-- 购物车内容会通过JS加载 -->
+                    <div class="empty-cart">购物车为空</div>
+                </div>
+                <div class="cart-summary">
+                    <div class="total-price">
+                        <span>总计:</span>
+                        <span class="price" id="total-price">¥0.00</span>
+                    </div>
+                    <div class="delivery-fee">
+                        <span>配送费:</span>
+                        <span class="price" id="delivery-fee">¥0.00</span>
+                    </div>
+                    <div class="final-price">
+                        <span>实付:</span>
+                        <span class="price" id="final-price">¥0.00</span>
+                    </div>
+                    <button class="checkout-btn" id="checkout-btn">立即下单</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="order-section" id="orders">
+            <h2>我的订单</h2>
+            <div class="order-list" id="order-list">
+                <!-- 订单内容会通过JS加载 -->
+                <div class="empty-orders">暂无订单</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">
+                    &copy; 2025 赛博智能服务. 保留所有权利。
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">隐私政策</a>
+                    <a href="#" class="footer-link">使用条款</a>
+                    <a href="#" class="footer-link">Cookie 政策</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="smart_service_food.js"></script>
+</body>
+</html>

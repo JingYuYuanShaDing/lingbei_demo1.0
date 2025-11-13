@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>酒店预订 - 赛博智能服务</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="smart_service_hotel.css">
+</head>
+<body>
+    <a href="smart_service.html" class="home-btn">
+        <i class="fas fa-home"></i> 返回首页
+    </a>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="smart_service.html" class="nav-logo">赛博智能服务</a>
+            <ul class="nav-menu">
+                <li><a href="smart_service.html" class="nav-link">返回智能服务</a></li>
+                <li><a href="#services" class="nav-link">服务</a></li>
+                <li><a href="#contact" class="nav-link">联系我们</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>酒店预订</h1>
+            <p class="subtitle">海量酒店资源，智能筛选，最优价格保障</p>
+            <p>找到最适合您的住宿体验</p>
+        </header>
+        
+        <!-- 搜索区域 -->
+        <section class="search-section">
+            <form class="search-form">
+                <div class="form-group">
+                    <label class="form-label">目的地</label>
+                    <input type="text" class="form-input" value="武汉市" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">入住日期</label>
+                    <input type="date" class="form-input" id="checkin-date">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">退房日期</label>
+                    <input type="date" class="form-input" id="checkout-date">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">房间/住客</label>
+                    <select class="form-select" id="room-guests">
+                        <option value="1-2">1间房, 2位成人</option>
+                        <option value="1-1">1间房, 1位成人</option>
+                        <option value="1-2-1">1间房, 2位成人, 1位儿童</option>
+                        <option value="2-4">2间房, 4位成人</option>
+                    </select>
+                </div>
+                <button type="button" class="search-btn" id="search-btn">搜索酒店</button>
+            </form>
+        </section>
+        
+        <!-- 筛选区域 -->
+        <section class="filter-section">
+            <div class="filter-group">
+                <button class="filter-btn active" data-type="all">全部</button>
+                <button class="filter-btn" data-type="economy">经济型</button>
+                <button class="filter-btn" data-type="comfort">舒适型</button>
+                <button class="filter-btn" data-type="luxury">豪华型</button>
+                <button class="filter-btn" data-type="resort">度假村</button>
+            </div>
+            <div>
+                <select class="sort-select" id="sort-select">
+                    <option value="recommended">推荐排序</option>
+                    <option value="price-low">价格从低到高</option>
+                    <option value="price-high">价格从高到低</option>
+                    <option value="rating">评分从高到低</option>
+                </select>
+            </div>
+        </section>
+        
+        <!-- 酒店列表 -->
+        <section class="hotels-grid" id="hotels-list">
+            <!-- 酒店卡片将通过JavaScript动态生成 -->
+        </section>
+        
+        <!-- 分页 -->
+        <div class="pagination" id="pagination">
+            <!-- 分页按钮将通过JavaScript动态生成 -->
+        </div>
+        
+        <!-- 页脚 -->
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="copyright">
+                        &copy; 2025 赛博智能服务. 保留所有权利。
+                    </div>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">隐私政策</a>
+                        <a href="#" class="footer-link">使用条款</a>
+                        <a href="#" class="footer-link">Cookie 政策</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="smart_service_hotel.js"></script>
+</body>
+</html>

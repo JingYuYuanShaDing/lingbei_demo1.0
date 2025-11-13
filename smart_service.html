@@ -1,4 +1,48 @@
-<!DOCTYPE html><html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>赛博智能服务 - 首页</title> <link rel="stylesheet" href="smart_service.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> </head> <body> <nav class="navbar"> <div class="nav-container"> <a href="index.html" class="nav-logo">赛博智能服务</a> <ul class="nav-menu"> <li><a href="index.html" class="nav-link">首页</a></li> <li><a href="#services" class="nav-link">服务</a></li> <li><a href="#contact" class="nav-link">联系我们</a></li> </ul> </div> </nav>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛博智能服务 - 首页</title>
+    <link rel="stylesheet" href="smart_service.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(10, 200, 255, 0.2);
+            border: 1px solid var(--neon-blue, #0ff0fc);
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: var(--neon-blue, #0ff0fc);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        .home-btn:hover {
+            background: var(--neon-blue, #0ff0fc);
+            color: var(--bg-dark, #0a0a14);
+            box-shadow: 0 0 15px var(--neon-blue, #0ff0fc);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-btn">
+        <i class="fas fa-home"></i> 返回首页
+    </a>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">赛博智能服务</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">返回首页</a></li>
+                <li><a href="#services" class="nav-link">服务</a></li>
+                <li><a href="#contact" class="nav-link">联系我们</a></li>
+            </ul>
+        </div>
+    </nav>
 
 <div class="container">
     <header>
@@ -73,19 +117,6 @@
             <span class="enter-btn">进入服务 →</span>
         </a>
         
-        <a href="smart_service_delivery.html" class="service-card">
-            <div class="service-icon delivery">📦</div>
-            <h3 class="service-title">快递服务</h3>
-            <p class="service-desc">一键寄件，多快递公司比价，实时追踪</p>
-            <ul class="service-features">
-                <li>在线下单寄件</li>
-                <li>快递公司选择</li>
-                <li>实时价格比较</li>
-                <li>包裹追踪服务</li>
-            </ul>
-            <span class="enter-btn">进入服务 →</span>
-        </a>
-        
         <a href="smart_service_payment.html" class="service-card">
             <div class="service-icon payment">💳</div>
             <h3 class="service-title">生活缴费</h3>
@@ -95,19 +126,6 @@
                 <li>水费缴纳</li>
                 <li>话费充值</li>
                 <li>缴费记录查询</li>
-            </ul>
-            <span class="enter-btn">进入服务 →</span>
-        </a>
-        
-        <a href="smart_service_sports.html" class="service-card">
-            <div class="service-icon sports">🏸</div>
-            <h3 class="service-title">场馆预约</h3>
-            <p class="service-desc">在线预约体育场馆，实时查看空闲时段</p>
-            <ul class="service-features">
-                <li>场地状态可视化</li>
-                <li>空闲(绿色)/占用(红色)</li>
-                <li>按小时分块预约</li>
-                <li>多种场馆类型</li>
             </ul>
             <span class="enter-btn">进入服务 →</span>
         </a>
@@ -144,9 +162,9 @@
                     <div class="footer-scenes-col">
                         <h5 class="col-title">热门服务</h5>
                         <ul class="col-list">
-                            <li><a class="footer-link" href="taxi.html">智能打车</a></li>
-                            <li><a class="footer-link" href="hospital.html">远程医疗</a></li>
-                            <li><a class="footer-link" href="ticket.html">车票预订</a></li>
+                            <li><a class="footer-link" href="page/taxi.html">智能打车</a></li>
+                            <li><a class="footer-link" href="page/hospital.html">远程医疗</a></li>
+                            <li><a class="footer-link" href="page/ticket.html">车票预订</a></li>
                             <li><a class="footer-link" href="food.html">美食外卖</a></li>
                         </ul>
                     </div>
@@ -194,4 +212,5 @@
 </div>
 
 <script src="smart_service.js"></script>
-</body> </html>
+</body>
+</html>

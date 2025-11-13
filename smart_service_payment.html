@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生活缴费 - 赛博智能服务</title>
+    <link rel="stylesheet" href="smart_service.css">
+    <link rel="stylesheet" href="smart_service_payment.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <a href="smart_service.html" class="home-btn">
+        <i class="fas fa-home"></i> 返回服务列表
+    </a>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="smart_service.html" class="nav-logo">赛博智能服务</a>
+            <ul class="nav-menu">
+                <li><a href="smart_service.html" class="nav-link">返回智能服务</a></li>
+                <li><a href="#payment-services" class="nav-link">缴费服务</a></li>
+                <li><a href="#payment-history" class="nav-link">缴费记录</a></li>
+                <li><a href="#help" class="nav-link">帮助</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="payment-header">
+            <h1>生活缴费</h1>
+            <p class="subtitle">一站式缴纳电费、水费、话费等生活费用</p>
+            <p>快速、安全、便捷的在线缴费服务</p>
+        </header>
+        
+        <div class="payment-container">
+            <div class="payment-services" id="payment-services">
+                <h2 class="section-title">选择缴费项目</h2>
+                <div class="payment-grid">
+                    <div class="payment-card" data-type="electricity">
+                        <div class="payment-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="payment-title">电费缴纳</h3>
+                        <p class="payment-desc">缴纳家庭或企业电费，支持预存</p>
+                        <div class="payment-amount">
+                            <span class="amount-label">当前欠费:</span>
+                            <span class="amount-value">¥ 156.80</span>
+                        </div>
+                        <button class="pay-btn">立即缴费</button>
+                    </div>
+                    
+                    <div class="payment-card" data-type="water">
+                        <div class="payment-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h3 class="payment-title">水费缴纳</h3>
+                        <p class="payment-desc">缴纳生活用水费用，支持多账户管理</p>
+                        <div class="payment-amount">
+                            <span class="amount-label">当前欠费:</span>
+                            <span class="amount-value">¥ 68.50</span>
+                        </div>
+                        <button class="pay-btn">立即缴费</button>
+                    </div>
+                    
+                    <div class="payment-card" data-type="gas">
+                        <div class="payment-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3 class="payment-title">燃气费缴纳</h3>
+                        <p class="payment-desc">缴纳燃气使用费用，安全便捷</p>
+                        <div class="payment-amount">
+                            <span class="amount-label">当前欠费:</span>
+                            <span class="amount-value">¥ 42.30</span>
+                        </div>
+                        <button class="pay-btn">立即缴费</button>
+                    </div>
+                    
+                    <div class="payment-card" data-type="phone">
+                        <div class="payment-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="payment-title">话费充值</h3>
+                        <p class="payment-desc">为手机号码充值，即时到账</p>
+                        <div class="payment-amount">
+                            <span class="amount-label">当前余额:</span>
+                            <span class="amount-value">¥ 12.50</span>
+                        </div>
+                        <button class="pay-btn">立即充值</button>
+                    </div>
+                    
+                    <div class="payment-card" data-type="broadband">
+                        <div class="payment-icon">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <h3 class="payment-title">宽带缴费</h3>
+                        <p class="payment-desc">缴纳宽带网络费用，支持包年包月</p>
+                        <div class="payment-amount">
+                            <span class="amount-label">到期时间:</span>
+                            <span class="amount-value">2025-06-15</span>
+                        </div>
+                        <button class="pay-btn">立即缴费</button>
+                    </div>
+                    
+                    <div class="payment-card" data-type="property">
+                        <div class="payment-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3 class="payment-title">物业费缴纳</h3>
+                        <p class="payment-desc">缴纳小区物业管理费用</p>
+                        <div class="payment-amount">
+                            <span class="amount-label">当前欠费:</span>
+                            <span class="amount-value">¥ 320.00</span>
+                        </div>
+                        <button class="pay-btn">立即缴费</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="payment-form-container" id="payment-form">
+                <div class="form-header">
+                    <h2>缴费详情</h2>
+                    <button class="close-form">&times;</button>
+                </div>
+                <form id="paymentForm" class="payment-form">
+                    <div class="form-group">
+                        <label for="paymentType">缴费类型</label>
+                        <input type="text" id="paymentType" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="accountNumber">户号/手机号</label>
+                        <input type="text" id="accountNumber" placeholder="请输入您的户号或手机号" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="accountName">户名</label>
+                        <input type="text" id="accountName" placeholder="请输入户名" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paymentAmount">缴费金额 (元)</label>
+                        <input type="number" id="paymentAmount" min="1" step="0.01" placeholder="请输入缴费金额" required>
+                    </div>
+                    
+                    <div class="amount-presets">
+                        <span>快捷金额:</span>
+                        <button type="button" class="amount-btn" data-amount="50">50元</button>
+                        <button type="button" class="amount-btn" data-amount="100">100元</button>
+                        <button type="button" class="amount-btn" data-amount="200">200元</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paymentMethod">支付方式</label>
+                        <div class="payment-methods">
+                            <label class="method-option">
+                                <input type="radio" name="paymentMethod" value="alipay" checked>
+                                <span class="method-icon"><i class="fab fa-alipay"></i></span>
+                                <span class="method-name">支付宝</span>
+                            </label>
+                            <label class="method-option">
+                                <input type="radio" name="paymentMethod" value="wechat">
+                                <span class="method-icon"><i class="fab fa-weixin"></i></span>
+                                <span class="method-name">微信支付</span>
+                            </label>
+                            <label class="method-option">
+                                <input type="radio" name="paymentMethod" value="bank">
+                                <span class="method-icon"><i class="fas fa-credit-card"></i></span>
+                                <span class="method-name">银行卡</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-payment">确认支付</button>
+                </form>
+            </div>
+            
+            <div class="payment-history" id="payment-history">
+                <h2 class="section-title">缴费记录</h2>
+                <div class="history-table-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>缴费项目</th>
+                                <th>缴费时间</th>
+                                <th>缴费金额</th>
+                                <th>支付方式</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>电费</td>
+                                <td>2025-03-10 14:23</td>
+                                <td>¥ 142.50</td>
+                                <td>支付宝</td>
+                                <td><span class="status success">成功</span></td>
+                            </tr>
+                            <tr>
+                                <td>水费</td>
+                                <td>2025-03-05 09:15</td>
+                                <td>¥ 65.80</td>
+                                <td>微信支付</td>
+                                <td><span class="status success">成功</span></td>
+                            </tr>
+                            <tr>
+                                <td>话费充值</td>
+                                <td>2025-02-28 16:42</td>
+                                <td>¥ 100.00</td>
+                                <td>支付宝</td>
+                                <td><span class="status success">成功</span></td>
+                            </tr>
+                            <tr>
+                                <td>燃气费</td>
+                                <td>2025-02-20 11:30</td>
+                                <td>¥ 38.50</td>
+                                <td>银行卡</td>
+                                <td><span class="status success">成功</span></td>
+                            </tr>
+                            <tr>
+                                <td>物业费</td>
+                                <td>2025-02-15 13:55</td>
+                                <td>¥ 320.00</td>
+                                <td>微信支付</td>
+                                <td><span class="status success">成功</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="payment-help" id="help">
+                <h2 class="section-title">常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>如何查询缴费记录？</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>您可以在"缴费记录"页面查看最近6个月的所有缴费记录，包括缴费项目、时间、金额和支付状态。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>缴费后多久到账？</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>一般情况下，缴费成功后资金会实时到账。如遇系统繁忙，最长不超过24小时。您可以在缴费记录中查看缴费状态。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>缴费失败怎么办？</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>如果缴费失败，系统会自动退款至原支付账户，一般1-3个工作日内到账。如果超过时间未收到退款，请联系客服处理。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>可以代他人缴费吗？</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>可以。您只需要输入对方的户号/手机号和户名，即可为他人缴纳相关费用。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">
+                    &copy; 2025 赛博智能服务. 保留所有权利。
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">隐私政策</a>
+                    <a href="#" class="footer-link">使用条款</a>
+                    <a href="#" class="footer-link">Cookie 政策</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="smart_service_payment.js"></script>
+</body>
+</html>

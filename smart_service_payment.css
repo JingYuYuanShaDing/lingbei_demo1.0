@@ -1,0 +1,429 @@
+/* 生活缴费页面专用样式 */
+
+.payment-header {
+    text-align: center;
+    padding: 40px 0;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.payment-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-blue);
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--neon-blue), transparent);
+}
+
+.payment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 60px;
+}
+
+.payment-card {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    padding: 25px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(10, 200, 255, 0.3);
+    box-shadow: 0 0 20px rgba(10, 200, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.payment-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: 0.5s;
+}
+
+.payment-card:hover::before {
+    left: 100%;
+}
+
+.payment-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(10, 200, 255, 0.3);
+    border-color: var(--neon-blue);
+}
+
+.payment-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 15px currentColor;
+    color: var(--neon-blue);
+}
+
+.payment-title {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: var(--neon-blue);
+}
+
+.payment-desc {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #b0b0d0;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.payment-amount {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.amount-label {
+    color: #a0a0c0;
+    font-size: 0.9rem;
+}
+
+.amount-value {
+    color: var(--neon-pink);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.pay-btn {
+    padding: 10px 20px;
+    background: rgba(10, 200, 255, 0.2);
+    border: 1px solid var(--neon-blue);
+    border-radius: 20px;
+    color: var(--neon-blue);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    align-self: flex-start;
+}
+
+.payment-card:hover .pay-btn {
+    background: var(--neon-blue);
+    color: var(--bg-dark);
+}
+
+/* 缴费表单样式 */
+.payment-form-container {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 60px;
+    border: 1px solid rgba(10, 200, 255, 0.3);
+    box-shadow: 0 0 20px rgba(10, 200, 255, 0.1);
+    display: none;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-header h2 {
+    color: var(--neon-blue);
+    margin: 0;
+}
+
+.close-form {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-form:hover {
+    color: var(--neon-pink);
+}
+
+.payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.form-group input {
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 10px rgba(10, 200, 255, 0.3);
+}
+
+.amount-presets {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: -10px;
+}
+
+.amount-presets span {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.amount-btn {
+    padding: 6px 12px;
+    background: rgba(10, 200, 255, 0.1);
+    border: 1px solid rgba(10, 200, 255, 0.3);
+    border-radius: 15px;
+    color: var(--neon-blue);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.85rem;
+}
+
+.amount-btn:hover {
+    background: rgba(10, 200, 255, 0.3);
+}
+
+.payment-methods {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.method-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex: 1;
+    min-width: 120px;
+}
+
+.method-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.method-option input {
+    display: none;
+}
+
+.method-option input:checked + .method-icon + .method-name {
+    color: var(--neon-blue);
+}
+
+.method-option input:checked ~ .method-icon,
+.method-option input:checked ~ .method-name {
+    color: var(--neon-blue);
+}
+
+.method-icon {
+    font-size: 1.2rem;
+    color: #a0a0c0;
+    transition: color 0.3s;
+}
+
+.method-name {
+    color: #a0a0c0;
+    transition: color 0.3s;
+}
+
+.submit-payment {
+    padding: 15px;
+    background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+    border: none;
+    border-radius: 6px;
+    color: var(--bg-dark);
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.submit-payment:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(10, 200, 255, 0.4);
+}
+
+/* 缴费记录样式 */
+.history-table-container {
+    overflow-x: auto;
+    margin-bottom: 60px;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--bg-card);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(10, 200, 255, 0.1);
+}
+
+.history-table th,
+.history-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.history-table th {
+    background-color: rgba(10, 200, 255, 0.1);
+    color: var(--neon-blue);
+    font-weight: 600;
+}
+
+.history-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status.success {
+    background-color: rgba(0, 255, 157, 0.2);
+    color: #00ff9d;
+}
+
+/* 常见问题样式 */
+.faq-list {
+    margin-bottom: 60px;
+}
+
+.faq-item {
+    background-color: var(--bg-card);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.faq-question {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.faq-question:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.faq-question span {
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+.faq-question i {
+    color: var(--neon-blue);
+    transition: transform 0.3s;
+}
+
+.faq-answer {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+}
+
+.faq-answer p {
+    padding-bottom: 20px;
+    color: #b0b0d0;
+    line-height: 1.6;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-item.active .faq-answer {
+    max-height: 200px;
+    padding: 0 20px 20px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .payment-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-methods {
+        flex-direction: column;
+    }
+    
+    .method-option {
+        min-width: auto;
+    }
+    
+    .amount-presets {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .history-table {
+        font-size: 0.9rem;
+    }
+    
+    .history-table th,
+    .history-table td {
+        padding: 10px;
+    }
+}
